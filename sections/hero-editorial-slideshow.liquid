@@ -22,7 +22,13 @@
               {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
             >
           {%- else -%}
-            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            <img
+              src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=2200&q=85"
+              alt="{{ block.settings.heading | default: 'CodyUI Atelier Runway' | escape }}"
+              width="2200"
+              height="1300"
+              {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+            >
           {%- endif -%}
         </div>
 

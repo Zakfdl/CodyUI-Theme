@@ -1,0 +1,70 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container cody-container--narrow" style="text-align: center;">
+    <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+    <h2 class="cody-display-lg" style="margin-bottom: 1.4rem;">{{ section.settings.heading | escape }}</h2>
+    <p class="cody-text-muted" style="font-size: 1.55rem; max-width: 52rem; margin: 0 auto 3.2rem;">
+      {{ section.settings.subtext | escape }}
+    </p>
+
+    {%- form 'customer', class: 'cody-newsletter-banner__form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <div style="display: flex; flex-wrap: wrap; gap: 1.2rem; max-width: 54rem; margin-inline: auto;">
+        <input
+          type="email"
+          name="contact[email]"
+          class="cody-input"
+          style="flex: 1; min-width: 24rem;"
+          placeholder="{{ 'newsletter.label' | t }}"
+          required
+        >
+        <button type="submit" class="cody-btn cody-btn--primary">
+          {{ section.settings.button_label | escape }}
+        </button>
+      </div>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Private List Newsletter",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-3"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "PRIVATE CLIENT INVITATION",
+      "label": "Eyebrow subtitle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Join The Atelier Private List",
+      "label": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "default": "Receive 48-hour early access to numbered capsule releases, private archive events, and invitations to Milan & Paris showroom appointments.",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "Request Access",
+      "label": "Button label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Private List Newsletter"
+    }
+  ]
+}
+{% endschema %}

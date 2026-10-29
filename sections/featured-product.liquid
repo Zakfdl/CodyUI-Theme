@@ -1,0 +1,124 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container">
+    {%- assign feat_product = section.settings.product -%}
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(32rem, 1fr)); gap: clamp(3.2rem, 6vw, 7.2rem); align-items: center;">
+      <div class="cody-media cody-media--portrait">
+        {%- if feat_product != blank and feat_product.featured_media != blank -%}
+          <img
+            src="{{ feat_product.featured_media | image_url: width: 1200 }}"
+            alt="{{ feat_product.title | escape }}"
+            width="900"
+            height="1200"
+            loading="lazy"
+          >
+        {%- else -%}
+          <img
+            src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=85"
+            alt="Double-Faced Cashmere Belted Coat"
+            width="900"
+            height="1200"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </div>
+
+      <div>
+        <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        <h2 class="cody-display-lg" style="margin-bottom: 1.2rem;">
+          {{ feat_product.title | default: 'Double-Faced Cashmere Belted Coat' | escape }}
+        </h2>
+
+        <div class="cody-price" style="font-size: 2.2rem; margin-bottom: 2rem;">
+          {%- if feat_product != blank -%}
+            <span class="cody-price__regular">{{ feat_product.price | money }}</span>
+          {%- else -%}
+            <span class="cody-price__sale">$890.00</span>
+            <s class="cody-price__compare">$1,150.00</s>
+          {%- endif -%}
+        </div>
+
+        <p class="cody-text-muted" style="font-size: 1.55rem; line-height: 1.75; margin-bottom: 2.8rem;">
+          {%- if feat_product != blank and feat_product.description != blank -%}
+            {{ feat_product.description | strip_html | truncatewords: 36 }}
+          {%- else -%}
+            Hand-finished in our Milanese atelier from 100% un-dyed Mongolian double-faced cashmere. Designed with a relaxed drop shoulder, wide peak lapels, and a removable self-tie waist belt.
+          {%- endif -%}
+        </p>
+
+        <div style="margin-bottom: 2.8rem;">
+          <span class="cody-eyebrow" style="margin-bottom: 1rem;">SELECT ATELIER SIZE</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+            {%- for sz in (1..4) -%}
+              {%- liquid
+                case sz
+                  when 1
+                    assign sz_label = 'XS'
+                  when 2
+                    assign sz_label = 'S'
+                  when 3
+                    assign sz_label = 'M'
+                  when 4
+                    assign sz_label = 'L'
+                endcase
+              -%}
+              <button
+                type="button"
+                class="cody-btn cody-btn--secondary cody-btn--sm"
+                onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('cody-btn--primary')); this.classList.add('cody-btn--primary');"
+              >
+                {{ sz_label }}
+              </button>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 1.4rem;">
+          <a
+            href="{{ feat_product.url | default: routes.all_products_collection_url }}"
+            class="cody-btn cody-btn--primary cody-btn--lg"
+            style="flex: 1; min-width: 22rem;"
+          >
+            {{ section.settings.button_label | escape }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Hero Product",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "ICON PIECE OF THE SEASON",
+      "label": "Eyebrow subtitle"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "Acquire Piece",
+      "label": "Button label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Hero Product"
+    }
+  ]
+}
+{% endschema %}

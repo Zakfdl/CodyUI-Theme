@@ -22,7 +22,13 @@
               loading="lazy"
             >
           {%- else -%}
-            {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            <img
+              src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=900&q=80"
+              alt="{{ section.settings.heading | escape }}"
+              width="450"
+              height="600"
+              loading="lazy"
+            >
           {%- endif -%}
         </div>
 

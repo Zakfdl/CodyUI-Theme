@@ -1,0 +1,127 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container{% if section.settings.full_width %} cody-container--fluid{% endif %}">
+    <div class="cody-section-header">
+      <div>
+        <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        <h2 class="cody-h1" style="margin-bottom: 0;">{{ section.settings.heading | escape }}</h2>
+      </div>
+      <span class="cody-link-editorial">{{ section.settings.handle_label | escape }}</span>
+    </div>
+
+    {%- liquid
+      assign social_imgs = 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=700&q=80|https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80|https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=700&q=80|https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=700&q=80' | split: '|'
+      assign social_captions = '@camille.paris in Double-Faced Trench|@elena.milano in Cashmere Knit|@sofia.nyc in Tailored Wool Blazer|@chloe.london in Pleated Silk Midi' | split: '|'
+    -%}
+
+    <div class="cody-grid cody-grid--4 cody-grid--mobile-2">
+      {%- for block in section.blocks -%}
+        {%- assign idx0 = forloop.index0 | modulo: 4 -%}
+        <a
+          href="{{ block.settings.link | default: routes.all_products_collection_url }}"
+          class="cody-card"
+          {{ block.shopify_attributes }}
+        >
+          <div class="cody-card__media-wrap cody-media cody-media--square">
+            {%- if block.settings.image != blank -%}
+              <img
+                src="{{ block.settings.image | image_url: width: 700 }}"
+                alt="{{ block.settings.caption | escape }}"
+                class="cody-card__img--primary"
+                width="600"
+                height="600"
+                loading="lazy"
+              >
+            {%- else -%}
+              <img
+                src="{{ social_imgs[idx0] }}"
+                alt="{{ block.settings.caption | default: social_captions[idx0] | escape }}"
+                class="cody-card__img--primary"
+                width="600"
+                height="600"
+                loading="lazy"
+              >
+            {%- endif -%}
+          </div>
+          <div style="padding-top: 1rem; display: flex; align-items: center; justify-content: space-between; font-size: 1.25rem;">
+            <span class="cody-text-muted">{{ block.settings.caption | default: social_captions[idx0] | escape }}</span>
+            {% render 'cody-icons', icon: 'bag', size: 15 %}
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop The Feed (Lookbook)",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "AS SEEN ON OUR COMMUNITY",
+      "label": "Eyebrow subtitle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Styled Around the World",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "handle_label",
+      "default": "@CODYUI.ATELIER",
+      "label": "Social handle label"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": false,
+      "label": "Full-bleed container"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "post",
+      "name": "Lookbook Post",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photograph"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Creator handle & item"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Product or collection link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop The Feed (Lookbook)",
+      "blocks": [
+        { "type": "post", "settings": { "caption": "@camille.paris — Wool Trench" } },
+        { "type": "post", "settings": { "caption": "@elena.milano — Cashmere Crewneck" } },
+        { "type": "post", "settings": { "caption": "@sofia.nyc — Relaxed Blazer" } },
+        { "type": "post", "settings": { "caption": "@chloe.london — Silk Midi Dress" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

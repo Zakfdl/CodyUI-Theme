@@ -1,0 +1,145 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container">
+    <div
+      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(32rem, 1fr)); gap: clamp(3.2rem, 6vw, 8rem); align-items: center;"
+    >
+      <div
+        class="cody-media cody-media--portrait"
+        {% if section.settings.layout == 'text_first' %}style="order: 2;"{% endif %}
+      >
+        {%- if section.settings.image != blank -%}
+          <img
+            src="{{ section.settings.image | image_url: width: 1200 }}"
+            alt="{{ section.settings.heading | escape }}"
+            width="900"
+            height="1200"
+            loading="lazy"
+          >
+        {%- else -%}
+          <img
+            src="https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=1200&q=85"
+            alt="{{ section.settings.heading | escape }}"
+            width="900"
+            height="1200"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </div>
+
+      <div style="max-width: 54rem;">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        <h2 class="cody-display-lg" style="margin-bottom: 2rem;">{{ section.settings.heading | escape }}</h2>
+        <div class="cody-text-muted" style="font-size: 1.6rem; line-height: 1.75; margin-bottom: 3.2rem;">
+          {{ section.settings.text }}
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.4rem; margin-bottom: 3.6rem; padding-top: 2.4rem; border-top: 1px solid rgb(var(--cody-border));">
+          <div>
+            <span class="cody-h3" style="display: block; margin-bottom: 0.4rem;">{{ section.settings.stat_1_number | escape }}</span>
+            <span class="cody-text-muted" style="font-size: 1.25rem;">{{ section.settings.stat_1_label | escape }}</span>
+          </div>
+          <div>
+            <span class="cody-h3" style="display: block; margin-bottom: 0.4rem;">{{ section.settings.stat_2_number | escape }}</span>
+            <span class="cody-text-muted" style="font-size: 1.25rem;">{{ section.settings.stat_2_label | escape }}</span>
+          </div>
+        </div>
+
+        {%- if section.settings.button_label != blank -%}
+          <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="cody-btn cody-btn--primary cody-btn--lg">
+            {{ section.settings.button_label | escape }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Editorial Split Story",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Editorial image"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Desktop image placement",
+      "options": [
+        { "value": "image_first", "label": "Image left, text right" },
+        { "value": "text_first", "label": "Text left, image right" }
+      ],
+      "default": "image_first"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "SAVOIR-FAIRE & HERITAGE",
+      "label": "Eyebrow subtitle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Crafted in Biella & Milan for Modern Permanence",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "default": "<p>Every CodyUI garment begins with traceable natural fibers—un-dyed Mongolian cashmere, double-faced virgin wool, and organic Como silk. Tailored in small batches with hand-finished seams.</p>",
+      "label": "Body text"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_number",
+      "default": "100% Traceable",
+      "label": "Highlight 1 title"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "default": "Certified Italian & Mongolian Mills",
+      "label": "Highlight 1 caption"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_number",
+      "default": "38 Hours",
+      "label": "Highlight 2 title"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "default": "Hand-tailoring per double-faced coat",
+      "label": "Highlight 2 caption"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "Explore The Atelier",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial Split Story"
+    }
+  ]
+}
+{% endschema %}

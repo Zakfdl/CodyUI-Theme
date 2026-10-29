@@ -1,0 +1,109 @@
+<section class="cody-section--tight color-{{ section.settings.color_scheme }}" style="border-top: 1px solid rgb(var(--cody-border)); border-bottom: 1px solid rgb(var(--cody-border));">
+  <div class="cody-container">
+    <div class="cody-grid cody-grid--4 cody-grid--mobile-2" style="gap: 3.2rem;">
+      {%- for block in section.blocks -%}
+        <div style="display: flex; align-items: flex-start; gap: 1.6rem;" {{ block.shopify_attributes }}>
+          <div style="flex-shrink: 0; width: 4.4rem; height: 4.4rem; display: flex; align-items: center; justify-content: center; border: 1px solid rgb(var(--cody-border)); background: rgb(var(--cody-surface));">
+            {% render 'cody-icons', icon: block.settings.icon, size: 20 %}
+          </div>
+          <div>
+            <h3 class="cody-h4" style="font-size: 1.4rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem;">
+              {{ block.settings.title | escape }}
+            </h3>
+            <p class="cody-text-muted" style="font-size: 1.3rem; line-height: 1.55; margin: 0;">
+              {{ block.settings.text | escape }}
+            </p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Atelier Service Pillars",
+  "tag": "section",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Service Pillar",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "truck", "label": "Express Shipping Truck" },
+            { "value": "return", "label": "Complimentary Returns" },
+            { "value": "shield", "label": "Authenticity Shield" },
+            { "value": "gift", "label": "Signature Packaging" },
+            { "value": "ruler", "label": "Bespoke Tailoring" }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Complimentary DHL Express",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Insured global air delivery in 2–4 business days on orders over $250.",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Atelier Service Pillars",
+      "blocks": [
+        {
+          "type": "pillar",
+          "settings": {
+            "icon": "truck",
+            "title": "Global Express Delivery",
+            "text": "Complimentary insured DHL Express shipping on orders over $250."
+          }
+        },
+        {
+          "type": "pillar",
+          "settings": {
+            "icon": "gift",
+            "title": "Signature Garment Box",
+            "text": "Delivered in archival cotton garment bags and embossed linen boxes."
+          }
+        },
+        {
+          "type": "pillar",
+          "settings": {
+            "icon": "return",
+            "title": "30-Day Concierge Exchanges",
+            "text": "Effortless courier pickup and instant size exchanges worldwide."
+          }
+        },
+        {
+          "type": "pillar",
+          "settings": {
+            "icon": "shield",
+            "title": "Certified Italian Mills",
+            "text": "100% traceable cashmere, virgin wool, and organic Como silk."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

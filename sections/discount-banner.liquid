@@ -1,0 +1,134 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container">
+    <div
+      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(32rem, 1fr)); gap: 4.8rem; align-items: center; padding: clamp(2.8rem, 5vw, 5.6rem); background-color: rgb(var(--cody-surface)); border: 1px solid rgb(var(--cody-border));"
+    >
+      <div>
+        <span class="cody-badge cody-badge--sale" style="margin-bottom: 1.6rem;">{{ section.settings.badge_text | escape }}</span>
+        <h2 class="cody-display-lg" style="margin-bottom: 1.4rem;">{{ section.settings.heading | escape }}</h2>
+        <p class="cody-text-muted" style="font-size: 1.55rem; max-width: 48rem; margin-bottom: 2.8rem;">
+          {{ section.settings.subheading | escape }}
+        </p>
+
+        <cody-countdown
+          data-end-date="{{ section.settings.end_date | escape }}"
+          style="display: flex; flex-wrap: wrap; gap: 1.6rem; margin-bottom: 3.2rem;"
+        >
+          <div style="min-width: 7.4rem; padding: 1.4rem 1.2rem; background: rgb(var(--cody-bg)); border: 1px solid rgb(var(--cody-border)); text-align: center;">
+            <span class="cody-h2" data-days style="display: block; margin: 0;">04</span>
+            <span class="cody-eyebrow" style="margin: 0.4rem 0 0; font-size: 1rem;">Days</span>
+          </div>
+          <div style="min-width: 7.4rem; padding: 1.4rem 1.2rem; background: rgb(var(--cody-bg)); border: 1px solid rgb(var(--cody-border)); text-align: center;">
+            <span class="cody-h2" data-hours style="display: block; margin: 0;">14</span>
+            <span class="cody-eyebrow" style="margin: 0.4rem 0 0; font-size: 1rem;">Hours</span>
+          </div>
+          <div style="min-width: 7.4rem; padding: 1.4rem 1.2rem; background: rgb(var(--cody-bg)); border: 1px solid rgb(var(--cody-border)); text-align: center;">
+            <span class="cody-h2" data-minutes style="display: block; margin: 0;">38</span>
+            <span class="cody-eyebrow" style="margin: 0.4rem 0 0; font-size: 1rem;">Mins</span>
+          </div>
+          <div style="min-width: 7.4rem; padding: 1.4rem 1.2rem; background: rgb(var(--cody-bg)); border: 1px solid rgb(var(--cody-border)); text-align: center;">
+            <span class="cody-h2" data-seconds style="display: block; margin: 0;">52</span>
+            <span class="cody-eyebrow" style="margin: 0.4rem 0 0; font-size: 1rem;">Secs</span>
+          </div>
+        </cody-countdown>
+
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.6rem;">
+          <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="cody-btn cody-btn--primary cody-btn--lg">
+            {{ section.settings.button_label | escape }}
+          </a>
+          {%- if section.settings.promo_code != blank -%}
+            <span style="font-size: 1.25rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 1.2rem 1.8rem; border: 1px dashed rgb(var(--cody-text));">
+              CODE: <strong>{{ section.settings.promo_code | escape }}</strong>
+            </span>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="cody-media cody-media--landscape">
+        {%- if section.settings.image != blank -%}
+          <img
+            src="{{ section.settings.image | image_url: width: 1200 }}"
+            alt="{{ section.settings.heading | escape }}"
+            width="1000"
+            height="680"
+            loading="lazy"
+          >
+        {%- else -%}
+          <img
+            src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1200&q=85"
+            alt="{{ section.settings.heading | escape }}"
+            width="1000"
+            height="680"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Flash Archive Sale Timer",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "default": "PRIVATE ARCHIVE EVENT — UP TO 30% OFF",
+      "label": "Badge text"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "The Mid-Season Private Archive",
+      "label": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "default": "Limited edition runway prototypes, past-season cashmere coats, and Italian leather goods at private atelier pricing.",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "default": "2026-12-31T23:59:59",
+      "label": "Countdown target date (ISO format YYYY-MM-DDTHH:MM:SS)"
+    },
+    {
+      "type": "text",
+      "id": "promo_code",
+      "default": "ARCHIVE25",
+      "label": "Optional discount code badge"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "Enter Private Sale",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Campaign image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Flash Archive Sale Timer"
+    }
+  ]
+}
+{% endschema %}

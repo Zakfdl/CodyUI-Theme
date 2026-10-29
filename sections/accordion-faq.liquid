@@ -1,0 +1,102 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container cody-container--narrow">
+    <div style="text-align: center; margin-bottom: 4rem;">
+      <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      <h2 class="cody-h1" style="margin-bottom: 0;">{{ section.settings.heading | escape }}</h2>
+    </div>
+
+    <cody-accordion style="display: block; border-top: 1px solid rgb(var(--cody-border));">
+      {%- for block in section.blocks -%}
+        <div class="cody-accordion-item{% if forloop.first %} is-open{% endif %}" {{ block.shopify_attributes }}>
+          <button
+            type="button"
+            class="cody-accordion-trigger"
+            aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+          >
+            <span>{{ block.settings.question | escape }}</span>
+            {% render 'cody-icons', icon: 'plus', size: 15 %}
+          </button>
+          <div class="cody-accordion-content">
+            {{ block.settings.answer }}
+          </div>
+        </div>
+      {%- endfor -%}
+    </cody-accordion>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collapsible Atelier FAQ",
+  "tag": "section",
+  "max_blocks": 10,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "CLIENT CONCIERGE",
+      "label": "Eyebrow subtitle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Sizing, Care & Delivery FAQ",
+      "label": "Heading"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "Question & Answer",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "default": "How do CodyUI tailored coats and knitwear fit?",
+          "label": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "default": "<p>Our outerwear is cut with an intentional architectural drape. Take your normal European size for our signature relaxed silhouette, or size down once for a closer shoulder fit.</p>",
+          "label": "Answer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collapsible Atelier FAQ",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do CodyUI tailored coats and knitwear fit?",
+            "answer": "<p>Our outerwear is cut with an intentional architectural drape. Take your normal size for our signature runway fit, or size down once for a closer fit.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Where are your fabrics woven and tailored?",
+            "answer": "<p>All virgin wool and cashmere fabrics are milled in Biella, Italy, and tailored in family-owned Milanese workshops.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is your global shipping and return policy?",
+            "answer": "<p>We offer complimentary DHL Express shipping on orders over $250 and 30-day complimentary courier pickup for returns or size exchanges.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

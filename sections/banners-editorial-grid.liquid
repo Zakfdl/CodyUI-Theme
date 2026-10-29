@@ -23,7 +23,25 @@
                   loading="lazy"
                 >
               {%- else -%}
-                {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- liquid
+                  case forloop.index
+                    when 1
+                      assign fallback_banner_img = 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1400&q=85'
+                    when 2
+                      assign fallback_banner_img = 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1400&q=85'
+                    when 3
+                      assign fallback_banner_img = 'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=1400&q=85'
+                    else
+                      assign fallback_banner_img = 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1400&q=85'
+                  endcase
+                -%}
+                <img
+                  src="{{ fallback_banner_img }}"
+                  alt="{{ block.settings.heading | escape }}"
+                  width="1200"
+                  height="900"
+                  loading="lazy"
+                >
               {%- endif -%}
             </div>
 

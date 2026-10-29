@@ -43,15 +43,32 @@
           </article>
         {%- endfor -%}
       {%- else -%}
-        {%- for i in (1..3) -%}
+        {%- liquid
+          assign blog_imgs = 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=900&q=80|https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=900&q=80|https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=900&q=80' | split: '|'
+          assign blog_titles = 'Inside the Milan Atelier: Architectural Cashmere|The Art of the Capsule Wardrobe: 12 Timeless Pieces|Runway Notes: Quiet Luxury & Monochromatic Tailoring' | split: '|'
+          assign blog_dates = 'OCTOBER 24, 2026|OCTOBER 12, 2026|SEPTEMBER 28, 2026' | split: '|'
+          assign blog_excerpts = 'Exploring how our master tailors source un-dyed Mongolian cashmere and sculpt fluid, unlined silhouettes built to last decades.|How to build a cohesive seasonal rotation anchored by Italian virgin wool outerwear, crisp organic poplin, and structured leather.|Backstage notes from our Autumn/Winter presentation on proportion, tactile drape, and understated hardware.' | split: '|'
+        -%}
+        {%- for i in (0..2) -%}
           <article class="cody-card">
-            <div class="cody-card__media-wrap cody-media cody-media--landscape">
-              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-            </div>
+            <a href="{{ routes.all_products_collection_url }}" class="cody-card__media-wrap cody-media cody-media--landscape">
+              <img
+                src="{{ blog_imgs[i] }}"
+                alt="{{ blog_titles[i] | escape }}"
+                class="cody-card__img--primary"
+                width="900"
+                height="600"
+                loading="lazy"
+              >
+            </a>
             <div class="cody-card__info" style="padding-top: 1.8rem;">
-              <span class="cody-eyebrow" style="margin-bottom: 0.4rem;">EDITORIAL JOURNAL</span>
-              <h3 class="cody-h3" style="margin-bottom: 0.8rem;">{{ 'sections.featured_blog.onboarding_title' | t }}</h3>
-              <p class="cody-text-muted" style="margin: 0;">{{ 'sections.featured_blog.onboarding_content' | t }}</p>
+              <span class="cody-eyebrow" style="margin-bottom: 0.4rem;">{{ blog_dates[i] }}</span>
+              <h3 class="cody-h3" style="margin-bottom: 0.8rem;"><a href="{{ routes.all_products_collection_url }}">{{ blog_titles[i] }}</a></h3>
+              <p class="cody-text-muted" style="margin: 0 0 1.4rem;">{{ blog_excerpts[i] }}</p>
+              <a href="{{ routes.all_products_collection_url }}" class="cody-link-editorial">
+                <span>{{ 'blogs.article.read_more' | t }}</span>
+                {% render 'cody-icons', icon: 'arrow-right', size: 14 %}
+              </a>
             </div>
           </article>
         {%- endfor -%}

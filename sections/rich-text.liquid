@@ -1,0 +1,79 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container cody-container--narrow" style="text-align: {{ section.settings.text_alignment }};">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="cody-display-lg" style="margin-bottom: 2rem;">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <div class="cody-text-muted" style="font-size: 1.7rem; line-height: 1.75; margin-bottom: 3rem;">
+        {{ section.settings.text }}
+      </div>
+    {%- endif -%}
+    {%- if section.settings.button_label != blank -%}
+      <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="cody-btn cody-btn--secondary">
+        {{ section.settings.button_label | escape }}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Editorial Manifesto Text",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "THE MAISON MANIFESTO",
+      "label": "Eyebrow subtitle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Fewer, Finer Pieces Built to Endure Beyond Seasons.",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "default": "<p>We reject fast-moving trends in favor of architectural tailoring, noble Italian fibers, and versatile silhouettes designed to anchor your wardrobe for decades.</p>",
+      "label": "Body copy"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "Read Our Philosophy",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial Manifesto Text"
+    }
+  ]
+}
+{% endschema %}

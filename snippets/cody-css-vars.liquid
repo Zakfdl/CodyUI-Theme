@@ -1,7 +1,6 @@
 {%- comment -%}
   CodyUI Fashion — Dynamic Design Tokens & Typography Engine
-  Outputs Google Fonts / Shopify Fonts, Color Scheme CSS Variables,
-  Custom Fashion Swatch Hex Tokens, and Layout Grid Tokens.
+  Includes built-in fallback schemes + dynamic Shopify color_schemes overrides.
 {%- endcomment -%}
 
 {%- liquid
@@ -39,9 +38,115 @@
     {{ settings.type_header_font | font_face: font_display: 'swap' }}
   {%- endif -%}
 
-  {%- assign scheme_classes = '' -%}
+  /* Guaranteed Base Scheme Fallbacks (Before Dynamic Theme Editor Overrides) */
+  :root,
+  .color-scheme-1 {
+    --cody-bg: 250, 248, 245;
+    --cody-bg-hex: #FAF8F5;
+    --cody-bg-gradient: #FAF8F5;
+    --cody-surface: 242, 239, 233;
+    --cody-surface-hex: #F2EFE9;
+    --cody-text: 17, 17, 17;
+    --cody-text-hex: #111111;
+    --cody-text-muted: 102, 99, 94;
+    --cody-text-muted-hex: #66635E;
+    --cody-accent: 154, 123, 79;
+    --cody-accent-hex: #9A7B4F;
+    --cody-btn-bg: 17, 17, 17;
+    --cody-btn-bg-hex: #111111;
+    --cody-btn-text: 250, 248, 245;
+    --cody-btn-text-hex: #FAF8F5;
+    --cody-btn-secondary: 17, 17, 17;
+    --cody-btn-secondary-hex: #111111;
+    --cody-border: 226, 221, 213;
+    --cody-border-hex: #E2DDD5;
+  }
+
+  .color-scheme-2 {
+    --cody-bg: 242, 239, 233;
+    --cody-bg-hex: #F2EFE9;
+    --cody-surface: 232, 227, 218;
+    --cody-surface-hex: #E8E3DA;
+    --cody-text: 17, 17, 17;
+    --cody-text-hex: #111111;
+    --cody-text-muted: 92, 88, 82;
+    --cody-text-muted-hex: #5C5852;
+    --cody-accent: 140, 109, 67;
+    --cody-accent-hex: #8C6D43;
+    --cody-btn-bg: 17, 17, 17;
+    --cody-btn-bg-hex: #111111;
+    --cody-btn-text: 250, 248, 245;
+    --cody-btn-text-hex: #FAF8F5;
+    --cody-btn-secondary: 17, 17, 17;
+    --cody-btn-secondary-hex: #111111;
+    --cody-border: 217, 210, 199;
+    --cody-border-hex: #D9D2C7;
+  }
+
+  .color-scheme-3 {
+    --cody-bg: 17, 17, 17;
+    --cody-bg-hex: #111111;
+    --cody-surface: 28, 28, 28;
+    --cody-surface-hex: #1C1C1C;
+    --cody-text: 250, 248, 245;
+    --cody-text-hex: #FAF8F5;
+    --cody-text-muted: 168, 163, 155;
+    --cody-text-muted-hex: #A8A39B;
+    --cody-accent: 212, 184, 140;
+    --cody-accent-hex: #D4B88C;
+    --cody-btn-bg: 250, 248, 245;
+    --cody-btn-bg-hex: #FAF8F5;
+    --cody-btn-text: 17, 17, 17;
+    --cody-btn-text-hex: #111111;
+    --cody-btn-secondary: 250, 248, 245;
+    --cody-btn-secondary-hex: #FAF8F5;
+    --cody-border: 46, 46, 46;
+    --cody-border-hex: #2E2E2E;
+  }
+
+  .color-scheme-4 {
+    --cody-bg: 35, 27, 22;
+    --cody-bg-hex: #231B16;
+    --cody-surface: 46, 36, 30;
+    --cody-surface-hex: #2E241E;
+    --cody-text: 247, 243, 235;
+    --cody-text-hex: #F7F3EB;
+    --cody-text-muted: 184, 173, 161;
+    --cody-text-muted-hex: #B8ADA1;
+    --cody-accent: 201, 166, 117;
+    --cody-accent-hex: #C9A675;
+    --cody-btn-bg: 247, 243, 235;
+    --cody-btn-bg-hex: #F7F3EB;
+    --cody-btn-text: 35, 27, 22;
+    --cody-btn-text-hex: #231B16;
+    --cody-btn-secondary: 247, 243, 235;
+    --cody-btn-secondary-hex: #F7F3EB;
+    --cody-border: 62, 50, 42;
+    --cody-border-hex: #3E322A;
+  }
+
+  .color-scheme-5 {
+    --cody-bg: 233, 223, 207;
+    --cody-bg-hex: #E9DFCF;
+    --cody-surface: 223, 211, 191;
+    --cody-surface-hex: #DFD3BF;
+    --cody-text: 20, 18, 16;
+    --cody-text-hex: #141210;
+    --cody-text-muted: 90, 82, 72;
+    --cody-text-muted-hex: #5A5248;
+    --cody-accent: 122, 91, 52;
+    --cody-accent-hex: #7A5B34;
+    --cody-btn-bg: 20, 18, 16;
+    --cody-btn-bg-hex: #141210;
+    --cody-btn-text: 250, 248, 245;
+    --cody-btn-text-hex: #FAF8F5;
+    --cody-btn-secondary: 20, 18, 16;
+    --cody-btn-secondary-hex: #141210;
+    --cody-border: 207, 193, 171;
+    --cody-border-hex: #CFC1AB;
+  }
+
   {%- for scheme in settings.color_schemes -%}
-    {%- assign scheme_classes = scheme_classes | append: ', .color-' | append: scheme.id -%}
     {%- if forloop.index == 1 -%}
       :root,
     {%- endif -%}
@@ -72,13 +177,17 @@
     }
   {%- endfor -%}
 
-  {{ scheme_classes | remove_first: ', ' }} {
+  .color-scheme-1,
+  .color-scheme-2,
+  .color-scheme-3,
+  .color-scheme-4,
+  .color-scheme-5 {
     color: rgb(var(--cody-text));
     background-color: rgb(var(--cody-bg));
   }
 
   :root {
-    {%- if settings.heading_font_source == 'google' -%}
+    {%- if settings.heading_font_source == 'google' or settings.heading_font_source == blank -%}
       --cody-font-heading-family: '{{ google_heading_family }}', Georgia, serif;
       --cody-font-heading-weight: {{ settings.heading_font_weight | default: '400' }};
       --cody-font-heading-style: normal;
@@ -88,7 +197,7 @@
       --cody-font-heading-style: {{ settings.type_header_font.style }};
     {%- endif -%}
 
-    {%- if settings.body_font_source == 'google' -%}
+    {%- if settings.body_font_source == 'google' or settings.body_font_source == blank -%}
       --cody-font-body-family: '{{ google_body_family }}', -apple-system, BlinkMacSystemFont, sans-serif;
       --cody-font-body-weight: 400;
       --cody-font-body-weight-bold: 600;
@@ -100,11 +209,11 @@
       --cody-font-body-style: {{ settings.type_body_font.style }};
     {%- endif -%}
 
-    --cody-heading-scale: {{ settings.heading_scale | divided_by: 100.0 }};
-    --cody-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
+    --cody-heading-scale: {{ settings.heading_scale | default: 110 | divided_by: 100.0 }};
+    --cody-body-scale: {{ settings.body_scale | default: 100 | divided_by: 100.0 }};
     --cody-heading-transform: {{ settings.heading_text_transform | default: 'none' }};
-    --cody-heading-tracking: {{ settings.heading_letter_spacing | divided_by: 100.0 }}em;
-    --cody-nav-tracking: {{ settings.nav_letter_spacing | divided_by: 100.0 }}em;
+    --cody-heading-tracking: {{ settings.heading_letter_spacing | default: -1 | divided_by: 100.0 }}em;
+    --cody-nav-tracking: {{ settings.nav_letter_spacing | default: 10 | divided_by: 100.0 }}em;
 
     --cody-page-width: {{ settings.page_width | default: 1520 }}px;
     --cody-section-spacing: {{ settings.spacing_sections | default: 0 }}px;
@@ -127,7 +236,22 @@
     --cody-duration-normal: 380ms;
     --cody-duration-slow: 650ms;
 
-    {%- comment -%} Custom Fashion Color Swatch Tokens {%- endcomment -%}
+    --cody-swatch-ivory: #FAF8F5;
+    --cody-swatch-ecru: #F3EFE6;
+    --cody-swatch-champagne: #E6D7BE;
+    --cody-swatch-camel: #C19A6B;
+    --cody-swatch-espresso: #3B2A22;
+    --cody-swatch-obsidian: #111111;
+    --cody-swatch-charcoal: #36383A;
+    --cody-swatch-sage: #9CAF88;
+    --cody-swatch-olive: #556B2F;
+    --cody-swatch-burgundy: #6E1E2A;
+    --cody-swatch-terracotta: #C66B4E;
+    --cody-swatch-navy: #1B263B;
+    --cody-swatch-slate: #6C7A89;
+    --cody-swatch-blush: #E8C5C8;
+    --cody-swatch-sand: #D8CBB8;
+
     {%- assign swatch_lines = settings.custom_color_swatch_map | newline_to_br | split: '<br />' -%}
     {%- for line in swatch_lines -%}
       {%- assign clean_line = line | strip -%}

@@ -19,7 +19,13 @@
             loading="lazy"
           >
         {%- else -%}
-          {{ 'collection-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          <img
+            src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1400&q=85"
+            alt="{{ section.settings.heading | escape }}"
+            width="1050"
+            height="1400"
+            loading="lazy"
+          >
         {%- endif -%}
 
         {%- for block in section.blocks -%}

@@ -120,7 +120,13 @@
                                   loading="lazy"
                                 >
                               {%- else -%}
-                                {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+                                <img
+                                  src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80"
+                                  alt="{{ promo_title | default: 'Editorial Capsule' | escape }}"
+                                  width="300"
+                                  height="400"
+                                  loading="lazy"
+                                >
                               {%- endif -%}
                             </div>
                             <div class="cody-megamenu-banner__caption">

@@ -1,0 +1,116 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container{% if section.settings.full_width %} cody-container--fluid{% endif %}">
+    <div class="cody-section-header">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        <h2 class="cody-h1" style="margin-bottom: 0;">{{ section.settings.heading | escape }}</h2>
+      </div>
+      {%- if section.settings.show_view_all -%}
+        <a href="{{ section.settings.collection.url | default: routes.all_products_collection_url }}" class="cody-link-editorial">
+          <span>{{ section.settings.view_all_label | escape }}</span>
+          {% render 'cody-icons', icon: 'arrow-right', size: 15 %}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="cody-grid cody-grid--{{ section.settings.columns_desktop }} cody-grid--mobile-{{ section.settings.columns_mobile }}">
+      {%- assign target_col = section.settings.collection -%}
+      {%- if target_col != blank and target_col.products_count > 0 -%}
+        {%- for product in target_col.products limit: section.settings.products_to_show -%}
+          {% render 'card-product', card_product: product, placeholder_index: forloop.index %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..section.settings.products_to_show) -%}
+          {% render 'card-product', card_product: nil, placeholder_index: i %}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Collection Grid",
+  "tag": "section",
+  "class": "cody-section-featured-collection",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "NEW ARRIVALS",
+      "label": "Eyebrow subtitle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "The Essential Capsule",
+      "label": "Heading"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Maximum products to show"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Desktop columns",
+      "options": [
+        { "value": "3", "label": "3 columns" },
+        { "value": "4", "label": "4 columns" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Mobile columns",
+      "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "Show 'View all' link"
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "default": "Explore Collection",
+      "label": "View all link label"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": false,
+      "label": "Full-bleed container"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection Grid"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,90 @@
+<section class="cody-section--tight color-{{ section.settings.color_scheme }}" style="border-bottom: 1px solid rgb(var(--cody-border));">
+  <div class="cody-container">
+    {%- if section.settings.heading != blank -%}
+      <p class="cody-eyebrow" style="text-align: center; margin-bottom: 2.8rem;">{{ section.settings.heading | escape }}</p>
+    {%- endif -%}
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 3.2rem; align-items: center; text-align: center;">
+      {%- for block in section.blocks -%}
+        <div style="opacity: 0.78;" {{ block.shopify_attributes }}>
+          {%- if block.settings.logo != blank -%}
+            <img
+              src="{{ block.settings.logo | image_url: width: 320 }}"
+              alt="{{ block.settings.brand_name | escape }}"
+              width="140"
+              height="48"
+              style="margin-inline: auto; width: auto; max-height: 3.6rem; object-fit: contain;"
+              loading="lazy"
+            >
+          {%- else -%}
+            <span class="cody-h3" style="margin: 0; letter-spacing: 0.14em; font-weight: 400;">
+              {{ block.settings.brand_name | escape }}
+            </span>
+          {%- endif -%}
+          {%- if block.settings.quote != blank -%}
+            <p class="cody-text-muted" style="font-size: 1.2rem; margin: 0.6rem 0 0;">“{{ block.settings.quote | escape }}”</p>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Press & Maison Logos",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "AS FEATURED IN INTERNATIONAL RUNWAY PRESS",
+      "label": "Eyebrow heading"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Press / Brand Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo image (optional)"
+        },
+        {
+          "type": "text",
+          "id": "brand_name",
+          "default": "VOGUE",
+          "label": "Publication or Maison name"
+        },
+        {
+          "type": "text",
+          "id": "quote",
+          "default": "The new benchmark in architectural quiet luxury.",
+          "label": "Optional short press quote"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Press & Maison Logos",
+      "blocks": [
+        { "type": "brand", "settings": { "brand_name": "VOGUE", "quote": "Masterful Italian tailoring." } },
+        { "type": "brand", "settings": { "brand_name": "HARPER'S BAZAAR", "quote": "Seasonless architectural essentials." } },
+        { "type": "brand", "settings": { "brand_name": "ELLE PARIS", "quote": "Pure un-dyed cashmere perfection." } },
+        { "type": "brand", "settings": { "brand_name": "WALLPAPER*", "quote": "Minimalist proportion and craft." } },
+        { "type": "brand", "settings": { "brand_name": "L'OFFICIEL", "quote": "Milan's sharpest capsule wardrobe." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

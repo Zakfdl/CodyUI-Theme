@@ -1,0 +1,119 @@
+<section class="cody-hero" style="--cody-hero-height: {{ section.settings.height_vh }}vh;">
+  <div class="cody-hero__slide" style="--cody-hero-overlay: {{ section.settings.overlay_opacity | divided_by: 100.0 }};">
+    <div class="cody-hero__media">
+      {%- if section.settings.video != blank -%}
+        {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true }}
+      {%- elsif section.settings.cover_image != blank -%}
+        <img
+          src="{{ section.settings.cover_image | image_url: width: 2000 }}"
+          alt="{{ section.settings.heading | escape }}"
+          width="2000"
+          height="1125"
+          loading="lazy"
+        >
+      {%- else -%}
+        <img
+          src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=2000&q=85"
+          alt="{{ section.settings.heading | escape }}"
+          width="2000"
+          height="1125"
+          loading="lazy"
+        >
+      {%- endif -%}
+    </div>
+
+    <div class="cody-hero__overlay"></div>
+
+    <div class="cody-container" style="position: relative; z-index: 3;">
+      <div class="cody-hero__content cody-hero__content--center">
+        <span class="cody-eyebrow" style="color: rgba(255,255,255,0.85);">{{ section.settings.eyebrow | escape }}</span>
+        <h2 class="cody-display-xl" style="color: #ffffff; margin-bottom: 1.6rem;">{{ section.settings.heading | escape }}</h2>
+        <p style="font-size: 1.65rem; color: rgba(255,255,255,0.9); max-width: 54rem; margin: 0 auto 2.8rem;">
+          {{ section.settings.subheading | escape }}
+        </p>
+        {%- if section.settings.button_label != blank -%}
+          <a
+            href="{{ section.settings.button_link | default: routes.all_products_collection_url }}"
+            class="cody-btn cody-btn--lg"
+            style="background: #ffffff; color: #111111; border-color: #ffffff;"
+          >
+            {{ section.settings.button_label | escape }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Runway Video Campaign",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Shopify-hosted background video"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image",
+      "label": "Fallback cover photograph"
+    },
+    {
+      "type": "range",
+      "id": "height_vh",
+      "min": 50,
+      "max": 95,
+      "step": 5,
+      "unit": "vh",
+      "default": 75,
+      "label": "Section height"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 10,
+      "max": 75,
+      "step": 5,
+      "unit": "%",
+      "default": 40,
+      "label": "Overlay contrast opacity"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "AUTUMN / WINTER FILM",
+      "label": "Eyebrow subtitle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Motion & Architecture",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "default": "Shot on 35mm film in Milan. Discover fluid tailoring crafted for effortless movement.",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "Shop The Film",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Runway Video Campaign"
+    }
+  ]
+}
+{% endschema %}

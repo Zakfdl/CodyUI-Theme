@@ -1,0 +1,153 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container{% if section.settings.full_width %} cody-container--fluid{% endif %}">
+    <div class="cody-section-header">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        <h2 class="cody-h1" style="margin-bottom: 0;">{{ section.settings.heading | escape }}</h2>
+      </div>
+      <a href="{{ routes.collections_url }}" class="cody-link-editorial">
+        <span>All Departments</span>
+        {% render 'cody-icons', icon: 'arrow-right', size: 15 %}
+      </a>
+    </div>
+
+    <div class="cody-grid cody-grid--{{ section.settings.columns_desktop }} cody-grid--mobile-2">
+      {%- liquid
+        assign fallback_col_imgs = 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=900&q=85|https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=85|https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=900&q=85|https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=900&q=85' | split: '|'
+        assign fallback_col_titles = 'Tailored Outerwear|Architectural Knitwear|Silk & Eveningwear|Italian Leather Goods' | split: '|'
+        assign fallback_col_counts = '24 Pieces|18 Pieces|16 Pieces|14 Pieces' | split: '|'
+      -%}
+
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign col = block.settings.collection
+          assign idx0 = forloop.index0 | modulo: 4
+          assign card_title = block.settings.custom_title | default: col.title | default: fallback_col_titles[idx0]
+          assign card_url = col.url | default: routes.all_products_collection_url
+        -%}
+        <a href="{{ card_url }}" class="cody-card" {{ block.shopify_attributes }}>
+          <div class="cody-card__media-wrap cody-media cody-media--portrait">
+            {%- if block.settings.custom_image != blank -%}
+              <img
+                src="{{ block.settings.custom_image | image_url: width: 900 }}"
+                alt="{{ card_title | escape }}"
+                class="cody-card__img--primary"
+                width="675"
+                height="900"
+                loading="lazy"
+              >
+            {%- elsif col != blank and col.featured_image != blank -%}
+              <img
+                src="{{ col.featured_image | image_url: width: 900 }}"
+                alt="{{ card_title | escape }}"
+                class="cody-card__img--primary"
+                width="675"
+                height="900"
+                loading="lazy"
+              >
+            {%- else -%}
+              <img
+                src="{{ fallback_col_imgs[idx0] }}"
+                alt="{{ card_title | escape }}"
+                class="cody-card__img--primary"
+                width="675"
+                height="900"
+                loading="lazy"
+              >
+            {%- endif -%}
+          </div>
+          <div class="cody-card__info" style="display: flex; align-items: baseline; justify-content: space-between; padding-top: 1.4rem;">
+            <h3 class="cody-h4" style="margin: 0;">{{ card_title | escape }}</h3>
+            <span class="cody-text-muted" style="font-size: 1.2rem;">
+              {%- if col != blank -%}
+                {{ col.all_products_count }} Pieces
+              {%- else -%}
+                {{ fallback_col_counts[idx0] }}
+              {%- endif -%}
+            </span>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Curated Collections List",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "SHOP BY CATEGORY",
+      "label": "Eyebrow subtitle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Curated Departments",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Desktop columns",
+      "options": [
+        { "value": "3", "label": "3 columns" },
+        { "value": "4", "label": "4 columns" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": false,
+      "label": "Full-bleed container"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_item",
+      "name": "Department Card",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom cover image (optional)"
+        },
+        {
+          "type": "text",
+          "id": "custom_title",
+          "label": "Custom title override (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Curated Collections List",
+      "blocks": [
+        { "type": "collection_item", "settings": { "custom_title": "Tailored Outerwear" } },
+        { "type": "collection_item", "settings": { "custom_title": "Architectural Knitwear" } },
+        { "type": "collection_item", "settings": { "custom_title": "Silk & Eveningwear" } },
+        { "type": "collection_item", "settings": { "custom_title": "Italian Leather Goods" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
