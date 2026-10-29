@@ -88,7 +88,12 @@
       }
     </script>
 
-    {% sections 'header-group' %}
+    {%- capture header_group_html -%}{% sections 'header-group' %}{%- endcapture -%}
+    {%- if header_group_html contains 'cody-header' -%}
+      {{ header_group_html }}
+    {%- else -%}
+      {%- render 'cody-header-shell' -%}
+    {%- endif -%}
 
     <main id="MainContent" class="cody-main focus-none" role="main" tabindex="-1">
       {%- unless request.page_type == 'index' or request.page_type == 'cart' or request.page_type == 'list-collections' or request.page_type == '404' or template.name == 'index' -%}
@@ -99,10 +104,11 @@
       {{ content_for_layout }}
     </main>
 
-    {% sections 'footer-group' %}
-
-    {%- if settings.cart_type == 'drawer' -%}
-      {%- section 'cart-drawer' -%}
+    {%- capture footer_group_html -%}{% sections 'footer-group' %}{%- endcapture -%}
+    {%- if footer_group_html contains 'cody-footer' -%}
+      {{ footer_group_html }}
+    {%- else -%}
+      {%- render 'cody-footer-shell' -%}
     {%- endif -%}
 
     {%- comment -%} Global Quick View Modal Shell (populated via Section Rendering API) {%- endcomment -%}

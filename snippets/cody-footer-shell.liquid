@@ -1,0 +1,173 @@
+{%- comment -%}
+  CodyUI Fashion — Global 4-Column Luxury Editorial Footer + Mobile Sticky Bottom Bar
+{%- endcomment -%}
+<footer class="cody-footer color-scheme-2">
+  <div class="cody-container">
+    <div class="cody-footer__top">
+      <div>
+        <h2 class="cody-h3" style="margin-bottom: 1rem;">Join The Private List</h2>
+        <p class="cody-text-muted" style="margin: 0 0 2rem; max-width: 38rem;">
+          Receive early access to runway capsules, private archive sales, and atelier invitations.
+        </p>
+        {%- form 'customer', id: 'ContactFooterShell', class: 'cody-footer__newsletter' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div style="display: flex; gap: 0.8rem;">
+            <input
+              type="email"
+              name="contact[email]"
+              class="cody-input"
+              placeholder="{{ 'newsletter.label' | t }}"
+              required
+            >
+            <button type="submit" class="cody-btn cody-btn--primary" name="commit">
+              {{ 'newsletter.button_label' | t }}
+            </button>
+          </div>
+        {%- endform -%}
+      </div>
+
+      <div>
+        <h3 class="cody-footer__heading">Collections</h3>
+        <ul class="cody-footer__links">
+          <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">New Season Runway</a></li>
+          <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Tailored Outerwear</a></li>
+          <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Architectural Knitwear</a></li>
+          <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Silk &amp; Eveningwear</a></li>
+          <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Italian Leather Goods</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="cody-footer__heading">Client Concierge</h3>
+        <ul class="cody-footer__links">
+          <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Shipping &amp; Global Courier</a></li>
+          <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">30-Day Returns &amp; Exchanges</a></li>
+          <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Size &amp; Tailoring Guide</a></li>
+          <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Garment &amp; Cashmere Care</a></li>
+          <li><a href="{{ routes.search_url }}" class="cody-footer__link">Book a Private Appointment</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="cody-footer__heading">The Maison</h3>
+        <div class="cody-rte cody-text-muted" style="font-size: 1.35rem;">
+          <p>Designed with architectural precision in Milan and crafted from 100% traceable Italian virgin wool, organic Como silk, and Mongolian cashmere.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cody-footer__bottom">
+      <div>
+        <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ powered_by_link }}</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 2rem;">
+        <a href="https://instagram.com" class="cody-footer__link" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://tiktok.com" class="cody-footer__link" target="_blank" rel="noopener">TikTok</a>
+        <a href="https://pinterest.com" class="cody-footer__link" target="_blank" rel="noopener">Pinterest</a>
+      </div>
+      {%- if shop.enabled_payment_types != empty -%}
+        <div style="display: flex; flex-wrap: wrap; gap: 0.8rem;">
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+<nav class="cody-mobile-sticky-bar color-scheme-1" aria-label="Mobile quick navigation">
+  <a href="{{ routes.root_url }}" class="cody-mobile-sticky-bar__item">
+    {% render 'cody-icons', icon: 'grid-2', size: 18 %}
+    <span>{{ 'general.breadcrumbs.home' | t }}</span>
+  </a>
+  <button type="button" class="cody-mobile-sticky-bar__item" data-drawer-open="CodyMobileMenuDrawer">
+    {% render 'cody-icons', icon: 'menu', size: 18 %}
+    <span>{{ 'sections.header.menu' | t }}</span>
+  </button>
+  <button type="button" class="cody-mobile-sticky-bar__item" data-drawer-open="CodySearchDrawer">
+    {% render 'cody-icons', icon: 'search', size: 18 %}
+    <span>{{ 'general.search.search' | t | truncatewords: 1, '' }}</span>
+  </a>
+  <a href="/pages/wishlist" class="cody-mobile-sticky-bar__item">
+    {% render 'cody-icons', icon: 'heart', size: 18 %}
+    <span>{{ 'general.wishlist.title' | t | truncatewords: 1, '' }}</span>
+  </a>
+  <a
+    href="{{ routes.cart_url }}"
+    class="cody-mobile-sticky-bar__item"
+    {% if settings.cart_type == 'drawer' and template != 'cart' %}data-drawer-open="CodyCartDrawer"{% endif %}
+  >
+    {% render 'cody-icons', icon: 'bag', size: 18 %}
+    <span>Bag</span>
+  </a>
+</nav>
+
+{%- if settings.cart_type == 'drawer' and template != 'cart' -%}
+  <cody-drawer id="CodyCartDrawer" class="cody-drawer" aria-hidden="true">
+    <div class="cody-drawer__backdrop" data-drawer-close></div>
+    <div
+      id="CodyCartDrawerContent"
+      class="cody-drawer__panel"
+      role="dialog"
+      aria-modal="true"
+      aria-label="{{ 'sections.cart.title' | t }}"
+    >
+      <div class="cody-drawer__header">
+        <h2 class="cody-drawer__title">
+          {{ 'sections.cart.title' | t }}
+          {%- if cart.item_count > 0 -%}
+            <span class="cody-text-muted" style="font-size: 1.5rem;">({{ cart.item_count }})</span>
+          {%- endif -%}
+        </h2>
+        <button type="button" class="cody-drawer__close" data-drawer-close aria-label="{{ 'accessibility.close' | t }}">
+          {% render 'cody-icons', icon: 'close', size: 20 %}
+        </button>
+      </div>
+
+      <div class="cody-shipping-bar">
+        <div class="cody-shipping-bar__text">
+          {% render 'cody-icons', icon: 'truck', size: 17 %}
+          <span>Complimentary DHL Express Shipping on orders over $250</span>
+        </div>
+        <div class="cody-shipping-bar__track">
+          <div class="cody-shipping-bar__fill" style="width: {% if cart.total_price >= 25000 %}100{% else %}{{ cart.total_price | divided_by: 250 }}{% endif %}%;"></div>
+        </div>
+      </div>
+
+      {%- if cart == empty -%}
+        <div class="cody-drawer__body" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+          <p class="cody-h3" style="margin-bottom: 2.4rem;">{{ 'sections.cart.empty' | t }}</p>
+          <a href="{{ routes.all_products_collection_url }}" class="cody-btn cody-btn--primary" data-drawer-close>
+            {{ 'general.continue_shopping' | t }}
+          </a>
+        </div>
+      {%- else -%}
+        <div class="cody-drawer__body">
+          <div class="cody-cart-items">
+            {%- for item in cart.items -%}
+              <div class="cody-cart-item">
+                <a href="{{ item.url }}" class="cody-media cody-media--portrait">
+                  {%- if item.image -%}
+                    <img src="{{ item.image | image_url: width: 240 }}" alt="{{ item.product.title | escape }}" width="120" height="160" loading="lazy">
+                  {%- endif -%}
+                </a>
+                <div class="cody-cart-item__details">
+                  <div class="cody-cart-item__top">
+                    <h3 class="cody-cart-item__title"><a href="{{ item.url }}">{{ item.product.title | escape }}</a></h3>
+                    <strong>{{ item.final_line_price | money }}</strong>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="cody-drawer__footer">
+          <a href="/checkout" class="cody-btn cody-btn--primary cody-btn--full">
+            {{ 'sections.cart.checkout' | t }} &mdash; {{ cart.total_price | money }}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </cody-drawer>
+{%- endif -%}
