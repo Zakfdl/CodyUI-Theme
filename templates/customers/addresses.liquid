@@ -1,0 +1,26 @@
+<section class="cody-section color-scheme-1">
+  <div class="cody-container">
+    <div class="cody-section-header">
+      <div>
+        <span class="cody-eyebrow">CLIENT DIRECTORY</span>
+        <h1 class="cody-h1" style="margin-bottom: 0;">{{ 'customer.addresses.title' | t }}</h1>
+      </div>
+      <a href="{{ routes.account_url }}" class="cody-link-editorial">{{ 'customer.account.return' | t }}</a>
+    </div>
+
+    {%- paginate customer.addresses by 10 -%}
+      <div class="cody-grid cody-grid--3">
+        {%- for address in customer.addresses -%}
+          <div style="padding: 2.8rem; border: 1px solid rgb(var(--cody-border)); background-color: rgb(var(--cody-surface));">
+            {%- if address == customer.default_address -%}
+              <span class="cody-eyebrow">{{ 'customer.addresses.default' | t }}</span>
+            {%- endif -%}
+            <div style="margin-bottom: 2rem;">
+              {{ address | format_address }}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endpaginate -%}
+  </div>
+</section>

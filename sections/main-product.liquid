@@ -1,0 +1,747 @@
+{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign gallery_layout = section.settings.gallery_layout | default: 'editorial-grid-2'
+  assign swatch_triggers = settings.swatch_option_names | downcase | split: ','
+-%}
+
+<section
+  id="MainProduct-{{ section.id }}"
+  class="cody-section color-{{ section.settings.color_scheme }}"
+  data-product-section
+>
+  <div class="cody-container">
+    <div class="cody-product-grid">
+      {%- comment -%} Left Column: 5-Mode Editorial Media Gallery {%- endcomment -%}
+      <div class="cody-product-gallery cody-product-gallery--{{ gallery_layout }}" data-product-gallery>
+        <div class="cody-product-gallery__main">
+          {%- if product.media.size > 0 -%}
+            {%- for media in product.media -%}
+              <div
+                class="cody-product-gallery__item cody-media cody-media--{{ section.settings.media_aspect_ratio }}{% if current_variant.featured_media.id == media.id or forloop.first and current_variant.featured_media == blank %} is-active-media{% endif %}"
+                data-media-id="{{ media.id }}"
+              >
+                {%- case media.media_type -%}
+                  {%- when 'image' -%}
+                    <img
+                      srcset="
+                        {%- if media.width >= 550 -%}{{ media | image_url: width: 550 }} 550w,{%- endif -%}
+                        {%- if media.width >= 850 -%}{{ media | image_url: width: 850 }} 850w,{%- endif -%}
+                        {%- if media.width >= 1200 -%}{{ media | image_url: width: 1200 }} 1200w,{%- endif -%}
+                        {{ media | image_url }} {{ media.width }}w
+                      "
+                      src="{{ media | image_url: width: 1100 }}"
+                      sizes="(min-width: 1024px) 55vw, 92vw"
+                      alt="{{ media.alt | default: product.title | escape }}"
+                      width="{{ media.width }}"
+                      height="{{ media.height }}"
+                      {% if forloop.index <= 2 %}loading="eager"{% else %}loading="lazy"{% endif %}
+                    >
+                  {%- when 'video', 'external_video' -%}
+                    {{ media | media_tag: image_size: '1024x', autoplay: true, loop: true, muted: true, controls: true }}
+                  {%- when 'model' -%}
+                    {{ media | model_viewer_tag: image_size: '1024x', reveal: 'interaction', toggleable: true }}
+                {%- endcase -%}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <div class="cody-product-gallery__item cody-media cody-media--portrait is-active-media">
+              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if product.media.size > 1 -%}
+          <div class="cody-product-gallery__thumbs">
+            {%- for media in product.media -%}
+              <button
+                type="button"
+                class="cody-product-gallery__thumb cody-media cody-media--portrait{% if forloop.first %} is-active{% endif %}"
+                data-gallery-thumb="{{ media.id }}"
+                aria-label="{{ 'products.product.media.load_image' | t: index: forloop.index }}"
+              >
+                <img
+                  src="{{ media.preview_image | image_url: width: 200 }}"
+                  alt="{{ media.alt | default: product.title | escape }}"
+                  width="88"
+                  height="118"
+                  loading="lazy"
+                >
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Right Column: Sticky Editorial Product Information & Blocks {%- endcomment -%}
+      <div class="cody-product-info{% if section.settings.enable_sticky_info %} cody-product-info--sticky{% endif %}">
+        {%- assign product_form_id = 'ProductForm-' | append: section.id -%}
+
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when '@app' -%}
+              <div {{ block.shopify_attributes }}>
+                {% render block %}
+              </div>
+
+            {%- when 'vendor' -%}
+              {%- if product.vendor != blank -%}
+                <div {{ block.shopify_attributes }}>
+                  <span class="cody-eyebrow" style="margin-bottom: 0;">{{ product.vendor }}</span>
+                </div>
+              {%- endif -%}
+
+            {%- when 'title' -%}
+              <div {{ block.shopify_attributes }}>
+                <h1 class="cody-h1" style="margin-bottom: 0;">{{ product.title | escape }}</h1>
+              </div>
+
+            {%- when 'price' -%}
+              <div id="ProductPrice-{{ section.id }}" {{ block.shopify_attributes }}>
+                {% render 'price', product: product, use_variant: true, price_class: 'cody-price--large' %}
+                {%- if cart.taxes_included or shop.shipping_policy.body != blank -%}
+                  <div class="cody-text-muted" style="font-size: 1.2rem; margin-top: 0.6rem;">
+                    {%- if cart.taxes_included -%}
+                      {{ 'products.product.include_taxes' | t }}
+                    {%- endif -%}
+                    {%- if shop.shipping_policy.body != blank -%}
+                      {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+
+            {%- when 'inventory_status' -%}
+              <div id="ProductInventory-{{ section.id }}" {{ block.shopify_attributes }}>
+                {%- if current_variant.inventory_management == 'shopify' -%}
+                  {%- assign threshold = block.settings.low_stock_threshold | default: 5 -%}
+                  {%- if current_variant.inventory_quantity > 0 and current_variant.inventory_quantity <= threshold -%}
+                    <div class="cody-inventory-bar cody-inventory-bar--low">
+                      <strong>{{ 'products.product.low_stock' | t: count: current_variant.inventory_quantity }}</strong>
+                      <div class="cody-inventory-bar__track">
+                        {%- assign bar_pct = current_variant.inventory_quantity | times: 100 | divided_by: threshold -%}
+                        <div class="cody-inventory-bar__fill" style="width: {{ bar_pct }}%;"></div>
+                      </div>
+                    </div>
+                  {%- elsif current_variant.inventory_quantity > threshold -%}
+                    <div class="cody-inventory-bar">
+                      <span>{{ 'products.product.in_stock' | t }}</span>
+                    </div>
+                  {%- endif -%}
+                {%- endif -%}
+              </div>
+
+            {%- when 'variant_picker' -%}
+              {%- unless product.has_only_default_variant -%}
+                <div class="cody-variant-picker" data-product-variant-picker {{ block.shopify_attributes }}>
+                  {%- for option in product.options_with_values -%}
+                    {%- liquid
+                      assign opt_name_down = option.name | strip | downcase
+                      assign is_color_option = false
+                      for trigger in swatch_triggers
+                        assign clean_trigger = trigger | strip
+                        if opt_name_down == clean_trigger
+                          assign is_color_option = true
+                          break
+                        endif
+                      endfor
+
+                      assign is_size_option = false
+                      if opt_name_down contains 'size' or opt_name_down contains 'taille'
+                        assign is_size_option = true
+                      endif
+                    -%}
+
+                    <fieldset class="cody-variant-fieldset" data-option-position="{{ option.position }}">
+                      <div class="cody-variant-fieldset__header">
+                        <legend class="cody-label">
+                          {{ option.name }}: <span class="cody-text-muted" data-selected-option-label>{{ option.selected_value }}</span>
+                        </legend>
+
+                        {%- if is_size_option and block.settings.enable_size_guide -%}
+                          <button
+                            type="button"
+                            class="cody-size-guide-trigger"
+                            data-modal-open="CodySizeGuideModal"
+                          >
+                            {% render 'cody-icons', icon: 'ruler', size: 15 %}
+                            <span>{{ 'products.product.size_guide' | t }}</span>
+                          </button>
+                        {%- endif -%}
+                      </div>
+
+                      {%- if is_color_option -%}
+                        <div class="cody-swatches" style="gap: 1rem;">
+                          {%- for value in option.values -%}
+                            {%- assign val_handle = value | handleize -%}
+                            <button
+                              type="button"
+                              class="cody-swatch{% if option.selected_value == value %} is-active{% endif %}"
+                              style="width: 2.8rem; height: 2.8rem; background-color: var(--cody-swatch-{{ val_handle }}, {{ val_handle }});"
+                              data-option-value="{{ value | escape }}"
+                              title="{{ value | escape }}"
+                              aria-label="{{ value | escape }}"
+                            ></button>
+                          {%- endfor -%}
+                        </div>
+                      {%- else -%}
+                        <div class="cody-variant-pills">
+                          {%- for value in option.values -%}
+                            <button
+                              type="button"
+                              class="cody-variant-pill{% if option.selected_value == value %} is-selected{% endif %}"
+                              data-option-value="{{ value | escape }}"
+                            >
+                              {{ value | escape }}
+                            </button>
+                          {%- endfor -%}
+                        </div>
+                      {%- endif -%}
+                    </fieldset>
+                  {%- endfor -%}
+                </div>
+              {%- endunless -%}
+
+            {%- when 'buy_buttons' -%}
+              <div {{ block.shopify_attributes }}>
+                {%- form 'product', product, id: product_form_id, class: 'cody-product-form', data-ajax-cart-form: '' -%}
+                  <input type="hidden" name="id" value="{{ current_variant.id }}" data-product-variant-id>
+
+                  <div class="cody-buy-row">
+                    <cody-quantity-input class="cody-quantity">
+                      <button type="button" name="minus" class="cody-quantity__btn" aria-label="{{ 'products.product.quantity.decrease' | t: product: product.title }}">
+                        {% render 'cody-icons', icon: 'minus', size: 14 %}
+                      </button>
+                      <input
+                        type="number"
+                        name="quantity"
+                        value="1"
+                        min="1"
+                        class="cody-quantity__input"
+                        aria-label="{{ 'products.product.quantity.label' | t }}"
+                      >
+                      <button type="button" name="plus" class="cody-quantity__btn" aria-label="{{ 'products.product.quantity.increase' | t: product: product.title }}">
+                        {% render 'cody-icons', icon: 'plus', size: 14 %}
+                      </button>
+                    </cody-quantity-input>
+
+                    <button
+                      type="submit"
+                      name="add"
+                      id="ProductSubmitButton-{{ section.id }}"
+                      class="cody-btn cody-btn--primary"
+                      style="flex: 1 1 auto;"
+                      {% unless current_variant.available %}disabled{% endunless %}
+                    >
+                      {%- if current_variant.available -%}
+                        {{ 'products.product.add_to_cart' | t }}
+                      {%- else -%}
+                        {{ 'products.product.sold_out' | t }}
+                      {%- endif -%}
+                    </button>
+
+                    {%- if settings.enable_wishlist -%}
+                      <button
+                        type="button"
+                        class="cody-buy-row__wishlist"
+                        data-wishlist-toggle="{{ product.handle }}"
+                        aria-label="{{ 'general.wishlist.add' | t }}"
+                      >
+                        {% render 'cody-icons', icon: 'heart', size: 20 %}
+                      </button>
+                    {%- endif -%}
+                  </div>
+
+                  {%- if block.settings.show_dynamic_checkout -%}
+                    <div style="margin-top: 1.2rem;">
+                      {{ form | payment_button }}
+                    </div>
+                  {%- endif -%}
+                {%- endform -%}
+              </div>
+
+            {%- when 'description' -%}
+              {%- if product.description != blank -%}
+                <div class="cody-rte cody-text-muted" {{ block.shopify_attributes }}>
+                  {{ product.description }}
+                </div>
+              {%- endif -%}
+
+            {%- when 'collapsible_tab' -%}
+              <cody-accordion {{ block.shopify_attributes }}>
+                <div class="cody-accordion-item{% if block.settings.open_by_default %} is-open{% endif %}">
+                  <button
+                    type="button"
+                    class="cody-accordion-trigger"
+                    data-accordion-trigger
+                    aria-expanded="{% if block.settings.open_by_default %}true{% else %}false{% endif %}"
+                  >
+                    <span>{{ block.settings.heading | escape }}</span>
+                    {% render 'cody-icons', icon: 'chevron-down', size: 16 %}
+                  </button>
+                  <div class="cody-accordion-content cody-rte">
+                    {{ block.settings.content }}
+                    {{ block.settings.page.content }}
+                  </div>
+                </div>
+              </cody-accordion>
+
+            {%- when 'complete_the_look' -%}
+              {%- assign look_col = block.settings.collection | default: collections['all'] -%}
+              {%- if look_col != blank and look_col.products_count > 0 -%}
+                <div class="cody-style-with" {{ block.shopify_attributes }}>
+                  <span class="cody-eyebrow" style="margin-bottom: 1rem;">{{ block.settings.heading | escape }}</span>
+                  {%- for item_prod in look_col.products limit: 2 -%}
+                    {%- if item_prod.id != product.id -%}
+                      <div class="cody-style-with__item">
+                        <a href="{{ item_prod.url }}" class="cody-media cody-media--portrait">
+                          {%- if item_prod.featured_media != blank -%}
+                            <img
+                              src="{{ item_prod.featured_media | image_url: width: 160 }}"
+                              alt="{{ item_prod.title | escape }}"
+                              width="64"
+                              height="85"
+                              loading="lazy"
+                            >
+                          {%- endif -%}
+                        </a>
+                        <div>
+                          <h4 style="font-size: 1.35rem; font-family: var(--cody-font-body-family); margin: 0 0 0.3rem;">
+                            <a href="{{ item_prod.url }}">{{ item_prod.title | escape }}</a>
+                          </h4>
+                          <div style="font-size: 1.25rem;" class="cody-text-muted">{{ item_prod.price | money }}</div>
+                        </div>
+                        <button
+                          type="button"
+                          class="cody-btn cody-btn--outline cody-btn--sm"
+                          data-quick-add-variant="{{ item_prod.selected_or_first_available_variant.id }}"
+                          {% unless item_prod.available %}disabled{% endunless %}
+                        >
+                          + {{ 'products.product.quick_add' | t }}
+                        </button>
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+
+            {%- when 'trust_badges' -%}
+              <div class="cody-trust-list" {{ block.shopify_attributes }}>
+                <div class="cody-trust-item">
+                  {% render 'cody-icons', icon: 'truck', size: 18 %}
+                  <span>{{ block.settings.badge_1 | escape }}</span>
+                </div>
+                <div class="cody-trust-item">
+                  {% render 'cody-icons', icon: 'return', size: 18 %}
+                  <span>{{ block.settings.badge_2 | escape }}</span>
+                </div>
+                <div class="cody-trust-item">
+                  {% render 'cody-icons', icon: 'shield', size: 18 %}
+                  <span>{{ block.settings.badge_3 | escape }}</span>
+                </div>
+              </div>
+
+            {%- when 'custom_liquid' -%}
+              <div {{ block.shopify_attributes }}>
+                {{ block.settings.custom_liquid }}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Interactive Size & Fit Guide Modal {%- endcomment -%}
+  <cody-modal id="CodySizeGuideModal" class="cody-modal" aria-hidden="true">
+    <div class="cody-modal__backdrop" data-modal-close></div>
+    <div class="cody-modal__dialog" style="max-width: 72rem; padding: 4rem;" role="dialog" aria-modal="true" aria-label="{{ 'products.product.size_guide' | t }}">
+      <button type="button" class="cody-modal__close" data-modal-close aria-label="{{ 'accessibility.close' | t }}">
+        {% render 'cody-icons', icon: 'close', size: 20 %}
+      </button>
+      <span class="cody-eyebrow">ATELIER MEASUREMENTS</span>
+      <h2 class="cody-h2">{{ 'products.product.size_guide' | t }}</h2>
+      <p class="cody-text-muted">All pieces are tailored to international luxury sizing standards. If you are between sizes, we recommend selecting the next size up for a relaxed editorial drape.</p>
+
+      <table class="cody-size-table">
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>IT / EU</th>
+            <th>US / UK</th>
+            <th>Bust / Chest (cm)</th>
+            <th>Waist (cm)</th>
+            <th>Hips (cm)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>XS</td><td>36 / 34</td><td>2 / 6</td><td>80 &ndash; 84</td><td>62 &ndash; 66</td><td>88 &ndash; 92</td></tr>
+          <tr><td>S</td><td>38 / 36</td><td>4 / 8</td><td>84 &ndash; 88</td><td>66 &ndash; 70</td><td>92 &ndash; 96</td></tr>
+          <tr><td>M</td><td>40 / 38</td><td>6 / 10</td><td>88 &ndash; 92</td><td>70 &ndash; 74</td><td>96 &ndash; 100</td></tr>
+          <tr><td>L</td><td>42 / 40</td><td>8 / 12</td><td>92 &ndash; 96</td><td>74 &ndash; 78</td><td>100 &ndash; 104</td></tr>
+          <tr><td>XL</td><td>44 / 42</td><td>10 / 14</td><td>96 &ndash; 102</td><td>78 &ndash; 84</td><td>104 &ndash; 110</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </cody-modal>
+
+  {%- comment -%} Sticky Add-to-Cart Bar on Scroll {%- endcomment -%}
+  {%- if section.settings.enable_sticky_atc -%}
+    <div class="cody-sticky-atc" data-sticky-atc>
+      <div class="cody-container">
+        <div class="cody-sticky-atc__inner">
+          <div class="cody-sticky-atc__product">
+            {%- if product.featured_media != blank -%}
+              <img
+                src="{{ product.featured_media | image_url: width: 120 }}"
+                alt="{{ product.title | escape }}"
+                class="cody-sticky-atc__thumb"
+                width="44"
+                height="58"
+                loading="lazy"
+              >
+            {%- endif -%}
+            <div>
+              <strong style="display: block; font-size: 1.4rem;">{{ product.title | escape }}</strong>
+              <span class="cody-text-muted" style="font-size: 1.3rem;" data-sticky-atc-price>{{ current_variant.price | money }}</span>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 1.2rem;">
+            <button
+              type="button"
+              class="cody-btn cody-btn--primary cody-btn--sm"
+              data-sticky-atc-trigger
+              {% unless current_variant.available %}disabled{% endunless %}
+            >
+              {%- if current_variant.available -%}
+                {{ 'products.product.add_to_cart' | t }}
+              {%- else -%}
+                {{ 'products.product.sold_out' | t }}
+              {%- endif -%}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <script type="application/json" data-product-variants-json>
+    {{ product.variants | json }}
+  </script>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const sectionEl = document.getElementById('MainProduct-{{ section.id }}');
+    if (!sectionEl) return;
+
+    // Record Recently Viewed
+    if (window.CodyStore) {
+      window.CodyStore.recordRecentlyViewed({{ product.handle | json }});
+    }
+
+    // Gallery Thumbnail Switcher
+    const thumbs = sectionEl.querySelectorAll('[data-gallery-thumb]');
+    const mediaItems = sectionEl.querySelectorAll('[data-media-id]');
+    thumbs.forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        const targetId = thumb.dataset.galleryThumb;
+        thumbs.forEach((t) => t.classList.toggle('is-active', t === thumb));
+        mediaItems.forEach((item) => {
+          const isMatch = item.dataset.mediaId === targetId;
+          item.classList.toggle('is-active-media', isMatch);
+          if (isMatch && window.innerWidth >= 1024) {
+            item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        });
+      });
+    });
+
+    // Variant Picker State Engine
+    const variantsJson = sectionEl.querySelector('[data-product-variants-json]');
+    const variantIdInput = sectionEl.querySelector('[data-product-variant-id]');
+    const submitBtn = document.getElementById('ProductSubmitButton-{{ section.id }}');
+    const stickyTrigger = sectionEl.querySelector('[data-sticky-atc-trigger]');
+    const fieldsets = Array.from(sectionEl.querySelectorAll('.cody-variant-fieldset'));
+
+    if (variantsJson && fieldsets.length) {
+      const variants = JSON.parse(variantsJson.textContent);
+
+      fieldsets.forEach((fieldset) => {
+        fieldset.addEventListener('click', (event) => {
+          const optionBtn = event.target.closest('[data-option-value]');
+          if (!optionBtn) return;
+
+          fieldset.querySelectorAll('[data-option-value]').forEach((btn) => {
+            btn.classList.remove('is-selected', 'is-active');
+          });
+          optionBtn.classList.add(
+            optionBtn.classList.contains('cody-swatch') ? 'is-active' : 'is-selected'
+          );
+
+          const labelSpan = fieldset.querySelector('[data-selected-option-label]');
+          if (labelSpan) labelSpan.textContent = optionBtn.dataset.optionValue;
+
+          const selectedValues = fieldsets.map((fs) => {
+            const active = fs.querySelector('.is-selected, .is-active');
+            return active ? active.dataset.optionValue : '';
+          });
+
+          const matched = variants.find((v) =>
+            v.options.every((opt, idx) => opt === selectedValues[idx])
+          );
+
+          if (matched) {
+            if (variantIdInput) variantIdInput.value = matched.id;
+            const url = new URL(window.location.href);
+            url.searchParams.set('variant', matched.id);
+            window.history.replaceState({}, '', url.toString());
+
+            if (submitBtn) {
+              submitBtn.disabled = !matched.available;
+              submitBtn.textContent = matched.available
+                ? window.variantStrings.addToCart
+                : window.variantStrings.soldOut;
+            }
+            if (stickyTrigger) {
+              stickyTrigger.disabled = !matched.available;
+              stickyTrigger.textContent = matched.available
+                ? window.variantStrings.addToCart
+                : window.variantStrings.soldOut;
+            }
+
+            if (matched.featured_media) {
+              const targetMediaId = String(matched.featured_media.id);
+              mediaItems.forEach((m) =>
+                m.classList.toggle('is-active-media', m.dataset.mediaId === targetMediaId)
+              );
+            }
+          }
+        });
+      });
+    }
+
+    // Sticky Add to Cart Scroll Observer
+    const stickyBar = sectionEl.querySelector('[data-sticky-atc]');
+    if (stickyBar && submitBtn) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            stickyBar.classList.toggle('is-visible', !entry.isIntersecting && entry.boundingClientRect.top < 0);
+          });
+        },
+        { threshold: 0 }
+      );
+      observer.observe(submitBtn);
+
+      if (stickyTrigger) {
+        stickyTrigger.addEventListener('click', () => {
+          submitBtn.click();
+        });
+      }
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Main Product (Fashion)",
+  "tag": "section",
+  "class": "cody-section-main-product",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "gallery_layout",
+      "label": "Desktop media gallery layout (5 Modes)",
+      "options": [
+        { "value": "editorial-grid-2", "label": "1. Editorial 2-Column Runway Grid (Zara / Totême)" },
+        { "value": "featured-plus-grid", "label": "2. Hero Image + 2-Column Grid" },
+        { "value": "thumbnails-left", "label": "3. Sticky Vertical Thumbnails Left" },
+        { "value": "thumbnails-bottom", "label": "4. Horizontal Thumbnails Bottom" },
+        { "value": "stacked-single", "label": "5. Stacked Full-Height Single Column" }
+      ],
+      "default": "editorial-grid-2"
+    },
+    {
+      "type": "select",
+      "id": "media_aspect_ratio",
+      "label": "Media aspect ratio",
+      "options": [
+        { "value": "portrait", "label": "Editorial Portrait (3:4)" },
+        { "value": "tall-runway", "label": "Runway Tall (2:3)" },
+        { "value": "square", "label": "Square (1:1)" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_info",
+      "default": true,
+      "label": "Enable sticky product details column on desktop"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_atc",
+      "default": true,
+      "label": "Enable Sticky Add-to-Bag bar on scroll"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "vendor",
+      "name": "Brand / Maison Eyebrow",
+      "limit": 1
+    },
+    {
+      "type": "title",
+      "name": "Product Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price & Tax Notice",
+      "limit": 1
+    },
+    {
+      "type": "inventory_status",
+      "name": "Low Stock Progress Bar",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "low_stock_threshold",
+          "min": 2,
+          "max": 15,
+          "step": 1,
+          "default": 5,
+          "label": "Low stock threshold"
+        }
+      ]
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant Swatches & Sizes",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "enable_size_guide",
+          "default": true,
+          "label": "Show Size & Fit Guide modal button on Size option"
+        }
+      ]
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy Buttons & Wishlist",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "default": true,
+          "label": "Show dynamic express checkout buttons (Shop Pay / Apple Pay)"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Product Description",
+      "limit": 1
+    },
+    {
+      "type": "collapsible_tab",
+      "name": "Collapsible Accordion Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Composition & Care",
+          "label": "Accordion heading"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "default": "<p>Crafted from 100% traceable virgin wool with a pure mulberry silk lining. Dry clean only at a specialist luxury cleaner.</p>",
+          "label": "Accordion content"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Or pull content from page"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_by_default",
+          "default": false,
+          "label": "Open by default"
+        }
+      ]
+    },
+    {
+      "type": "complete_the_look",
+      "name": "Complete The Look Bundle",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "STYLE WITH / COMPLETE THE LOOK",
+          "label": "Block heading"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Complementary pieces collection"
+        }
+      ]
+    },
+    {
+      "type": "trust_badges",
+      "name": "Luxury Service Guarantees",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "badge_1",
+          "default": "Complimentary Express Delivery",
+          "label": "Guarantee 1"
+        },
+        {
+          "type": "text",
+          "id": "badge_2",
+          "default": "30-Day Complimentary Returns",
+          "label": "Guarantee 2"
+        },
+        {
+          "type": "text",
+          "id": "badge_3",
+          "default": "Authenticity & Atelier Warranty",
+          "label": "Guarantee 3"
+        }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom Liquid"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

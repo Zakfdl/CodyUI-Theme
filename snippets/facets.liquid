@@ -1,0 +1,107 @@
+{%- comment -%}
+  CodyUI Fashion — Reusable Facets Form Snippet (Drawer & Sidebar)
+  Accepts:
+  - results: {Object} Collection or Search object
+  - form_id: {String} Unique form ID
+{%- endcomment -%}
+{%- liquid
+  assign swatch_triggers = settings.swatch_option_names | downcase | split: ','
+-%}
+
+<form id="{{ form_id }}" class="cody-facets-form" data-facets-form>
+  {%- if results.terms -%}
+    <input type="hidden" name="q" value="{{ results.terms | escape }}">
+    <input name="options[prefix]" type="hidden" value="last">
+  {%- endif -%}
+
+  {%- for filter in results.filters -%}
+    {%- liquid
+      assign filter_label_down = filter.label | strip | downcase
+      assign is_color_facet = false
+      for trigger in swatch_triggers
+        assign clean_trigger = trigger | strip
+        if filter_label_down == clean_trigger
+          assign is_color_facet = true
+          break
+        endif
+      endfor
+    -%}
+
+    <details class="cody-facet-group" open>
+      <summary class="cody-facet-group__summary">
+        <span>
+          {{ filter.label | escape }}
+          {%- if filter.active_values.size > 0 -%}
+            <span class="cody-text-muted">({{ filter.active_values.size }})</span>
+          {%- endif -%}
+        </span>
+        {% render 'cody-icons', icon: 'chevron-down', size: 15 %}
+      </summary>
+
+      {%- case filter.type -%}
+        {%- when 'boolean', 'list' -%}
+          <ul class="cody-facet-group__list">
+            {%- for value in filter.values -%}
+              <li>
+                <label class="cody-facet-checkbox{% if value.count == 0 and value.active == false %} cody-text-muted{% endif %}">
+                  <span class="cody-facet-checkbox__left">
+                    <input
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      {% if value.active %}checked{% endif %}
+                      {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                    >
+                    {%- if is_color_facet -%}
+                      {%- assign val_handle = value.label | handleize -%}
+                      <span
+                        class="cody-swatch"
+                        style="width: 1.6rem; height: 1.6rem; background-color: var(--cody-swatch-{{ val_handle }}, {{ val_handle }});"
+                      ></span>
+                    {%- endif -%}
+                    <span>{{ value.label | escape }}</span>
+                  </span>
+                  <span class="cody-text-muted" style="font-size: 1.2rem;">({{ value.count }})</span>
+                </label>
+              </li>
+            {%- endfor -%}
+          </ul>
+
+        {%- when 'price_range' -%}
+          <div class="cody-facet-price-row">
+            <div class="cody-field">
+              <label class="cody-label" for="{{ form_id }}-PriceGTE">{{ 'products.facets.from' | t }} ({{ cart.currency.symbol }})</label>
+              <input
+                class="cody-input"
+                name="{{ filter.min_value.param_name }}"
+                id="{{ form_id }}-PriceGTE"
+                type="number"
+                placeholder="0"
+                min="0"
+                max="{{ filter.range_max | divided_by: 100.0 | ceil }}"
+                {% if filter.min_value.value %}
+                  value="{{ filter.min_value.value | divided_by: 100.0 | round }}"
+                {% endif %}
+              >
+            </div>
+
+            <div class="cody-field">
+              <label class="cody-label" for="{{ form_id }}-PriceLTE">{{ 'products.facets.to' | t }} ({{ cart.currency.symbol }})</label>
+              <input
+                class="cody-input"
+                name="{{ filter.max_value.param_name }}"
+                id="{{ form_id }}-PriceLTE"
+                type="number"
+                placeholder="{{ filter.range_max | divided_by: 100.0 | ceil }}"
+                min="0"
+                max="{{ filter.range_max | divided_by: 100.0 | ceil }}"
+                {% if filter.max_value.value %}
+                  value="{{ filter.max_value.value | divided_by: 100.0 | ceil }}"
+                {% endif %}
+              >
+            </div>
+          </div>
+      {%- endcase -%}
+    </details>
+  {%- endfor -%}
+</form>

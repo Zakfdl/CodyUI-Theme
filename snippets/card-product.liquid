@@ -1,0 +1,330 @@
+{%- comment -%}
+  CodyUI Fashion — Signature Editorial Product Card (card-product.liquid)
+  Accepts:
+  - card_product: {Object} Product Liquid object
+  - media_aspect_ratio: {String} Optional override ('portrait', 'tall-runway', 'square', 'adapt')
+  - show_secondary_image: {Boolean} Optional override
+  - show_vendor: {Boolean} Optional override
+  - show_quick_add: {String} Optional override ('size-bar-hover', 'button-hover', 'below-card', 'none')
+  - placeholder_index: {Number} For onboarding placeholders (1..6)
+{%- endcomment -%}
+
+{%- liquid
+  assign ratio_mode = media_aspect_ratio | default: settings.card_image_ratio | default: 'portrait'
+  assign secondary_enabled = show_secondary_image | default: settings.card_show_secondary_image
+  assign vendor_enabled = show_vendor | default: settings.card_show_vendor
+  assign quick_add_mode = show_quick_add | default: settings.card_quick_add_style | default: 'size-bar-hover'
+  assign text_align = settings.card_text_alignment | default: 'split'
+  assign p_index = placeholder_index | default: 1
+-%}
+
+{%- if card_product and card_product != empty -%}
+  {%- liquid
+    assign first_avail_variant = card_product.selected_or_first_available_variant
+    assign is_on_sale = false
+    if card_product.compare_at_price > card_product.price and card_product.available
+      assign is_on_sale = true
+      assign discount_pct = card_product.compare_at_price | minus: card_product.price | times: 100.0 | divided_by: card_product.compare_at_price | round
+      assign saved_amount = card_product.compare_at_price | minus: card_product.price | money
+    endif
+
+    assign is_new_arrival = false
+    if settings.show_new_badge
+      assign now_ts = 'now' | date: '%s' | plus: 0
+      assign pub_ts = card_product.published_at | date: '%s' | plus: 0
+      assign diff_days = now_ts | minus: pub_ts | divided_by: 86400
+      if diff_days <= settings.new_badge_days or card_product.tags contains 'badge:new'
+        assign is_new_arrival = true
+      endif
+    endif
+
+    assign is_preorder = false
+    if settings.show_preorder_badge and first_avail_variant.inventory_policy == 'continue' and first_avail_variant.inventory_quantity <= 0
+      assign is_preorder = true
+    endif
+  -%}
+
+  <article class="cody-card" data-product-card data-product-handle="{{ card_product.handle }}">
+    <div class="cody-card__media-wrap cody-media cody-media--{{ ratio_mode }}">
+      {%- comment -%} Top-Left Editorial Badges {%- endcomment -%}
+      <div class="cody-badges">
+        {%- unless card_product.available -%}
+          <span class="cody-badge cody-badge--soldout">{{ 'products.product.sold_out' | t }}</span>
+        {%- else -%}
+          {%- if is_on_sale -%}
+            <span class="cody-badge cody-badge--sale">
+              {%- if settings.sale_badge_format == 'percentage' -%}
+                -{{ discount_pct }}%
+              {%- elsif settings.sale_badge_format == 'amount' -%}
+                -{{ saved_amount }}
+              {%- else -%}
+                {{ 'products.product.on_sale' | t }}
+              {%- endif -%}
+            </span>
+          {%- endif -%}
+          {%- if is_preorder -%}
+            <span class="cody-badge cody-badge--preorder">{{ 'products.product.preorder' | t }}</span>
+          {%- elsif is_new_arrival -%}
+            <span class="cody-badge cody-badge--new">{{ 'products.product.new_arrival' | t }}</span>
+          {%- endif -%}
+        {%- endunless -%}
+      </div>
+
+      {%- comment -%} Top-Right Floating Utility Actions (Wishlist, Compare, Quick View) {%- endcomment -%}
+      <div class="cody-card__actions-top">
+        {%- if settings.enable_wishlist and settings.card_enable_wishlist -%}
+          <button
+            type="button"
+            class="cody-card__icon-btn"
+            data-wishlist-toggle="{{ card_product.handle }}"
+            aria-label="{{ 'general.wishlist.add' | t }}"
+            aria-pressed="false"
+          >
+            {% render 'cody-icons', icon: 'heart', size: 17 %}
+          </button>
+        {%- endif -%}
+
+        {%- if settings.enable_compare and settings.card_enable_compare -%}
+          <button
+            type="button"
+            class="cody-card__icon-btn"
+            data-compare-toggle="{{ card_product.handle }}"
+            aria-label="{{ 'general.compare.add' | t }}"
+            aria-pressed="false"
+          >
+            {% render 'cody-icons', icon: 'compare', size: 17 %}
+          </button>
+        {%- endif -%}
+
+        {%- if settings.card_enable_quick_view -%}
+          <button
+            type="button"
+            class="cody-card__icon-btn"
+            data-quickview-handle="{{ card_product.handle }}"
+            aria-label="{{ 'products.product.quick_view' | t }}"
+          >
+            {% render 'cody-icons', icon: 'eye', size: 17 %}
+          </button>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Primary & Secondary Hover Media {%- endcomment -%}
+      <a href="{{ card_product.url }}" class="cody-card__link-overlay" data-card-link tabindex="-1" aria-hidden="true">
+        {%- if card_product.featured_media != blank -%}
+          <img
+            srcset="
+              {%- if card_product.featured_media.width >= 360 -%}{{ card_product.featured_media | image_url: width: 360 }} 360w,{%- endif -%}
+              {%- if card_product.featured_media.width >= 540 -%}{{ card_product.featured_media | image_url: width: 540 }} 540w,{%- endif -%}
+              {%- if card_product.featured_media.width >= 720 -%}{{ card_product.featured_media | image_url: width: 720 }} 720w,{%- endif -%}
+              {%- if card_product.featured_media.width >= 960 -%}{{ card_product.featured_media | image_url: width: 960 }} 960w,{%- endif -%}
+              {{ card_product.featured_media | image_url }} {{ card_product.featured_media.width }}w
+            "
+            src="{{ card_product.featured_media | image_url: width: 720 }}"
+            sizes="(min-width: 1200px) 25vw, (min-width: 750px) 33vw, 50vw"
+            alt="{{ card_product.featured_media.alt | default: card_product.title | escape }}"
+            class="cody-card__img--primary"
+            data-card-primary-image
+            width="{{ card_product.featured_media.width }}"
+            height="{{ card_product.featured_media.height }}"
+            loading="lazy"
+          >
+          {%- if secondary_enabled and card_product.media[1] != blank -%}
+            <img
+              src="{{ card_product.media[1] | image_url: width: 720 }}"
+              alt="{{ card_product.media[1].alt | default: card_product.title | escape }}"
+              class="cody-card__img--secondary"
+              width="{{ card_product.media[1].width }}"
+              height="{{ card_product.media[1].height }}"
+              loading="lazy"
+            >
+          {%- endif -%}
+        {%- else -%}
+          {{ 'product-' | append: p_index | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </a>
+
+      {%- comment -%} Zara / Massimo Dutti Instant Size Bar or Quick Add on Hover {%- endcomment -%}
+      {%- if card_product.available and quick_add_mode != 'none' and quick_add_mode != 'below-card' -%}
+        {%- liquid
+          assign size_option_index = nil
+          for option in card_product.options_with_values
+            assign opt_down = option.name | downcase
+            if opt_down contains 'size' or opt_down contains 'taille' or opt_down contains 'waist'
+              assign size_option_index = forloop.index0
+              break
+            endif
+          endfor
+        -%}
+
+        <div class="cody-card__quick-bar">
+          {%- if quick_add_mode == 'size-bar-hover' and size_option_index != nil and card_product.options.size <= 2 -%}
+            <span class="cody-card__quick-bar-label">{{ 'products.product.quick_add' | t }}</span>
+            <div class="cody-card__sizes">
+              {%- assign size_option = card_product.options_with_values[size_option_index] -%}
+              {%- for val in size_option.values -%}
+                {%- liquid
+                  assign matched_variant = nil
+                  for v in card_product.variants
+                    if v.options[size_option_index] == val and v.available
+                      assign matched_variant = v
+                      break
+                    endif
+                  endfor
+                -%}
+                <button
+                  type="button"
+                  class="cody-card__size-btn"
+                  {% if matched_variant != nil %}
+                    data-quick-add-variant="{{ matched_variant.id }}"
+                  {% else %}
+                    disabled
+                  {% endif %}
+                >
+                  {{ val | escape }}
+                </button>
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            {%- if card_product.has_only_default_variant -%}
+              <button
+                type="button"
+                class="cody-btn cody-btn--primary cody-btn--sm cody-btn--full"
+                data-quick-add-variant="{{ first_avail_variant.id }}"
+              >
+                {{ 'products.product.add_to_cart' | t }}
+              </button>
+            {%- else -%}
+              <button
+                type="button"
+                class="cody-btn cody-btn--primary cody-btn--sm cody-btn--full"
+                data-quickview-handle="{{ card_product.handle }}"
+              >
+                {{ 'products.product.choose_options' | t }}
+              </button>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Product Details & Interactive Color Swatches {%- endcomment -%}
+    <div class="cody-card__info{% if text_align == 'center' %} cody-card__info--center{% endif %}">
+      {%- if vendor_enabled and card_product.vendor != blank -%}
+        <span class="cody-card__vendor">{{ card_product.vendor }}</span>
+      {%- endif -%}
+
+      <div class="cody-card__header-row">
+        <h3 class="cody-card__title">
+          <a href="{{ card_product.url }}" data-card-link>{{ card_product.title | escape }}</a>
+        </h3>
+        {%- if text_align == 'split' -%}
+          {% render 'price', product: card_product %}
+        {%- endif -%}
+      </div>
+
+      {%- if text_align != 'split' -%}
+        {% render 'price', product: card_product %}
+      {%- endif -%}
+
+      {%- if settings.enable_color_swatches -%}
+        {%- liquid
+          assign swatch_triggers = settings.swatch_option_names | downcase | split: ','
+          assign max_swatches = settings.card_max_swatches | default: 5
+        -%}
+        {%- for option in card_product.options_with_values -%}
+          {%- liquid
+            assign opt_name_down = option.name | strip | downcase
+            assign is_color_opt = false
+            for trigger in swatch_triggers
+              assign clean_trigger = trigger | strip
+              if opt_name_down == clean_trigger
+                assign is_color_opt = true
+                break
+              endif
+            endfor
+          -%}
+
+          {%- if is_color_opt and option.values.size > 1 -%}
+            {%- assign opt_idx = forloop.index0 -%}
+            <div class="cody-card__swatches-row">
+              <div class="cody-swatches">
+                {%- for value in option.values limit: max_swatches -%}
+                  {%- liquid
+                    assign val_handle = value | handleize
+                    assign swatch_variant = nil
+                    for variant in card_product.variants
+                      if variant.options[opt_idx] == value
+                        assign swatch_variant = variant
+                        break
+                      endif
+                    endfor
+
+                    assign swatch_img_url = ''
+                    if swatch_variant.featured_media != blank
+                      assign swatch_img_url = swatch_variant.featured_media | image_url: width: 720
+                    endif
+
+                    assign swatch_bg = 'var(--cody-swatch-' | append: val_handle | append: ', ' | append: val_handle | append: ')'
+                    if value.swatch.color != blank
+                      assign swatch_bg = value.swatch.color
+                    endif
+                  -%}
+                  <button
+                    type="button"
+                    class="cody-swatch{% if forloop.first %} is-active{% endif %}"
+                    data-card-swatch
+                    data-swatch-image="{{ swatch_img_url }}"
+                    data-variant-url="{{ swatch_variant.url | default: card_product.url }}"
+                    title="{{ value | escape }}"
+                    aria-label="{{ value | escape }}"
+                    style="background-color: {{ swatch_bg }};{% if settings.swatch_source == 'variant_image' and swatch_variant.featured_media != blank %} background-image: url('{{ swatch_variant.featured_media | image_url: width: 80 }}');{% endif %}"
+                  ></button>
+                {%- endfor -%}
+              </div>
+              {%- if option.values.size > max_swatches -%}
+                <span class="cody-card__swatch-more">+{{ option.values.size | minus: max_swatches }}</span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+
+      {%- if quick_add_mode == 'below-card' -%}
+        <div style="margin-top: 1rem; width: 100%;">
+          {%- if card_product.has_only_default_variant -%}
+            <button
+              type="button"
+              class="cody-btn cody-btn--outline cody-btn--sm cody-btn--full"
+              data-quick-add-variant="{{ first_avail_variant.id }}"
+              {% unless card_product.available %}disabled{% endunless %}
+            >
+              {%- if card_product.available -%}{{ 'products.product.add_to_cart' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+            </button>
+          {%- else -%}
+            <button
+              type="button"
+              class="cody-btn cody-btn--outline cody-btn--sm cody-btn--full"
+              data-quickview-handle="{{ card_product.handle }}"
+            >
+              {{ 'products.product.choose_options' | t }}
+            </button>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </article>
+{%- else -%}
+  {%- comment -%} Onboarding Editorial Placeholder Card {%- endcomment -%}
+  <article class="cody-card">
+    <div class="cody-card__media-wrap cody-media cody-media--{{ ratio_mode }}">
+      {{ 'product-' | append: p_index | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
+    <div class="cody-card__info">
+      <span class="cody-card__vendor">{{ 'onboarding.product_vendor' | t }}</span>
+      <div class="cody-card__header-row">
+        <h3 class="cody-card__title">{{ 'onboarding.product_title' | t }}</h3>
+        <div class="cody-price"><span class="cody-price__regular">{{ 48000 | money }}</span></div>
+      </div>
+    </div>
+  </article>
+{%- endif -%}

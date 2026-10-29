@@ -1,0 +1,24 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}" style="text-align: center; padding-block: 10rem;">
+  <div class="cody-container cody-container--narrow">
+    <span class="cody-eyebrow">404 ARCHIVE ERROR</span>
+    <h1 class="cody-display-lg">{{ 'templates.404.title' | t }}</h1>
+    <p class="cody-text-muted" style="margin-bottom: 3.2rem;">{{ 'templates.404.subtext' | t }}</p>
+    <a href="{{ routes.all_products_collection_url }}" class="cody-btn cody-btn--primary">
+      {{ 'general.continue_shopping' | t }}
+    </a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "404 Page",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,138 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container">
+    <cody-tabs>
+      <div class="cody-section-header">
+        <div>
+          <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+          <div class="cody-collection-tabs__nav" role="tablist" style="margin-bottom: 0; border-bottom: none;">
+            {%- for block in section.blocks -%}
+              <button
+                type="button"
+                role="tab"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                class="cody-collection-tabs__btn{% if forloop.first %} is-active{% endif %}"
+                data-tab-trigger="col-tab-{{ block.id }}"
+                {{ block.shopify_attributes }}
+              >
+                {{ block.settings.tab_label | default: block.settings.collection.title | default: 'Collection' | escape }}
+              </button>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- assign tab_col = block.settings.collection -%}
+        <div
+          data-tab-panel="col-tab-{{ block.id }}"
+          class="{% if forloop.first %}is-active{% endif %}"
+          {% unless forloop.first %}hidden{% endunless %}
+        >
+          <div class="cody-grid cody-grid--{{ section.settings.columns_desktop }}">
+            {%- if tab_col != blank and tab_col.products_count > 0 -%}
+              {%- for product in tab_col.products limit: section.settings.products_to_show -%}
+                {% render 'card-product', card_product: product %}
+              {%- endfor -%}
+            {%- else -%}
+              {%- for i in (1..section.settings.products_to_show) -%}
+                {% render 'card-product', placeholder_index: i %}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+
+          {%- if section.settings.show_view_all and tab_col != blank -%}
+            <div style="text-align: center; margin-top: 4rem;">
+              <a href="{{ tab_col.url }}" class="cody-btn cody-btn--outline">
+                {{ 'sections.featured_collection.view_all' | t }}
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </cody-tabs>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Collection Tabs",
+  "tag": "section",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "SEASONAL WARDROBE",
+      "label": "Eyebrow subtitle"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 12,
+      "step": 4,
+      "default": 4,
+      "label": "Products per tab"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "Desktop columns"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "Show 'Explore Full Collection' button"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Collection Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_label",
+          "default": "New Arrivals",
+          "label": "Tab title"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection Tabs",
+      "blocks": [
+        {
+          "type": "tab",
+          "settings": { "tab_label": "New Arrivals" }
+        },
+        {
+          "type": "tab",
+          "settings": { "tab_label": "Tailoring & Coats" }
+        },
+        {
+          "type": "tab",
+          "settings": { "tab_label": "Silk & Knitwear" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

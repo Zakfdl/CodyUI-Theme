@@ -1,0 +1,77 @@
+{%- if section.settings.enable_sales_popup -%}
+  <div id="CodySalesPopup" class="cody-sales-popup color-{{ section.settings.color_scheme }}" role="status" aria-live="polite">
+    <div class="cody-media cody-media--portrait">
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
+    <div style="font-size: 1.2rem; line-height: 1.35;">
+      <span class="cody-text-muted" data-sales-city>A client in Paris, France acquired</span>
+      <strong style="display: block; margin-top: 0.2rem;" data-sales-title>{{ section.settings.sample_product_title | escape }}</strong>
+      <small class="cody-text-muted" data-sales-time>4 minutes ago</small>
+    </div>
+    <button type="button" id="CodySalesPopupClose" aria-label="{{ 'accessibility.close' | t }}" style="font-size: 1.8rem;">&times;</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const popup = document.getElementById('CodySalesPopup');
+      const closeBtn = document.getElementById('CodySalesPopupClose');
+      if (!popup || Shopify.designMode) return;
+
+      const cities = {{ section.settings.cities_list | split: ',' | json }};
+      const cityEl = popup.querySelector('[data-sales-city]');
+      let dismissed = false;
+
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+          dismissed = true;
+          popup.classList.remove('is-visible');
+        });
+      }
+
+      setTimeout(() => {
+        if (dismissed) return;
+        if (cities.length && cityEl) {
+          const randomCity = cities[Math.floor(Math.random() * cities.length)].trim();
+          cityEl.textContent = `A client in ${randomCity} acquired`;
+        }
+        popup.classList.add('is-visible');
+        setTimeout(() => popup.classList.remove('is-visible'), 6500);
+      }, 11000);
+    });
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Recent Acquisitions Popup",
+  "enabled_on": {
+    "groups": ["custom.aside"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_sales_popup",
+      "default": false,
+      "label": "Enable social proof recent acquisitions popup"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "sample_product_title",
+      "default": "Double-Breasted Virgin Wool Coat",
+      "label": "Featured piece title"
+    },
+    {
+      "type": "text",
+      "id": "cities_list",
+      "default": "Paris, Milan, New York, London, Geneva, Tokyo",
+      "label": "Boutique cities list (comma-separated)"
+    }
+  ]
+}
+{% endschema %}

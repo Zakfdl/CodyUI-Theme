@@ -1,0 +1,55 @@
+{%- if section.settings.enable_mobile_bar -%}
+  <nav class="cody-mobile-sticky-bar color-{{ section.settings.color_scheme }}" aria-label="Mobile quick navigation">
+    <a href="{{ routes.root_url }}" class="cody-mobile-sticky-bar__item">
+      {% render 'cody-icons', icon: 'grid-2', size: 18 %}
+      <span>{{ 'general.breadcrumbs.home' | t }}</span>
+    </a>
+
+    <button type="button" class="cody-mobile-sticky-bar__item" data-drawer-open="CodyMobileMenuDrawer">
+      {% render 'cody-icons', icon: 'menu', size: 18 %}
+      <span>{{ 'sections.header.menu' | t }}</span>
+    </button>
+
+    <button type="button" class="cody-mobile-sticky-bar__item" data-drawer-open="CodySearchDrawer">
+      {% render 'cody-icons', icon: 'search', size: 18 %}
+      <span>{{ 'general.search.search' | t | truncatewords: 1, '' }}</span>
+    </button>
+
+    <a href="/pages/wishlist" class="cody-mobile-sticky-bar__item">
+      {% render 'cody-icons', icon: 'heart', size: 18 %}
+      <span>{{ 'general.wishlist.title' | t | truncatewords: 1, '' }}</span>
+    </a>
+
+    <a
+      href="{{ routes.cart_url }}"
+      class="cody-mobile-sticky-bar__item"
+      {% if settings.cart_type == 'drawer' and template != 'cart' %}data-drawer-open="CodyCartDrawer"{% endif %}
+    >
+      {% render 'cody-icons', icon: 'bag', size: 18 %}
+      <span>{{ 'sections.quick_order_list.view_cart' | t }}</span>
+    </a>
+  </nav>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Mobile Sticky Bottom Bar",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_mobile_bar",
+      "default": true,
+      "label": "Enable fixed bottom app bar on mobile devices"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

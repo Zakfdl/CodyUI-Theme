@@ -1,0 +1,118 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container">
+    <div class="cody-section-header cody-section-header--center">
+      <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      <h2 class="cody-h1" style="margin-bottom: 0;">{{ section.settings.heading | escape }}</h2>
+    </div>
+
+    <div class="cody-grid cody-grid--3">
+      {%- for block in section.blocks -%}
+        <blockquote
+          style="margin: 0; padding: 3.2rem; background-color: rgb(var(--cody-surface)); border: 1px solid rgb(var(--cody-border)); display: flex; flex-direction: column; justify-content: space-between; gap: 2rem;"
+          {{ block.shopify_attributes }}
+        >
+          <div>
+            <div style="display: flex; gap: 0.3rem; margin-bottom: 1.6rem; color: var(--cody-color-star);">
+              {%- for i in (1..5) -%}
+                {% render 'cody-icons', icon: 'star', size: 14 %}
+              {%- endfor -%}
+            </div>
+            <p style="font-family: var(--cody-font-heading-family); font-size: 2.1rem; line-height: 1.35; margin: 0;">
+              &ldquo;{{ block.settings.quote | escape }}&rdquo;
+            </p>
+          </div>
+          <footer>
+            <strong style="display: block; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.1em;">
+              {{ block.settings.author | escape }}
+            </strong>
+            <span class="cody-text-muted" style="font-size: 1.2rem;">{{ block.settings.role | escape }}</span>
+          </footer>
+        </blockquote>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Editorial Press & Reviews",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "CLIENT & PRESS ACCLAIM",
+      "label": "Eyebrow subtitle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "In The Words of Our Clients",
+      "label": "Heading"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Editorial Quote",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "default": "The tailoring and drape of the double-faced cashmere coat rival heritage Milanese houses at twice the price.",
+          "label": "Quote"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "default": "Elena Rostova",
+          "label": "Author / Publication"
+        },
+        {
+          "type": "text",
+          "id": "role",
+          "default": "Verified Atelier Client — Paris",
+          "label": "Location / Title"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial Press & Reviews",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "The tailoring and drape of the double-faced cashmere coat rival heritage Milanese houses at twice the price.",
+            "author": "Elena Rostova",
+            "role": "Verified Atelier Client — Paris"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Uncompromising fabric weight, whisper-quiet luxury hardware, and presentation that feels like a private showroom.",
+            "author": "Camille Laurent",
+            "role": "Fashion Director — Geneva"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Every piece in my capsule wardrobe from CodyUI transitions effortlessly from morning flights to evening dinners.",
+            "author": "Sophia Vance",
+            "role": "Verified Atelier Client — New York"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

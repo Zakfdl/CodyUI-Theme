@@ -1,0 +1,39 @@
+{
+  "settings_schema": {
+    "color_schemes": {
+      "name": "Color Schemes & Palette",
+      "settings": {
+        "background": {
+          "label": "Background"
+        },
+        "background_gradient": {
+          "label": "Background gradient"
+        },
+        "surface": {
+          "label": "Secondary surface / Card backdrop"
+        },
+        "text": {
+          "label": "Primary text & headings"
+        },
+        "text_muted": {
+          "label": "Muted / Secondary text"
+        },
+        "accent": {
+          "label": "Editorial accent & active state"
+        },
+        "button": {
+          "label": "Primary button background"
+        },
+        "button_label": {
+          "label": "Primary button text"
+        },
+        "secondary_button_label": {
+          "label": "Outline / Secondary button text & border"
+        },
+        "border": {
+          "label": "Hairline borders & dividers"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container cody-container--narrow">
+    <h1 class="cody-display-lg" style="margin-bottom: 3.2rem;">{{ page.title | escape }}</h1>
+    <div class="cody-rte">
+      {{ page.content }}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page Content",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

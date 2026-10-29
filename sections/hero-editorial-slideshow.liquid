@@ -1,0 +1,183 @@
+<section
+  class="cody-hero"
+  style="--cody-hero-height: {{ section.settings.hero_height }}vh;"
+  aria-label="{{ 'sections.slideshow.carousel' | t }}"
+>
+  <div class="cody-hero__slides">
+    {%- for block in section.blocks -%}
+      <div
+        class="cody-hero__slide"
+        style="--cody-hero-overlay: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"
+        {{ block.shopify_attributes }}
+      >
+        <div class="cody-hero__media">
+          {%- if block.settings.video != blank -%}
+            {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true }}
+          {%- elsif block.settings.image != blank -%}
+            <img
+              src="{{ block.settings.image | image_url: width: 2200 }}"
+              alt="{{ block.settings.heading | escape }}"
+              width="{{ block.settings.image.width }}"
+              height="{{ block.settings.image.height }}"
+              {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+            >
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+
+        <div class="cody-hero__overlay"></div>
+
+        <div class="cody-container" style="position: relative; z-index: 3;">
+          <div class="cody-hero__content{% if block.settings.text_alignment == 'center' %} cody-hero__content--center{% endif %}">
+            {%- if block.settings.eyebrow != blank -%}
+              <span class="cody-eyebrow" style="color: rgba(255, 255, 255, 0.85);">{{ block.settings.eyebrow | escape }}</span>
+            {%- endif -%}
+
+            {%- if block.settings.heading != blank -%}
+              <h2 class="cody-display-xl" style="color: #ffffff; margin-bottom: 1.6rem;">
+                {{ block.settings.heading | escape }}
+              </h2>
+            {%- endif -%}
+
+            {%- if block.settings.subheading != blank -%}
+              <p style="font-size: 1.65rem; color: rgba(255, 255, 255, 0.9); max-width: 56rem; margin-bottom: 0;{% if block.settings.text_alignment == 'center' %} margin-inline: auto;{% endif %}">
+                {{ block.settings.subheading | escape }}
+              </p>
+            {%- endif -%}
+
+            <div class="cody-hero__actions">
+              {%- if block.settings.button_label_1 != blank -%}
+                <a
+                  href="{{ block.settings.button_link_1 | default: routes.all_products_collection_url }}"
+                  class="cody-btn cody-btn--lg"
+                  style="background-color: #ffffff; color: #111111; border-color: #ffffff;"
+                >
+                  {{ block.settings.button_label_1 | escape }}
+                </a>
+              {%- endif -%}
+
+              {%- if block.settings.button_label_2 != blank -%}
+                <a
+                  href="{{ block.settings.button_link_2 | default: routes.collections_url }}"
+                  class="cody-btn cody-btn--lg"
+                  style="background-color: transparent; color: #ffffff; border-color: rgba(255, 255, 255, 0.8);"
+                >
+                  {{ block.settings.button_label_2 | escape }}
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Editorial Hero Slideshow",
+  "tag": "section",
+  "class": "cody-section-hero",
+  "settings": [
+    {
+      "type": "range",
+      "id": "hero_height",
+      "min": 55,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "default": 85,
+      "label": "Hero viewport height"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Runway Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Desktop background image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Optional background video (overrides image)"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "unit": "%",
+          "default": 40,
+          "label": "Image contrast overlay opacity"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Content alignment",
+          "options": [
+            { "value": "left", "label": "Bottom Left (Editorial)" },
+            { "value": "center", "label": "Bottom Center (Runway)" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "default": "AUTUMN / WINTER RUNWAY CAPSULE",
+          "label": "Eyebrow subtitle"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "The Architecture of Quiet Luxury",
+          "label": "Display heading"
+        },
+        {
+          "type": "textarea",
+          "id": "subheading",
+          "default": "Sculpted silhouettes in Italian double-faced cashmere, raw mulberry silk, and structured virgin wool.",
+          "label": "Subheading"
+        },
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "default": "Explore Women",
+          "label": "Primary button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "Primary button link"
+        },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "default": "View Lookbook",
+          "label": "Secondary button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "Secondary button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial Hero Slideshow",
+      "blocks": [
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

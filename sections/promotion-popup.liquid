@@ -1,0 +1,132 @@
+{%- if section.settings.enable_popup -%}
+  <cody-modal
+    id="CodyPromoPopupModal"
+    class="cody-modal"
+    aria-hidden="true"
+    data-delay="{{ section.settings.delay_seconds }}"
+  >
+    <div class="cody-modal__backdrop" data-modal-close></div>
+    <div class="cody-modal__dialog color-{{ section.settings.color_scheme }}" style="max-width: 78rem;" role="dialog" aria-modal="true" aria-label="{{ section.settings.heading | escape }}">
+      <button type="button" class="cody-modal__close" data-modal-close aria-label="{{ 'accessibility.close' | t }}">
+        {% render 'cody-icons', icon: 'close', size: 20 %}
+      </button>
+
+      <div class="cody-quickview">
+        <div class="cody-media cody-media--portrait">
+          {%- if section.settings.image != blank -%}
+            <img
+              src="{{ section.settings.image | image_url: width: 900 }}"
+              alt="{{ section.settings.heading | escape }}"
+              width="450"
+              height="600"
+              loading="lazy"
+            >
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+
+        <div class="cody-quickview__details">
+          <span class="cody-eyebrow" style="margin-bottom: 0;">{{ section.settings.eyebrow | escape }}</span>
+          <h2 class="cody-h2" style="margin-bottom: 0.4rem;">{{ section.settings.heading | escape }}</h2>
+          <p class="cody-text-muted" style="margin: 0;">{{ section.settings.subtext | escape }}</p>
+
+          {%- form 'customer', id: 'CodyPromoPopupForm' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter,popup">
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <input
+                type="email"
+                name="contact[email]"
+                class="cody-input"
+                placeholder="{{ 'newsletter.label' | t }}"
+                required
+              >
+              <button type="submit" class="cody-btn cody-btn--primary cody-btn--full">
+                {{ section.settings.button_label | escape }}
+              </button>
+            </div>
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+  </cody-modal>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const popup = document.getElementById('CodyPromoPopupModal');
+      if (!popup || Shopify.designMode) return;
+      const storageKey = 'cody_promo_popup_dismissed_v1';
+      if (sessionStorage.getItem(storageKey)) return;
+
+      const delay = (Number(popup.dataset.delay) || 6) * 1000;
+      setTimeout(() => {
+        if (typeof popup.open === 'function') {
+          popup.open();
+          sessionStorage.setItem(storageKey, 'true');
+        }
+      }, delay);
+    });
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Private List Promo Popup",
+  "enabled_on": {
+    "groups": ["custom.aside"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_popup",
+      "default": false,
+      "label": "Enable newsletter welcome popup"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "delay_seconds",
+      "min": 2,
+      "max": 30,
+      "step": 2,
+      "unit": "s",
+      "default": 8,
+      "label": "Popup delay after page load"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Editorial image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "PRIVATE INVITATION",
+      "label": "Eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Unlock 10% Off Your First Acquisition",
+      "label": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "default": "Join our private client list for priority access to limited runway capsules and seasonal archive events.",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "Unlock Private Access",
+      "label": "Button label"
+    }
+  ]
+}
+{% endschema %}

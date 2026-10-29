@@ -1,0 +1,570 @@
+{{ 'header.css' | asset_url | stylesheet_tag }}
+{%- if settings.predictive_search_enabled -%}
+  <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- liquid
+  assign main_menu = section.settings.menu
+  assign header_layout = section.settings.header_layout | default: 'logo-center-split'
+-%}
+
+<div
+  class="cody-header-wrapper color-{{ section.settings.color_scheme }}"
+  data-header-wrapper
+  data-sticky="{{ section.settings.sticky_header_type }}"
+  data-transparent="{{ section.settings.transparent_on_home }}"
+  style="--cody-header-height: {{ section.settings.header_height }}px; --cody-transparent-text: {{ section.settings.transparent_text_color }};"
+>
+  <header class="cody-header cody-header--{{ header_layout }}">
+    <div class="cody-container{% if section.settings.full_width %} cody-container--fluid{% endif %}">
+      <div class="cody-header__inner">
+        {%- comment -%} Left Column (Mobile Toggle + Desktop Nav in Split Mode) {%- endcomment -%}
+        <div class="cody-header__left" style="display: flex; align-items: center; gap: 2.4rem;">
+          <button
+            type="button"
+            class="cody-header__mobile-toggle"
+            data-drawer-open="CodyMobileMenuDrawer"
+            aria-label="{{ 'sections.header.menu' | t }}"
+          >
+            {% render 'cody-icons', icon: 'menu', size: 22 %}
+            <span>{{ 'sections.header.menu' | t }}</span>
+          </button>
+
+          {%- if header_layout == 'logo-center-split' -%}
+            {%- render 'header-desktop-nav', section: section, main_menu: main_menu -%}
+          {%- elsif header_layout == 'logo-left-inline' -%}
+            {%- render 'header-logo', section: section -%}
+          {%- elsif header_layout == 'editorial-stacked' -%}
+            <button
+              type="button"
+              class="cody-header__action-btn"
+              data-drawer-open="CodySearchDrawer"
+              aria-label="{{ 'general.search.search' | t }}"
+            >
+              {% render 'cody-icons', icon: 'search', size: 20 %}
+              <span class="cody-hide-mobile">{{ 'general.search.search' | t | truncatewords: 1, '' }}</span>
+            </button>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Center Column (Logo in Split/Stacked/Minimal Modes OR Nav in Inline Mode) {%- endcomment -%}
+        {%- if header_layout == 'logo-left-inline' -%}
+          {%- render 'header-desktop-nav', section: section, main_menu: main_menu -%}
+        {%- else -%}
+          <div class="cody-header__logo">
+            {%- render 'header-logo', section: section -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Right Column (Utility Icons: Search, Account, Wishlist, Compare, Bag) {%- endcomment -%}
+        <div class="cody-header__actions">
+          <button
+            type="button"
+            class="cody-header__action-btn"
+            data-drawer-open="CodySearchDrawer"
+            aria-label="{{ 'general.search.search' | t }}"
+          >
+            {% render 'cody-icons', icon: 'search', size: 20 %}
+          </button>
+
+          {%- if shop.customer_accounts_enabled -%}
+            <a
+              href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+              class="cody-header__action-btn"
+              aria-label="{%- if customer -%}{{ 'customer.account_fallback' | t }}{%- else -%}{{ 'customer.log_in' | t }}{%- endif -%}"
+            >
+              {% render 'cody-icons', icon: 'user', size: 20 %}
+            </a>
+          {%- endif -%}
+
+          {%- if settings.enable_wishlist -%}
+            <a
+              href="{{ section.settings.wishlist_page.url | default: '/pages/wishlist' }}"
+              class="cody-header__action-btn"
+              aria-label="{{ 'general.wishlist.title' | t }}"
+            >
+              {% render 'cody-icons', icon: 'heart', size: 20 %}
+              <span class="cody-header__badge" data-wishlist-count hidden>0</span>
+            </a>
+          {%- endif -%}
+
+          {%- if settings.enable_compare -%}
+            <a
+              href="{{ section.settings.compare_page.url | default: '/pages/compare' }}"
+              class="cody-header__action-btn"
+              aria-label="{{ 'general.compare.title' | t }}"
+            >
+              {% render 'cody-icons', icon: 'compare', size: 20 %}
+              <span class="cody-header__badge" data-compare-count hidden>0</span>
+            </a>
+          {%- endif -%}
+
+          <a
+            href="{{ routes.cart_url }}"
+            class="cody-header__action-btn"
+            id="cart-icon-bubble"
+            {% if settings.cart_type == 'drawer' and template != 'cart' %}
+              data-drawer-open="CodyCartDrawer"
+            {% endif %}
+          >
+            {%- render 'cody-icons', icon: 'bag', size: 20 -%}
+            <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+            {%- if cart != empty -%}
+              <span class="cody-header__badge" aria-hidden="true">
+                {%- if cart.item_count < 100 -%}{{ cart.item_count }}{%- else -%}99+{%- endif -%}
+              </span>
+            {%- endif -%}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    {%- if header_layout == 'editorial-stacked' -%}
+      <div class="cody-header__bottom-nav">
+        <div class="cody-container">
+          {%- render 'header-desktop-nav', section: section, main_menu: main_menu -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </header>
+</div>
+
+{%- comment -%} Mobile Off-Canvas Navigation Drawer (Tabbed Menu + Visual Categories) {%- endcomment -%}
+<cody-drawer id="CodyMobileMenuDrawer" class="cody-drawer cody-drawer--left" aria-hidden="true">
+  <div class="cody-drawer__backdrop" data-drawer-close></div>
+  <div class="cody-drawer__panel" role="dialog" aria-modal="true" aria-label="{{ 'sections.header.menu' | t }}">
+    <div class="cody-drawer__header">
+      <span class="cody-drawer__title">{{ shop.name }}</span>
+      <button type="button" class="cody-drawer__close" data-drawer-close aria-label="{{ 'accessibility.close' | t }}">
+        {% render 'cody-icons', icon: 'close', size: 20 %}
+      </button>
+    </div>
+
+    <cody-tabs>
+      <div class="cody-mobile-tabs" role="tablist">
+        <button type="button" class="cody-mobile-tabs__btn is-active" role="tab" aria-selected="true" data-tab-trigger="mobile-menu">
+          {{ 'sections.header.menu' | t }}
+        </button>
+        <button type="button" class="cody-mobile-tabs__btn" role="tab" aria-selected="false" data-tab-trigger="mobile-categories">
+          {{ 'general.breadcrumbs.collections' | t }}
+        </button>
+      </div>
+
+      <div class="cody-drawer__body">
+        <div data-tab-panel="mobile-menu" class="is-active">
+          <cody-accordion data-single-open="true">
+            <ul class="cody-mobile-nav">
+              {%- for link in main_menu.links -%}
+                <li class="cody-mobile-nav__item cody-accordion-item">
+                  {%- if link.links != blank -%}
+                    <button type="button" class="cody-mobile-nav__link cody-accordion-trigger" data-accordion-trigger aria-expanded="false">
+                      <span>{{ link.title | escape }}</span>
+                      {% render 'cody-icons', icon: 'chevron-down', size: 18 %}
+                    </button>
+                    <div class="cody-accordion-content">
+                      <ul class="cody-megamenu__sublist" style="padding-left: 1.2rem;">
+                        {%- for childlink in link.links -%}
+                          <li>
+                            <a href="{{ childlink.url }}" class="cody-megamenu__sublink" style="font-weight: 600; color: rgb(var(--cody-text));">
+                              {{ childlink.title | escape }}
+                            </a>
+                            {%- if childlink.links != blank -%}
+                              <ul class="cody-megamenu__sublist" style="padding-left: 1.2rem; margin-top: 0.6rem;">
+                                {%- for grandchildlink in childlink.links -%}
+                                  <li>
+                                    <a href="{{ grandchildlink.url }}" class="cody-megamenu__sublink">
+                                      {{ grandchildlink.title | escape }}
+                                    </a>
+                                  </li>
+                                {%- endfor -%}
+                              </ul>
+                            {%- endif -%}
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  {%- else -%}
+                    <a href="{{ link.url }}" class="cody-mobile-nav__link">
+                      <span>{{ link.title | escape }}</span>
+                      {% render 'cody-icons', icon: 'arrow-up-right', size: 16 %}
+                    </a>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </cody-accordion>
+        </div>
+
+        <div data-tab-panel="mobile-categories" hidden>
+          <div class="cody-grid cody-grid--2" style="gap: 1.2rem;">
+            {%- for collection in collections limit: 6 -%}
+              <a href="{{ collection.url }}" class="cody-megamenu-banner">
+                <div class="cody-media cody-media--portrait">
+                  {%- if collection.featured_image != blank -%}
+                    <img
+                      src="{{ collection.featured_image | image_url: width: 400 }}"
+                      alt="{{ collection.title | escape }}"
+                      width="200"
+                      height="266"
+                      loading="lazy"
+                    >
+                  {%- endif -%}
+                </div>
+                <div class="cody-megamenu-banner__caption">
+                  <span class="cody-megamenu-banner__title" style="font-size: 1.6rem;">{{ collection.title | escape }}</span>
+                </div>
+              </a>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </cody-tabs>
+
+    <div class="cody-drawer__footer">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 1.2rem;">
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="cody-link-editorial">
+            {% render 'cody-icons', icon: 'user', size: 16 %}
+            <span>{%- if customer -%}{{ 'customer.account_fallback' | t }}{%- else -%}{{ 'customer.log_in' | t }}{%- endif -%}</span>
+          </a>
+        {%- endif -%}
+        {%- if settings.enable_wishlist -%}
+          <a href="{{ section.settings.wishlist_page.url | default: '/pages/wishlist' }}" class="cody-link-editorial">
+            {% render 'cody-icons', icon: 'heart', size: 16 %}
+            <span>{{ 'general.wishlist.title' | t }}</span>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</cody-drawer>
+
+{%- comment -%} Slide-Out Instant AJAX Predictive Search Drawer {%- endcomment -%}
+<cody-drawer id="CodySearchDrawer" class="cody-drawer cody-search-drawer" aria-hidden="true">
+  <div class="cody-drawer__backdrop" data-drawer-close></div>
+  <div class="cody-drawer__panel" role="dialog" aria-modal="true" aria-label="{{ 'general.search.search' | t }}">
+    <div class="cody-drawer__header">
+      <span class="cody-drawer__title">{{ 'general.search.search' | t | truncatewords: 1, '' }}</span>
+      <button type="button" class="cody-drawer__close" data-drawer-close aria-label="{{ 'accessibility.close' | t }}">
+        {% render 'cody-icons', icon: 'close', size: 20 %}
+      </button>
+    </div>
+
+    <div class="cody-drawer__body">
+      <cody-predictive-search>
+        <form action="{{ routes.search_url }}" method="get" role="search" id="CodyHeaderSearchForm" class="cody-search-form">
+          <input
+            type="search"
+            name="q"
+            value="{{ search.terms | escape }}"
+            placeholder="{{ 'general.search.search' | t }}"
+            class="cody-search-form__input"
+            role="combobox"
+            aria-expanded="false"
+            aria-owns="predictive-search-results"
+            aria-controls="predictive-search-results"
+            aria-haspopup="listbox"
+            aria-autocomplete="list"
+            autocorrect="off"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+          >
+          <input name="options[prefix]" type="hidden" value="last">
+          <button type="button" class="cody-header__action-btn" data-search-reset hidden aria-label="{{ 'general.search.reset' | t }}">
+            {% render 'cody-icons', icon: 'close', size: 18 %}
+          </button>
+          <button type="submit" class="cody-header__action-btn" aria-label="{{ 'general.search.search' | t }}">
+            {% render 'cody-icons', icon: 'search', size: 20 %}
+          </button>
+        </form>
+
+        <div data-predictive-search-trending>
+          {%- if settings.predictive_search_trending_terms != blank -%}
+            <span class="cody-eyebrow">{{ 'general.search.trending' | t }}</span>
+            <div class="cody-search-trending__pills">
+              {%- assign trending_terms = settings.predictive_search_trending_terms | split: ',' -%}
+              {%- for term in trending_terms -%}
+                {%- assign clean_term = term | strip -%}
+                {%- if clean_term != blank -%}
+                  <button type="button" class="cody-search-pill" data-trending-pill="{{ clean_term | escape }}">
+                    {{ clean_term | escape }}
+                  </button>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div data-predictive-search-results hidden></div>
+      </cody-predictive-search>
+    </div>
+  </div>
+</cody-drawer>
+
+<script>
+  (function () {
+    const headerWrapper = document.querySelector('[data-header-wrapper]');
+    if (!headerWrapper) return;
+    const stickyType = headerWrapper.dataset.sticky;
+    let lastScrollY = window.scrollY;
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        const currentY = window.scrollY;
+        headerWrapper.classList.toggle('is-scrolled', currentY > 40);
+
+        if (stickyType === 'on-scroll-up') {
+          if (currentY > lastScrollY && currentY > 180) {
+            headerWrapper.classList.add('is-hidden');
+          } else {
+            headerWrapper.classList.remove('is-hidden');
+          }
+        }
+        lastScrollY = currentY;
+      },
+      { passive: true }
+    );
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Editorial Header & Mega",
+  "class": "cody-section-header",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Header color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "header_layout",
+      "label": "Desktop header layout",
+      "options": [
+        { "value": "logo-center-split", "label": "Logo Center / Nav Left / Icons Right (Editorial Luxury)" },
+        { "value": "logo-left-inline", "label": "Logo Left / Nav Center / Icons Right" },
+        { "value": "editorial-stacked", "label": "Two-Tier Stacked Runway Header" },
+        { "value": "minimal-drawer", "label": "Minimal Slide-Out Drawer + Giant Center Logo" }
+      ],
+      "default": "logo-center-split"
+    },
+    {
+      "type": "range",
+      "id": "header_height",
+      "min": 60,
+      "max": 110,
+      "step": 4,
+      "unit": "px",
+      "label": "Desktop header bar height",
+      "default": 76
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full-bleed header container",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Brand Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Primary logo image"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_transparent",
+      "label": "Transparent header alternate logo (white/light)"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 70,
+      "max": 280,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo image width",
+      "default": 140
+    },
+    {
+      "type": "header",
+      "content": "Navigation & Sticky Behavior"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "Primary navigation menu"
+    },
+    {
+      "type": "select",
+      "id": "sticky_header_type",
+      "label": "Sticky header mode",
+      "options": [
+        { "value": "on-scroll-up", "label": "Smart Reveal on Scroll Up" },
+        { "value": "always", "label": "Always Sticky" },
+        { "value": "none", "label": "Not Sticky" }
+      ],
+      "default": "on-scroll-up"
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_on_home",
+      "label": "Enable transparent overlay header on Homepage",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "transparent_text_color",
+      "label": "Transparent header text & icon color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Wishlist & Compare Pages"
+    },
+    {
+      "type": "page",
+      "id": "wishlist_page",
+      "label": "Wishlist page link"
+    },
+    {
+      "type": "page",
+      "id": "compare_page",
+      "label": "Compare page link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "megamenu_editorial",
+      "name": "Mega Menu: Editorial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "trigger_item",
+          "label": "Menu item name to attach to",
+          "default": "Catalog",
+          "info": "Must match the exact title of a top-level link in your navigation menu (case-insensitive)."
+        },
+        {
+          "type": "header",
+          "content": "Editorial Promo Card 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Promo 1 image"
+        },
+        {
+          "type": "text",
+          "id": "subtitle_1",
+          "label": "Promo 1 eyebrow label",
+          "default": "NEW SEASON"
+        },
+        {
+          "type": "text",
+          "id": "title_1",
+          "label": "Promo 1 heading",
+          "default": "Autumn Tailoring"
+        },
+        {
+          "type": "url",
+          "id": "link_1",
+          "label": "Promo 1 link"
+        },
+        {
+          "type": "header",
+          "content": "Editorial Promo Card 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Promo 2 image"
+        },
+        {
+          "type": "text",
+          "id": "subtitle_2",
+          "label": "Promo 2 eyebrow label",
+          "default": "LIMITED CAPSULE"
+        },
+        {
+          "type": "text",
+          "id": "title_2",
+          "label": "Promo 2 heading",
+          "default": "Italian Cashmere"
+        },
+        {
+          "type": "url",
+          "id": "link_2",
+          "label": "Promo 2 link"
+        }
+      ]
+    },
+    {
+      "type": "megamenu_products",
+      "name": "Mega Menu: Products",
+      "settings": [
+        {
+          "type": "text",
+          "id": "trigger_item",
+          "label": "Menu item name to attach to",
+          "default": "Women"
+        },
+        {
+          "type": "collection",
+          "id": "featured_collection",
+          "label": "Featured collection inside Mega Menu"
+        },
+        {
+          "type": "range",
+          "id": "products_limit",
+          "min": 2,
+          "max": 4,
+          "step": 1,
+          "label": "Products to display",
+          "default": 2
+        }
+      ]
+    },
+    {
+      "type": "menu_badge",
+      "name": "Menu Item Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "trigger_item",
+          "label": "Menu item name",
+          "default": "Sale"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge text",
+          "default": "RUNWAY"
+        },
+        {
+          "type": "color",
+          "id": "badge_bg",
+          "label": "Badge background color",
+          "default": "#111111"
+        },
+        {
+          "type": "color",
+          "id": "badge_color",
+          "label": "Badge text color",
+          "default": "#FAF8F5"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

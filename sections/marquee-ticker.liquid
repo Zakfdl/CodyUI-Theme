@@ -1,0 +1,69 @@
+<section
+  class="color-{{ section.settings.color_scheme }}"
+  style="padding-block: 2.2rem; border-top: 1px solid rgb(var(--cody-border)); border-bottom: 1px solid rgb(var(--cody-border)); --cody-marquee-speed: {{ section.settings.speed }}s;"
+>
+  <div class="cody-marquee">
+    {%- for i in (1..2) -%}
+      <div class="cody-marquee__track" {% if i == 2 %}aria-hidden="true"{% endif %}>
+        {%- for block in section.blocks -%}
+          <span
+            style="font-family: var(--cody-font-heading-family); font-size: clamp(2.2rem, 3.2vw, 3.6rem); letter-spacing: 0.04em;"
+            {{ block.shopify_attributes }}
+          >
+            {{ block.settings.text | escape }}
+          </span>
+          <span aria-hidden="true" style="opacity: 0.4;">&mdash;</span>
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Runway Marquee Ticker",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-3"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "default": 25,
+      "label": "Scroll speed"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Ticker Phrase",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "ITALIAN VIRGIN WOOL & MULBERRY SILK",
+          "label": "Phrase"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Runway Marquee Ticker",
+      "blocks": [
+        { "type": "item", "settings": { "text": "AUTUMN / WINTER RUNWAY EDITION" } },
+        { "type": "item", "settings": { "text": "TRACEABLE ITALIAN CASHMERE" } },
+        { "type": "item", "settings": { "text": "COMPLIMENTARY GLOBAL COURIER" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

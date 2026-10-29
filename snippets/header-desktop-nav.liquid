@@ -1,0 +1,183 @@
+{%- comment -%}
+  CodyUI Fashion — Desktop Navigation & Mega Menu Engine
+{%- endcomment -%}
+<nav class="cody-header__nav" role="navigation" aria-label="{{ 'sections.header.menu' | t }}">
+  <ul class="cody-nav__list">
+    {%- for link in main_menu.links -%}
+      {%- liquid
+        assign link_title_down = link.title | strip | downcase
+        assign matched_megamenu = nil
+        assign matched_badge = nil
+
+        for block in section.blocks
+          assign trigger_down = block.settings.trigger_item | strip | downcase
+          if trigger_down == link_title_down
+            if block.type == 'megamenu_editorial' or block.type == 'megamenu_products'
+              assign matched_megamenu = block
+            elsif block.type == 'menu_badge'
+              assign matched_badge = block
+            endif
+          endif
+        endfor
+
+        assign has_grandchild = false
+        for childlink in link.links
+          if childlink.links != blank
+            assign has_grandchild = true
+            break
+          endif
+        endfor
+
+        assign is_megamenu = false
+        if matched_megamenu != nil or has_grandchild
+          assign is_megamenu = true
+        endif
+      -%}
+
+      <li class="cody-nav__item{% if link.links != blank and is_megamenu == false %} cody-nav__item--dropdown{% endif %}">
+        <a
+          href="{{ link.url }}"
+          class="cody-nav__link{% if link.active or link.child_active %} is-active{% endif %}"
+          {% if link.current %}aria-current="page"{% endif %}
+        >
+          <span>{{ link.title | escape }}</span>
+          {%- if matched_badge != nil -%}
+            <span
+              class="cody-nav__badge"
+              style="background-color: {{ matched_badge.settings.badge_bg }}; color: {{ matched_badge.settings.badge_color }};"
+            >
+              {{ matched_badge.settings.badge_text | escape }}
+            </span>
+          {%- endif -%}
+          {%- if link.links != blank or matched_megamenu != nil -%}
+            {% render 'cody-icons', icon: 'chevron-down', size: 13 %}
+          {%- endif -%}
+        </a>
+
+        {%- if is_megamenu -%}
+          <div class="cody-megamenu" {% if matched_megamenu != nil %}{{ matched_megamenu.shopify_attributes }}{% endif %}>
+            <div class="cody-container">
+              <div class="cody-megamenu__grid">
+                <div class="cody-megamenu__links-area{% if matched_megamenu == nil %} cody-megamenu__links-area--full{% endif %}">
+                  {%- if link.links != blank -%}
+                    {%- for childlink in link.links -%}
+                      <div class="cody-megamenu__col">
+                        <a href="{{ childlink.url }}" class="cody-megamenu__col-title">
+                          {{ childlink.title | escape }}
+                        </a>
+                        {%- if childlink.links != blank -%}
+                          <ul class="cody-megamenu__sublist">
+                            {%- for grandchildlink in childlink.links -%}
+                              <li>
+                                <a href="{{ grandchildlink.url }}" class="cody-megamenu__sublink">
+                                  {{ grandchildlink.title | escape }}
+                                </a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      </div>
+                    {%- endfor -%}
+                  {%- else -%}
+                    {%- for col in collections limit: 3 -%}
+                      <div class="cody-megamenu__col">
+                        <a href="{{ col.url }}" class="cody-megamenu__col-title">{{ col.title | escape }}</a>
+                        <ul class="cody-megamenu__sublist">
+                          {%- for prod in col.products limit: 4 -%}
+                            <li>
+                              <a href="{{ prod.url }}" class="cody-megamenu__sublink">{{ prod.title | escape }}</a>
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      </div>
+                    {%- endfor -%}
+                  {%- endif -%}
+                </div>
+
+                {%- if matched_megamenu != nil -%}
+                  <div class="cody-megamenu__promos">
+                    {%- if matched_megamenu.type == 'megamenu_editorial' -%}
+                      {%- for i in (1..2) -%}
+                        {%- liquid
+                          assign img_key = 'image_' | append: i
+                          assign sub_key = 'subtitle_' | append: i
+                          assign title_key = 'title_' | append: i
+                          assign link_key = 'link_' | append: i
+                          assign promo_img = matched_megamenu.settings[img_key]
+                          assign promo_sub = matched_megamenu.settings[sub_key]
+                          assign promo_title = matched_megamenu.settings[title_key]
+                          assign promo_link = matched_megamenu.settings[link_key]
+                        -%}
+                        {%- if promo_title != blank or promo_img != blank -%}
+                          <a href="{{ promo_link | default: '#' }}" class="cody-megamenu-banner">
+                            <div class="cody-media cody-media--portrait">
+                              {%- if promo_img != blank -%}
+                                <img
+                                  src="{{ promo_img | image_url: width: 600 }}"
+                                  alt="{{ promo_title | escape }}"
+                                  width="300"
+                                  height="400"
+                                  loading="lazy"
+                                >
+                              {%- else -%}
+                                {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+                              {%- endif -%}
+                            </div>
+                            <div class="cody-megamenu-banner__caption">
+                              {%- if promo_sub != blank -%}
+                                <span class="cody-megamenu-banner__subtitle">{{ promo_sub | escape }}</span>
+                              {%- endif -%}
+                              {%- if promo_title != blank -%}
+                                <h4 class="cody-megamenu-banner__title">{{ promo_title | escape }}</h4>
+                              {%- endif -%}
+                            </div>
+                          </a>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    {%- elsif matched_megamenu.type == 'megamenu_products' -%}
+                      {%- assign mega_col = matched_megamenu.settings.featured_collection -%}
+                      {%- if mega_col != blank and mega_col.products_count > 0 -%}
+                        {%- for product in mega_col.products limit: matched_megamenu.settings.products_limit -%}
+                          <a href="{{ product.url }}" class="cody-megamenu-banner">
+                            <div class="cody-media cody-media--portrait">
+                              {%- if product.featured_media != blank -%}
+                                <img
+                                  src="{{ product.featured_media | image_url: width: 500 }}"
+                                  alt="{{ product.title | escape }}"
+                                  width="250"
+                                  height="333"
+                                  loading="lazy"
+                                >
+                              {%- endif -%}
+                            </div>
+                            <div class="cody-megamenu-banner__caption">
+                              <span class="cody-megamenu-banner__subtitle">{{ product.vendor | escape }}</span>
+                              <h4 class="cody-megamenu-banner__title" style="font-size: 1.6rem;">{{ product.title | escape }}</h4>
+                              <span style="font-size: 1.3rem;">{{ product.price | money }}</span>
+                            </div>
+                          </a>
+                        {%- endfor -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {%- elsif link.links != blank -%}
+          <div class="cody-dropdown">
+            <ul class="cody-megamenu__sublist">
+              {%- for childlink in link.links -%}
+                <li>
+                  <a href="{{ childlink.url }}" class="cody-megamenu__sublink">
+                    {{ childlink.title | escape }}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>

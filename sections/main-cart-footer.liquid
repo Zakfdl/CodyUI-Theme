@@ -1,0 +1,50 @@
+{%- if cart != empty -%}
+  <section class="cody-section color-{{ section.settings.color_scheme }}" style="padding-top: 0;">
+    <div class="cody-container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr)); gap: 4.8rem; align-items: start;">
+        <div>
+          {%- if settings.cart_show_note -%}
+            <div class="cody-field">
+              <label class="cody-label" for="CartPageNote">{{ 'general.cart.order_note_label' | t }}</label>
+              <textarea
+                id="CartPageNote"
+                name="note"
+                form="cart"
+                class="cody-textarea"
+                placeholder="{{ 'general.cart.order_note_placeholder' | t }}"
+                data-cart-note-input
+              >{{ cart.note }}</textarea>
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div style="max-width: 44rem; justify-self: end; width: 100%; padding: 3.2rem; background-color: rgb(var(--cody-surface));">
+          <div class="cody-cart-subtotal">
+            <span class="cody-cart-subtotal__label">{{ 'sections.cart.subtotal' | t }}</span>
+            <span class="cody-cart-subtotal__value">{{ cart.total_price | money_with_currency }}</span>
+          </div>
+
+          <p class="cody-cart-tax-note">{{ 'sections.cart.taxes_and_shipping_at_checkout' | t }}</p>
+
+          <button type="submit" name="checkout" form="cart" class="cody-btn cody-btn--primary cody-btn--lg cody-btn--full">
+            {{ 'sections.cart.checkout' | t }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Main Cart Footer",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

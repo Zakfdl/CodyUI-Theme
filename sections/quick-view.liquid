@@ -1,0 +1,128 @@
+{%- comment -%}
+  CodyUI Fashion — AJAX Quick View Section Rendering Endpoint
+  Loaded dynamically via /products/{handle}?section_id=quick-view
+{%- endcomment -%}
+{%- if product != blank -%}
+  {%- assign current_variant = product.selected_or_first_available_variant -%}
+  <div class="cody-quickview" data-quickview-product>
+    <div class="cody-quickview__gallery">
+      {%- if product.media.size > 0 -%}
+        {%- for media in product.media limit: 5 -%}
+          <div class="cody-quickview__slide cody-media cody-media--portrait">
+            <img
+              src="{{ media | image_url: width: 900 }}"
+              alt="{{ media.alt | default: product.title | escape }}"
+              width="600"
+              height="800"
+              loading="eager"
+            >
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <div class="cody-quickview__slide cody-media cody-media--portrait">
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="cody-quickview__details">
+      {%- if product.vendor != blank -%}
+        <span class="cody-eyebrow" style="margin-bottom: 0;">{{ product.vendor }}</span>
+      {%- endif -%}
+
+      <h2 class="cody-h2" style="margin-bottom: 0.4rem;">{{ product.title | escape }}</h2>
+
+      <div data-quickview-price>
+        {% render 'price', product: product, use_variant: true, price_class: 'cody-price--large' %}
+      </div>
+
+      {%- if product.description != blank -%}
+        <div class="cody-rte cody-text-muted" style="font-size: 1.4rem;">
+          {{ product.description | strip_html | truncatewords: 28 }}
+        </div>
+      {%- endif -%}
+
+      {%- form 'product', product, id: 'CodyQuickViewForm', class: 'cody-quickview__form', data-ajax-cart-form: '' -%}
+        <input type="hidden" name="id" value="{{ current_variant.id }}" data-quickview-variant-id>
+
+        {%- unless product.has_only_default_variant -%}
+          <div style="display: flex; flex-direction: column; gap: 1.6rem; margin-bottom: 2rem;">
+            {%- for option in product.options_with_values -%}
+              <div class="cody-field">
+                <label class="cody-label" for="QuickViewOption-{{ forloop.index }}">
+                  {{ option.name }}
+                </label>
+                <select
+                  id="QuickViewOption-{{ forloop.index }}"
+                  class="cody-select"
+                  data-quickview-option-select
+                  data-option-index="{{ forloop.index0 }}"
+                >
+                  {%- for value in option.values -%}
+                    <option
+                      value="{{ value | escape }}"
+                      {% if option.selected_value == value %}selected{% endif %}
+                    >
+                      {{ value }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endunless -%}
+
+        <div style="display: flex; flex-wrap: wrap; gap: 1.2rem; align-items: stretch;">
+          <cody-quantity-input class="cody-quantity">
+            <button type="button" name="minus" class="cody-quantity__btn" aria-label="{{ 'products.product.quantity.decrease' | t: product: product.title }}">
+              {% render 'cody-icons', icon: 'minus', size: 14 %}
+            </button>
+            <input
+              type="number"
+              name="quantity"
+              value="1"
+              min="1"
+              class="cody-quantity__input"
+              aria-label="{{ 'products.product.quantity.label' | t }}"
+            >
+            <button type="button" name="plus" class="cody-quantity__btn" aria-label="{{ 'products.product.quantity.increase' | t: product: product.title }}">
+              {% render 'cody-icons', icon: 'plus', size: 14 %}
+            </button>
+          </cody-quantity-input>
+
+          <button
+            type="submit"
+            name="add"
+            class="cody-btn cody-btn--primary"
+            style="flex: 1 1 auto;"
+            {% unless current_variant.available %}disabled{% endunless %}
+          >
+            {%- if current_variant.available -%}
+              {{ 'products.product.add_to_cart' | t }}
+            {%- else -%}
+              {{ 'products.product.sold_out' | t }}
+            {%- endif -%}
+          </button>
+        </div>
+
+        <script type="application/json" data-quickview-variants-json>
+          {{ product.variants | json }}
+        </script>
+      {%- endform -%}
+
+      <div style="padding-top: 1.2rem; border-top: 1px solid rgb(var(--cody-border));">
+        <a href="{{ product.url }}" class="cody-link-editorial">
+          <span>{{ 'products.product.view_full_details' | t }}</span>
+          {% render 'cody-icons', icon: 'arrow-right', size: 15 %}
+        </a>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Quick View Modal",
+  "settings": []
+}
+{% endschema %}

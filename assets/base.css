@@ -1,0 +1,866 @@
+/* ==========================================================================
+   CodyUI Fashion — Editorial Luxury Core Stylesheet (base.css)
+   Version: 1.0.0 | OS 2.0 Commercial Theme Architecture
+   ========================================================================== */
+
+/* 1. Modern Reset & Base Defaults
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: calc(var(--cody-body-scale, 1) * 62.5%);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  height: 100%;
+}
+
+body.cody-body {
+  margin: 0;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--cody-font-body-family);
+  font-weight: var(--cody-font-body-weight);
+  font-style: var(--cody-font-body-style);
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: rgb(var(--cody-text));
+  background-color: rgb(var(--cody-bg));
+  overflow-x: hidden;
+}
+
+body.cody-lock-scroll {
+  overflow: hidden;
+}
+
+main.cody-main {
+  flex: 1 0 auto;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--cody-duration-fast) ease, opacity var(--cody-duration-fast) ease;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 2. Accessibility & Focus States
+   ========================================================================== */
+.visually-hidden {
+  position: absolute !important;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  word-wrap: normal !important;
+}
+
+.cody-skip-link:focus {
+  position: fixed !important;
+  top: 1.6rem;
+  left: 1.6rem;
+  z-index: 9999;
+  width: auto;
+  height: auto;
+  clip: auto;
+  padding: 1.2rem 2.4rem;
+}
+
+:focus-visible {
+  outline: 1.5px solid rgb(var(--cody-text));
+  outline-offset: 3px;
+}
+
+.focus-none:focus {
+  outline: none;
+}
+
+/* 3. Editorial Typography System
+   ========================================================================== */
+h1, .cody-h1,
+h2, .cody-h2,
+h3, .cody-h3,
+h4, .cody-h4,
+h5, .cody-h5,
+h6, .cody-h6 {
+  font-family: var(--cody-font-heading-family);
+  font-weight: var(--cody-font-heading-weight);
+  font-style: var(--cody-font-heading-style);
+  text-transform: var(--cody-heading-transform);
+  letter-spacing: var(--cody-heading-tracking);
+  line-height: 1.12;
+  margin: 0 0 1.6rem;
+  color: rgb(var(--cody-text));
+}
+
+.cody-display-xl {
+  font-family: var(--cody-font-heading-family);
+  font-weight: var(--cody-font-heading-weight);
+  font-size: calc(var(--cody-heading-scale, 1.1) * clamp(4rem, 6.2vw, 8.2rem));
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+.cody-display-lg {
+  font-family: var(--cody-font-heading-family);
+  font-weight: var(--cody-font-heading-weight);
+  font-size: calc(var(--cody-heading-scale, 1.1) * clamp(3.2rem, 4.8vw, 6.4rem));
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+}
+
+h1, .cody-h1 {
+  font-size: calc(var(--cody-heading-scale, 1.1) * clamp(2.8rem, 3.8vw, 4.8rem));
+}
+
+h2, .cody-h2 {
+  font-size: calc(var(--cody-heading-scale, 1.1) * clamp(2.4rem, 3vw, 3.8rem));
+}
+
+h3, .cody-h3 {
+  font-size: calc(var(--cody-heading-scale, 1.1) * clamp(2rem, 2.2vw, 2.8rem));
+}
+
+h4, .cody-h4 {
+  font-size: calc(var(--cody-heading-scale, 1.1) * clamp(1.7rem, 1.6vw, 2.2rem));
+}
+
+h5, .cody-h5 {
+  font-size: 1.6rem;
+}
+
+h6, .cody-h6 {
+  font-size: 1.4rem;
+}
+
+.cody-eyebrow {
+  display: inline-block;
+  font-family: var(--cody-font-body-family);
+  font-size: 1.15rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgb(var(--cody-text-muted));
+  margin-bottom: 1rem;
+}
+
+.cody-text-muted {
+  color: rgb(var(--cody-text-muted));
+}
+
+.cody-rte p {
+  margin: 0 0 1.6rem;
+}
+
+.cody-rte p:last-child {
+  margin-bottom: 0;
+}
+
+.cody-rte a {
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+/* 4. Containers, Section Spacing & Responsive Grid System
+   ========================================================================== */
+.cody-container {
+  width: 100%;
+  max-width: var(--cody-page-width, 1520px);
+  margin-inline: auto;
+  padding-inline: clamp(1.6rem, 3.5vw, 4.8rem);
+}
+
+.cody-container--narrow {
+  max-width: 960px;
+  margin-inline: auto;
+  padding-inline: clamp(1.6rem, 3.5vw, 4.8rem);
+}
+
+.cody-container--fluid {
+  width: 100%;
+  max-width: 100%;
+  padding-inline: clamp(1.2rem, 2vw, 2.8rem);
+}
+
+.cody-section {
+  padding-block: var(--cody-section-padding-y, 6.4rem);
+  margin-block: var(--cody-section-spacing, 0px);
+}
+
+.cody-section-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: clamp(2.8rem, 4vw, 4.8rem);
+}
+
+.cody-section-header--center {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.cody-grid {
+  display: grid;
+  column-gap: var(--cody-grid-gap-x, 16px);
+  row-gap: var(--cody-grid-gap-y, 36px);
+}
+
+.cody-grid--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.cody-grid--3 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.cody-grid--4 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.cody-grid--5 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.cody-grid--6 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media screen and (min-width: 750px) {
+  .cody-grid--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .cody-grid--4 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .cody-grid--5,
+  .cody-grid--6 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .cody-grid--4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .cody-grid--5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  .cody-grid--6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+/* 5. Aspect Ratio & Editorial Media Wrappers
+   ========================================================================== */
+.cody-media {
+  position: relative;
+  overflow: hidden;
+  background-color: rgb(var(--cody-surface));
+  border-radius: var(--cody-radius-global, 0px);
+}
+
+.cody-media--portrait {
+  aspect-ratio: 3 / 4;
+}
+
+.cody-media--tall-runway {
+  aspect-ratio: 2 / 3;
+}
+
+.cody-media--square {
+  aspect-ratio: 1 / 1;
+}
+
+.cody-media--landscape {
+  aspect-ratio: 16 / 10;
+}
+
+.cody-media > img,
+.cody-media > video,
+.cody-media > svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform var(--cody-duration-slow) var(--cody-ease-editorial),
+              opacity var(--cody-duration-normal) ease;
+}
+
+/* 6. Buttons & Interactive Controls
+   ========================================================================== */
+.cody-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 4.8rem;
+  padding: 1.3rem 2.8rem;
+  font-family: var(--cody-font-body-family);
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: var(--cody-btn-transform, uppercase);
+  letter-spacing: var(--cody-nav-tracking, 0.1em);
+  line-height: 1;
+  border-radius: var(--cody-radius-btn, 0px);
+  border: var(--cody-btn-border-width, 1px) solid transparent;
+  overflow: hidden;
+  z-index: 1;
+  transition: color var(--cody-duration-normal) var(--cody-ease-editorial),
+              background-color var(--cody-duration-normal) var(--cody-ease-editorial),
+              border-color var(--cody-duration-normal) var(--cody-ease-editorial),
+              opacity var(--cody-duration-fast) ease;
+}
+
+.cody-btn--sm {
+  min-height: 3.8rem;
+  padding: 0.9rem 1.8rem;
+  font-size: 1.1rem;
+}
+
+.cody-btn--lg {
+  min-height: 5.4rem;
+  padding: 1.6rem 3.6rem;
+  font-size: 1.25rem;
+}
+
+.cody-btn--full {
+  width: 100%;
+}
+
+.cody-btn--primary {
+  background-color: rgb(var(--cody-btn-bg));
+  color: rgb(var(--cody-btn-text));
+  border-color: rgb(var(--cody-btn-bg));
+}
+
+.cody-btn--secondary,
+.cody-btn--outline {
+  background-color: transparent;
+  color: rgb(var(--cody-btn-secondary));
+  border-color: rgb(var(--cody-btn-secondary));
+}
+
+/* Curtain Slide-Fill Hover Effect */
+html[data-button-hover="slide-fill"] .cody-btn--primary::before,
+html[data-button-hover="slide-fill"] .cody-btn--outline::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: scaleY(0);
+  transform-origin: bottom center;
+  transition: transform var(--cody-duration-normal) var(--cody-ease-editorial);
+}
+
+html[data-button-hover="slide-fill"] .cody-btn--primary::before {
+  background-color: rgb(var(--cody-bg));
+}
+
+html[data-button-hover="slide-fill"] .cody-btn--outline::before {
+  background-color: rgb(var(--cody-btn-secondary));
+}
+
+@media (hover: hover) {
+  html[data-button-hover="slide-fill"] .cody-btn--primary:hover {
+    color: rgb(var(--cody-text));
+  }
+  html[data-button-hover="slide-fill"] .cody-btn--primary:hover::before {
+    transform: scaleY(1);
+  }
+  html[data-button-hover="slide-fill"] .cody-btn--outline:hover {
+    color: rgb(var(--cody-bg));
+  }
+  html[data-button-hover="slide-fill"] .cody-btn--outline:hover::before {
+    transform: scaleY(1);
+  }
+
+  html[data-button-hover="invert"] .cody-btn--primary:hover {
+    background-color: transparent;
+    color: rgb(var(--cody-text));
+  }
+  html[data-button-hover="invert"] .cody-btn--outline:hover {
+    background-color: rgb(var(--cody-btn-secondary));
+    color: rgb(var(--cody-bg));
+  }
+
+  html[data-button-hover="opacity"] .cody-btn:hover {
+    opacity: 0.82;
+  }
+}
+
+.cody-btn[disabled],
+.cody-btn.is-disabled {
+  opacity: 0.45;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.cody-link-editorial {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding-bottom: 0.4rem;
+}
+
+.cody-link-editorial::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  transform-origin: right center;
+  transition: transform var(--cody-duration-normal) var(--cody-ease-editorial);
+}
+
+.cody-link-editorial:hover::after {
+  transform: scaleX(0);
+}
+
+/* 7. Forms, Inputs & Quantity Steppers
+   ========================================================================== */
+.cody-field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.cody-label {
+  font-size: 1.15rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgb(var(--cody-text));
+}
+
+.cody-input,
+.cody-select,
+.cody-textarea {
+  width: 100%;
+  min-height: 4.8rem;
+  padding: 1.2rem 1.6rem;
+  font-size: 1.4rem;
+  color: rgb(var(--cody-text));
+  background-color: rgb(var(--cody-bg));
+  border: 1px solid rgb(var(--cody-border));
+  border-radius: var(--cody-radius-global, 0px);
+  transition: border-color var(--cody-duration-fast) ease;
+  appearance: none;
+}
+
+.cody-input:focus,
+.cody-select:focus,
+.cody-textarea:focus {
+  outline: none;
+  border-color: rgb(var(--cody-text));
+}
+
+.cody-textarea {
+  min-height: 12rem;
+  resize: vertical;
+}
+
+/* Quantity Stepper */
+cody-quantity-input.cody-quantity {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgb(var(--cody-border));
+  border-radius: var(--cody-radius-global, 0px);
+  height: 4.8rem;
+  background-color: rgb(var(--cody-bg));
+}
+
+.cody-quantity__btn {
+  width: 4.2rem;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(var(--cody-text));
+  transition: background-color var(--cody-duration-fast) ease;
+}
+
+.cody-quantity__btn:hover {
+  background-color: rgb(var(--cody-surface));
+}
+
+.cody-quantity__input {
+  width: 4.4rem;
+  height: 100%;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 500;
+  -moz-appearance: textfield;
+}
+
+.cody-quantity__input::-webkit-outer-spin-button,
+.cody-quantity__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* 8. Slide-Out Drawers (<cody-drawer>) & Modals (<cody-modal>)
+   ========================================================================== */
+cody-drawer.cody-drawer,
+cody-modal.cody-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+cody-drawer.cody-drawer[aria-hidden="false"],
+cody-modal.cody-modal[aria-hidden="false"] {
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.cody-drawer__backdrop,
+.cody-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(17, 17, 17, 0.45);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity var(--cody-duration-normal) ease;
+}
+
+cody-drawer.cody-drawer[aria-hidden="false"] .cody-drawer__backdrop,
+cody-modal.cody-modal[aria-hidden="false"] .cody-modal__backdrop {
+  opacity: 1;
+}
+
+.cody-drawer__panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: min(46rem, 92vw);
+  background-color: rgb(var(--cody-bg));
+  color: rgb(var(--cody-text));
+  display: flex;
+  flex-direction: column;
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.12);
+  transform: translateX(100%);
+  transition: transform var(--cody-duration-normal) var(--cody-ease-drawer);
+}
+
+.cody-drawer--left .cody-drawer__panel,
+html[dir="rtl"] .cody-drawer:not(.cody-drawer--left) .cody-drawer__panel {
+  right: auto;
+  left: 0;
+  transform: translateX(-100%);
+}
+
+html[dir="rtl"] .cody-drawer--left .cody-drawer__panel {
+  left: auto;
+  right: 0;
+  transform: translateX(100%);
+}
+
+cody-drawer.cody-drawer[aria-hidden="false"] .cody-drawer__panel {
+  transform: translateX(0);
+}
+
+.cody-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 2.4rem;
+  border-bottom: 1px solid rgb(var(--cody-border));
+}
+
+.cody-drawer__title {
+  font-family: var(--cody-font-heading-family);
+  font-size: 2.2rem;
+  margin: 0;
+}
+
+.cody-drawer__close,
+.cody-modal__close {
+  width: 4rem;
+  height: 4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: transform var(--cody-duration-fast) ease, background-color var(--cody-duration-fast) ease;
+}
+
+.cody-drawer__close:hover,
+.cody-modal__close:hover {
+  background-color: rgb(var(--cody-surface));
+  transform: rotate(90deg);
+}
+
+.cody-drawer__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 2.4rem;
+}
+
+.cody-drawer__footer {
+  padding: 2rem 2.4rem;
+  border-top: 1px solid rgb(var(--cody-border));
+  background-color: rgb(var(--cody-bg));
+}
+
+/* Modal Dialog */
+.cody-modal__dialog {
+  position: relative;
+  margin: 5vh auto;
+  width: min(104rem, 94vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  background-color: rgb(var(--cody-bg));
+  color: rgb(var(--cody-text));
+  border-radius: var(--cody-radius-global, 0px);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.22);
+  opacity: 0;
+  transform: translateY(2rem) scale(0.98);
+  transition: opacity var(--cody-duration-normal) var(--cody-ease-editorial),
+              transform var(--cody-duration-normal) var(--cody-ease-editorial);
+}
+
+cody-modal.cody-modal[aria-hidden="false"] .cody-modal__dialog {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.cody-modal__close {
+  position: absolute;
+  top: 1.6rem;
+  right: 1.6rem;
+  z-index: 10;
+  background-color: rgb(var(--cody-bg));
+}
+
+/* 9. Product Badges, Swatches & Breadcrumbs
+   ========================================================================== */
+.cody-badges {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  pointer-events: none;
+}
+
+.cody-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  background-color: rgb(var(--cody-bg));
+  color: rgb(var(--cody-text));
+  border-radius: var(--cody-radius-global, 0px);
+}
+
+.cody-badge--sale {
+  background-color: var(--cody-color-sale);
+  color: #ffffff;
+}
+
+.cody-badge--new {
+  background-color: rgb(var(--cody-text));
+  color: rgb(var(--cody-bg));
+}
+
+.cody-badge--preorder {
+  background-color: rgb(var(--cody-surface));
+  color: rgb(var(--cody-text));
+  border: 1px solid rgb(var(--cody-border));
+}
+
+.cody-badge--soldout {
+  background-color: rgba(17, 17, 17, 0.72);
+  color: #ffffff;
+}
+
+/* Swatches */
+.cody-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.cody-swatch {
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid rgba(17, 17, 17, 0.2);
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  transition: transform var(--cody-duration-fast) ease, box-shadow var(--cody-duration-fast) ease;
+}
+
+html[data-swatch-shape="square"] .cody-swatch {
+  border-radius: 0;
+}
+
+html[data-swatch-shape="portrait"] .cody-swatch {
+  width: 2.4rem;
+  height: 3.2rem;
+  border-radius: 0;
+}
+
+.cody-swatch.is-active,
+.cody-swatch:hover {
+  box-shadow: 0 0 0 2px rgb(var(--cody-bg)), 0 0 0 3.5px rgb(var(--cody-text));
+}
+
+/* Breadcrumbs */
+.cody-breadcrumbs {
+  padding-block: 1.6rem;
+}
+
+.cody-breadcrumbs__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.2rem;
+  color: rgb(var(--cody-text-muted));
+}
+
+.cody-breadcrumbs__link:hover {
+  color: rgb(var(--cody-text));
+}
+
+.cody-breadcrumbs__current {
+  color: rgb(var(--cody-text));
+  font-weight: 500;
+}
+
+/* 10. Accordions (<cody-accordion>) & Tabs (<cody-tabs>)
+   ========================================================================== */
+.cody-accordion-item {
+  border-bottom: 1px solid rgb(var(--cody-border));
+}
+
+.cody-accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.8rem 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: left;
+}
+
+.cody-accordion-content {
+  overflow: hidden;
+  padding-bottom: 1.8rem;
+  font-size: 1.45rem;
+  color: rgb(var(--cody-text-muted));
+}
+
+.cody-accordion-item:not(.is-open) .cody-accordion-content {
+  display: none;
+}
+
+/* 11. Toast Notifications (<cody-toast-manager>)
+   ========================================================================== */
+.cody-toast-container {
+  position: fixed;
+  bottom: 2.4rem;
+  right: 2.4rem;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 38rem;
+  pointer-events: none;
+}
+
+.cody-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.4rem;
+  padding: 1.4rem 1.8rem;
+  background-color: rgb(var(--cody-text));
+  color: rgb(var(--cody-bg));
+  font-size: 1.3rem;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  animation: codyToastIn var(--cody-duration-normal) var(--cody-ease-editorial) forwards;
+}
+
+@keyframes codyToastIn {
+  from {
+    opacity: 0;
+    transform: translateY(1.2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,765 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "CodyUI Fashion",
+    "theme_author": "CodyUI Studio",
+    "theme_version": "1.0.0",
+    "theme_documentation_url": "https://docs.codyui.com/fashion-theme",
+    "theme_support_url": "https://support.codyui.com"
+  },
+  {
+    "name": "t:settings_schema.color_schemes.name",
+    "settings": [
+      {
+        "type": "color_scheme_group",
+        "id": "color_schemes",
+        "definition": [
+          {
+            "type": "color",
+            "id": "background",
+            "label": "t:settings_schema.color_schemes.settings.background.label",
+            "default": "#FAF8F5"
+          },
+          {
+            "type": "color_background",
+            "id": "background_gradient",
+            "label": "t:settings_schema.color_schemes.settings.background_gradient.label"
+          },
+          {
+            "type": "color",
+            "id": "surface",
+            "label": "t:settings_schema.color_schemes.settings.surface.label",
+            "default": "#F2EFE9"
+          },
+          {
+            "type": "color",
+            "id": "text",
+            "label": "t:settings_schema.color_schemes.settings.text.label",
+            "default": "#111111"
+          },
+          {
+            "type": "color",
+            "id": "text_muted",
+            "label": "t:settings_schema.color_schemes.settings.text_muted.label",
+            "default": "#66635E"
+          },
+          {
+            "type": "color",
+            "id": "accent",
+            "label": "t:settings_schema.color_schemes.settings.accent.label",
+            "default": "#9A7B4F"
+          },
+          {
+            "type": "color",
+            "id": "button",
+            "label": "t:settings_schema.color_schemes.settings.button.label",
+            "default": "#111111"
+          },
+          {
+            "type": "color",
+            "id": "button_label",
+            "label": "t:settings_schema.color_schemes.settings.button_label.label",
+            "default": "#FAF8F5"
+          },
+          {
+            "type": "color",
+            "id": "secondary_button_label",
+            "label": "t:settings_schema.color_schemes.settings.secondary_button_label.label",
+            "default": "#111111"
+          },
+          {
+            "type": "color",
+            "id": "border",
+            "label": "t:settings_schema.color_schemes.settings.border.label",
+            "default": "#E2DDD5"
+          }
+        ],
+        "role": {
+          "text": "text",
+          "background": {
+            "solid": "background",
+            "gradient": "background_gradient"
+          },
+          "links": "accent",
+          "icons": "text",
+          "primary_button": "button",
+          "on_primary_button": "button_label",
+          "primary_button_border": "button",
+          "secondary_button": "background",
+          "on_secondary_button": "secondary_button_label",
+          "secondary_button_border": "secondary_button_label"
+        }
+      },
+      {
+        "type": "header",
+        "content": "Global Semantic Status Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "label": "Sale price & discount badge color",
+        "default": "#A82424"
+      },
+      {
+        "type": "color",
+        "id": "color_success",
+        "label": "In-stock & success status color",
+        "default": "#1E5E3A"
+      },
+      {
+        "type": "color",
+        "id": "color_warning",
+        "label": "Low-stock & urgency color",
+        "default": "#B86B19"
+      },
+      {
+        "type": "color",
+        "id": "color_rating_star",
+        "label": "Review star color",
+        "default": "#111111"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Editorial Headings"
+      },
+      {
+        "type": "select",
+        "id": "heading_font_source",
+        "label": "Heading font source",
+        "options": [
+          {
+            "value": "shopify",
+            "label": "Shopify Font Library"
+          },
+          {
+            "value": "google",
+            "label": "Google Fonts (Editorial Custom)"
+          }
+        ],
+        "default": "google"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_header_font",
+        "default": "cormorant_garamond_n5",
+        "label": "Shopify Heading Font"
+      },
+      {
+        "type": "text",
+        "id": "google_heading_font_family",
+        "label": "Google Font Family for Headings",
+        "default": "Cormorant Garamond",
+        "info": "Example: 'Cormorant Garamond', 'Playfair Display', 'Bodoni Moda', 'Syne', or 'Instrument Serif'."
+      },
+      {
+        "type": "select",
+        "id": "heading_font_weight",
+        "label": "Heading font weight",
+        "options": [
+          { "value": "300", "label": "Light (300)" },
+          { "value": "400", "label": "Regular (400)" },
+          { "value": "500", "label": "Medium (500)" },
+          { "value": "600", "label": "Semi-Bold (600)" },
+          { "value": "700", "label": "Bold (700)" }
+        ],
+        "default": "400"
+      },
+      {
+        "type": "select",
+        "id": "heading_text_transform",
+        "label": "Heading case style",
+        "options": [
+          { "value": "none", "label": "Sentence / Title Case" },
+          { "value": "uppercase", "label": "ALL CAPS (Editorial Runway)" }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "range",
+        "id": "heading_scale",
+        "min": 90,
+        "max": 140,
+        "step": 5,
+        "unit": "%",
+        "label": "Heading size scale",
+        "default": 110
+      },
+      {
+        "type": "range",
+        "id": "heading_letter_spacing",
+        "min": -4,
+        "max": 15,
+        "step": 1,
+        "unit": "%",
+        "label": "Heading letter tracking",
+        "default": -1
+      },
+      {
+        "type": "header",
+        "content": "Body & UI Navigation Typography"
+      },
+      {
+        "type": "select",
+        "id": "body_font_source",
+        "label": "Body font source",
+        "options": [
+          {
+            "value": "shopify",
+            "label": "Shopify Font Library"
+          },
+          {
+            "value": "google",
+            "label": "Google Fonts"
+          }
+        ],
+        "default": "google"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "default": "plus_jakarta_sans_n4",
+        "label": "Shopify Body Font"
+      },
+      {
+        "type": "text",
+        "id": "google_body_font_family",
+        "label": "Google Font Family for Body & UI",
+        "default": "Plus Jakarta Sans",
+        "info": "Example: 'Plus Jakarta Sans', 'Inter', 'DM Sans', or 'Jost'."
+      },
+      {
+        "type": "range",
+        "id": "body_scale",
+        "min": 90,
+        "max": 120,
+        "step": 5,
+        "unit": "%",
+        "label": "Body font size scale",
+        "default": 100
+      },
+      {
+        "type": "range",
+        "id": "nav_letter_spacing",
+        "min": 0,
+        "max": 20,
+        "step": 2,
+        "unit": "%",
+        "label": "Navigation & button uppercase letter spacing",
+        "default": 10
+      }
+    ]
+  },
+  {
+    "name": "Layout & Grid System",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1200,
+        "max": 1800,
+        "step": 40,
+        "default": 1520,
+        "unit": "px",
+        "label": "Maximum container width"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_wide_editorial_layout",
+        "label": "Enable full-bleed edge-to-edge editorial grids",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "spacing_sections",
+        "min": 0,
+        "max": 120,
+        "step": 8,
+        "unit": "px",
+        "label": "Vertical space between sections",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "grid_horizontal_space",
+        "min": 0,
+        "max": 48,
+        "step": 2,
+        "unit": "px",
+        "label": "Product grid horizontal gap (desktop)",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "grid_vertical_space",
+        "min": 8,
+        "max": 64,
+        "step": 4,
+        "unit": "px",
+        "label": "Product grid vertical gap (desktop)",
+        "default": 36
+      },
+      {
+        "type": "range",
+        "id": "border_radius_global",
+        "min": 0,
+        "max": 24,
+        "step": 2,
+        "unit": "px",
+        "label": "Global corner radius (0px for sharp Zara/Editorial look)",
+        "default": 0
+      },
+      {
+        "type": "select",
+        "id": "icon_stroke_weight",
+        "label": "System icon stroke weight",
+        "options": [
+          { "value": "1.1", "label": "Ultra-Thin Luxury (1.1px)" },
+          { "value": "1.4", "label": "Editorial Crisp (1.4px)" },
+          { "value": "1.8", "label": "Modern Bold (1.8px)" }
+        ],
+        "default": "1.4"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_rtl",
+        "label": "Force Right-to-Left (RTL) layout",
+        "default": false,
+        "info": "Automatically activates for Arabic/Hebrew locales even when unchecked."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_breadcrumbs",
+        "label": "Show editorial breadcrumb navigation on inner templates",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Buttons & Interactive Controls",
+    "settings": [
+      {
+        "type": "range",
+        "id": "buttons_radius",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "label": "Button corner radius",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "buttons_border_thickness",
+        "min": 1,
+        "max": 3,
+        "step": 1,
+        "unit": "px",
+        "label": "Button border thickness",
+        "default": 1
+      },
+      {
+        "type": "select",
+        "id": "buttons_text_transform",
+        "label": "Button label case",
+        "options": [
+          { "value": "uppercase", "label": "UPPERCASE" },
+          { "value": "none", "label": "Standard Case" }
+        ],
+        "default": "uppercase"
+      },
+      {
+        "type": "select",
+        "id": "button_hover_effect",
+        "label": "Button hover animation",
+        "options": [
+          { "value": "slide-fill", "label": "Editorial Curtain Fill" },
+          { "value": "invert", "label": "Clean Color Invert" },
+          { "value": "opacity", "label": "Subtle Opacity Fade" }
+        ],
+        "default": "slide-fill"
+      }
+    ]
+  },
+  {
+    "name": "Fashion Product Card",
+    "settings": [
+      {
+        "type": "select",
+        "id": "card_image_ratio",
+        "label": "Product card image aspect ratio",
+        "options": [
+          { "value": "portrait", "label": "Editorial Portrait (3:4)" },
+          { "value": "tall-runway", "label": "Runway Tall (2:3)" },
+          { "value": "square", "label": "Square (1:1)" },
+          { "value": "adapt", "label": "Adapt to Original Image" }
+        ],
+        "default": "portrait"
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_secondary_image",
+        "label": "Show second image or lookbook video on hover",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_vendor",
+        "label": "Show brand / designer name above title",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_rating",
+        "label": "Show product review rating stars",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "card_quick_add_style",
+        "label": "Quick Add / Size Bar on Product Card",
+        "options": [
+          { "value": "size-bar-hover", "label": "Instant Size Selector Bar on Image Hover (Zara/Massimo style)" },
+          { "value": "button-hover", "label": "Quick Add Button on Hover" },
+          { "value": "below-card", "label": "Always Visible Button Below Details" },
+          { "value": "none", "label": "Disabled" }
+        ],
+        "default": "size-bar-hover"
+      },
+      {
+        "type": "checkbox",
+        "id": "card_enable_quick_view",
+        "label": "Enable Quick View modal icon on card hover",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_enable_wishlist",
+        "label": "Enable Wishlist heart button on product card",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_enable_compare",
+        "label": "Enable Compare button on product card",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "card_text_alignment",
+        "label": "Card details alignment",
+        "options": [
+          { "value": "left", "label": "Left (Editorial)" },
+          { "value": "center", "label": "Centered (Classic)" },
+          { "value": "split", "label": "Title Left / Price Right" }
+        ],
+        "default": "split"
+      }
+    ]
+  },
+  {
+    "name": "Color & Fabric Swatches",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_color_swatches",
+        "label": "Enable interactive color & fabric swatches on cards and product pages",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "swatch_option_names",
+        "label": "Option names to render as color swatches",
+        "default": "Color, Colour, Shade, Fabric, Material, Finish",
+        "info": "Comma-separated option names."
+      },
+      {
+        "type": "select",
+        "id": "swatch_shape",
+        "label": "Swatch shape",
+        "options": [
+          { "value": "circle", "label": "Circle" },
+          { "value": "square", "label": "Sharp Square (Editorial)" },
+          { "value": "portrait", "label": "Mini Variant Thumbnail (3:4)" }
+        ],
+        "default": "circle"
+      },
+      {
+        "type": "select",
+        "id": "swatch_source",
+        "label": "Swatch visual source priority",
+        "options": [
+          { "value": "variant_image", "label": "Variant Image first, fallback to CSS/Custom Color Map" },
+          { "value": "custom_color", "label": "Custom Color Map / Native Shopify Swatch first" }
+        ],
+        "default": "custom_color"
+      },
+      {
+        "type": "range",
+        "id": "card_max_swatches",
+        "min": 3,
+        "max": 10,
+        "step": 1,
+        "label": "Max swatches shown on product card before '+X more'",
+        "default": 5
+      },
+      {
+        "type": "textarea",
+        "id": "custom_color_swatch_map",
+        "label": "Custom fashion color hex mapping",
+        "default": "Ivory:#FAF8F5\nEcru:#F3EFE6\nChampagne:#E6D7BE\nCamel:#C19A6B\nEspresso:#3B2A22\nObsidian:#111111\nCharcoal:#36383A\nSage:#9CAF88\nOlive:#556B2F\nBurgundy:#6E1E2A\nTerracotta:#C66B4E\nNavy:#1B263B\nSlate:#6C7A89\nBlush:#E8C5C8\nSand:#D8CBB8",
+        "info": "One color per line in Name:#HEX format."
+      }
+    ]
+  },
+  {
+    "name": "Product Badges & Stickers",
+    "settings": [
+      {
+        "type": "select",
+        "id": "sale_badge_format",
+        "label": "Sale badge display format",
+        "options": [
+          { "value": "percentage", "label": "Discount Percentage (-25%)" },
+          { "value": "amount", "label": "Saved Amount (Save $40)" },
+          { "value": "text", "label": "Text Only (SALE)" }
+        ],
+        "default": "percentage"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_new_badge",
+        "label": "Automatically show 'NEW' badge on recently created products",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "new_badge_days",
+        "min": 7,
+        "max": 90,
+        "step": 7,
+        "unit": "d",
+        "label": "Days since publication to consider a product 'NEW'",
+        "default": 28
+      },
+      {
+        "type": "checkbox",
+        "id": "show_preorder_badge",
+        "label": "Show 'PRE-ORDER' badge when inventory policy is continue selling",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_low_stock_badge",
+        "label": "Show 'LOW STOCK' badge when total inventory is below threshold",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "low_stock_threshold",
+        "min": 1,
+        "max": 15,
+        "step": 1,
+        "label": "Low stock quantity threshold",
+        "default": 5
+      }
+    ]
+  },
+  {
+    "name": "Cart & Free Shipping Bar",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart interaction style",
+        "options": [
+          { "value": "drawer", "label": "Slide-Out Editorial Drawer (Recommended)" },
+          { "value": "page", "label": "Dedicated Cart Page" }
+        ],
+        "default": "drawer"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_enable_free_shipping_bar",
+        "label": "Enable dynamic Free Shipping progress bar",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "cart_free_shipping_threshold",
+        "label": "Free shipping threshold amount (in store base currency, e.g. 200)",
+        "default": 200
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_note",
+        "label": "Enable order note / delivery instructions in cart",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_gift_wrap",
+        "label": "Enable luxury gift-wrapping option in cart drawer",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_gift_wrap_price_display",
+        "label": "Gift wrap fee label",
+        "default": "$12.00"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_discount_input",
+        "label": "Show promo / discount code field inside Cart Drawer",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_upsells",
+        "label": "Show 'Complete Your Wardrobe' recommendations in Cart Drawer",
+        "default": true
+      },
+      {
+        "type": "collection",
+        "id": "cart_upsell_collection",
+        "label": "Fallback upsell collection for Cart Drawer"
+      }
+    ]
+  },
+  {
+    "name": "Wishlist, Compare & Recently Viewed",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_wishlist",
+        "label": "Enable Wishlist system globally",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_compare",
+        "label": "Enable Product Comparison drawer & table globally",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "compare_max_items",
+        "min": 2,
+        "max": 6,
+        "step": 1,
+        "label": "Maximum products in comparison table",
+        "default": 4
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_recently_viewed",
+        "label": "Track recently viewed products in browser storage",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "recently_viewed_limit",
+        "min": 4,
+        "max": 16,
+        "step": 2,
+        "label": "Maximum recently viewed products stored",
+        "default": 8
+      }
+    ]
+  },
+  {
+    "name": "Predictive Search",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "predictive_search_enabled",
+        "label": "Enable instant AJAX predictive search",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_vendor",
+        "label": "Show brand/vendor in search results",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_price",
+        "label": "Show price in search results",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "predictive_search_trending_terms",
+        "label": "Trending search pills",
+        "default": "Cashmere Coat, Silk Slip Dress, Tailored Blazer, Leather Tote, New Season",
+        "info": "Comma-separated quick search suggestions shown when opening search drawer."
+      }
+    ]
+  },
+  {
+    "name": "Social Media & Brand Identity",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image (32x32px PNG)"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram URL",
+        "default": "https://instagram.com"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok_link",
+        "label": "TikTok URL",
+        "default": "https://tiktok.com"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest URL",
+        "default": "https://pinterest.com"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "YouTube URL"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "X (Twitter) URL"
+      }
+    ]
+  },
+  {
+    "name": "Currency & Formatting",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "currency_code_enabled",
+        "label": "Show currency ISO codes with prices (e.g. $240.00 USD)",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "external_links_new_tab",
+        "label": "Open external http/https links in a new browser tab",
+        "default": false
+      }
+    ]
+  }
+]

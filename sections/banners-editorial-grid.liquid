@@ -1,0 +1,151 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container{% if section.settings.full_width %} cody-container--fluid{% endif %}">
+    {%- if section.settings.heading != blank -%}
+      <div class="cody-section-header">
+        <div>
+          <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+          <h2 class="cody-h1" style="margin-bottom: 0;">{{ section.settings.heading | escape }}</h2>
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="cody-bento-grid">
+      {%- for block in section.blocks -%}
+        <div class="cody-bento-item--span-{{ block.settings.column_span }}" {{ block.shopify_attributes }}>
+          <a href="{{ block.settings.link | default: routes.collections_url }}" class="cody-bento-card">
+            <div class="cody-bento-card__media">
+              {%- if block.settings.image != blank -%}
+                <img
+                  src="{{ block.settings.image | image_url: width: 1400 }}"
+                  alt="{{ block.settings.heading | escape }}"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                  loading="lazy"
+                >
+              {%- else -%}
+                {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+
+            <div class="cody-bento-card__content">
+              {%- if block.settings.eyebrow != blank -%}
+                <span class="cody-eyebrow" style="color: rgba(255,255,255,0.8);">{{ block.settings.eyebrow | escape }}</span>
+              {%- endif -%}
+              <h3 class="cody-h2" style="color: #ffffff; margin-bottom: 1.2rem;">{{ block.settings.heading | escape }}</h3>
+              {%- if block.settings.button_label != blank -%}
+                <span class="cody-link-editorial" style="color: #ffffff;">
+                  <span>{{ block.settings.button_label | escape }}</span>
+                  {% render 'cody-icons', icon: 'arrow-up-right', size: 16 %}
+                </span>
+              {%- endif -%}
+            </div>
+          </a>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Editorial Bento Banners",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "CURATED DEPARTMENTS",
+      "label": "Eyebrow subtitle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "The Seasonal Edit",
+      "label": "Heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": false,
+      "label": "Full-bleed container"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Editorial Banner Card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "column_span",
+          "label": "Desktop width (12-column grid)",
+          "options": [
+            { "value": "8", "label": "Wide Asymmetric (8/12 columns)" },
+            { "value": "6", "label": "Half Width (6/12 columns)" },
+            { "value": "4", "label": "Third Width (4/12 columns)" }
+          ],
+          "default": "6"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "default": "CAPSULE 01",
+          "label": "Eyebrow"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Outerwear & Trench Coats",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "Discover Capsule",
+          "label": "Link label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial Bento Banners",
+      "blocks": [
+        {
+          "type": "banner",
+          "settings": {
+            "column_span": "8",
+            "eyebrow": "WOMENSWEAR",
+            "heading": "Architectural Coat Edit"
+          }
+        },
+        {
+          "type": "banner",
+          "settings": {
+            "column_span": "4",
+            "eyebrow": "ACCESSORIES",
+            "heading": "Sculpted Leather Goods"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

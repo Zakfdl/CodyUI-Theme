@@ -1,0 +1,384 @@
+/* ==========================================================================
+   CodyUI Fashion — Homepage Editorial Sections, Lookbook Hotspots & Footer CSS
+   ========================================================================== */
+
+/* 1. Editorial Hero Slideshow & Split Runway Banner
+   ========================================================================== */
+.cody-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.cody-hero__slides {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.cody-hero__slides::-webkit-scrollbar {
+  display: none;
+}
+
+.cody-hero__slide {
+  position: relative;
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  min-height: var(--cody-hero-height, 82vh);
+  display: flex;
+  align-items: flex-end;
+  padding-block: clamp(4.8rem, 7vw, 8.8rem);
+}
+
+.cody-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.cody-hero__media img,
+.cody-hero__media video,
+.cody-hero__media svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cody-hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, var(--cody-hero-overlay, 0.42)) 0%,
+    rgba(0, 0, 0, 0.12) 60%,
+    rgba(0, 0, 0, 0.05) 100%
+  );
+}
+
+.cody-hero__content {
+  position: relative;
+  z-index: 3;
+  max-width: 74rem;
+  color: #ffffff;
+}
+
+.cody-hero__content--center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.cody-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  margin-top: 2.8rem;
+}
+
+.cody-hero__content--center .cody-hero__actions {
+  justify-content: center;
+}
+
+/* 2. Interactive Lookbook ("Shop The Look" with Hotspot Pins)
+   ========================================================================== */
+.cody-lookbook__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2.8rem, 4vw, 5.6rem);
+  align-items: center;
+}
+
+@media screen and (min-width: 960px) {
+  .cody-lookbook__grid {
+    grid-template-columns: 1.3fr 1fr;
+  }
+}
+
+.cody-lookbook__canvas {
+  position: relative;
+  overflow: hidden;
+  background-color: rgb(var(--cody-surface));
+}
+
+.cody-lookbook__pin {
+  position: absolute;
+  z-index: 5;
+  width: 3.4rem;
+  height: 3.4rem;
+  margin-left: -1.7rem;
+  margin-top: -1.7rem;
+  border-radius: 50%;
+  background-color: rgb(var(--cody-bg));
+  color: rgb(var(--cody-text));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  transition: transform var(--cody-duration-fast) ease,
+              background-color var(--cody-duration-fast) ease,
+              color var(--cody-duration-fast) ease;
+}
+
+.cody-lookbook__pin::after {
+  content: "";
+  position: absolute;
+  inset: -0.6rem;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  animation: codyPinPulse 2.2s infinite;
+}
+
+.cody-lookbook__pin.is-active,
+.cody-lookbook__pin:hover {
+  background-color: rgb(var(--cody-text));
+  color: rgb(var(--cody-bg));
+  transform: scale(1.15);
+}
+
+@keyframes codyPinPulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+.cody-lookbook__showcase {
+  max-width: 38rem;
+  margin-inline: auto;
+  width: 100%;
+}
+
+/* 3. Tabbed Featured Collections (New Arrivals / Best Sellers / Runway)
+   ========================================================================== */
+.cody-collection-tabs__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2.8rem;
+  border-bottom: 1px solid rgb(var(--cody-border));
+  margin-bottom: 3.6rem;
+}
+
+.cody-collection-tabs__btn {
+  position: relative;
+  padding-bottom: 1.4rem;
+  font-family: var(--cody-font-heading-family);
+  font-size: clamp(2rem, 2.4vw, 2.8rem);
+  color: rgb(var(--cody-text-muted));
+  transition: color var(--cody-duration-fast) ease;
+}
+
+.cody-collection-tabs__btn.is-active,
+.cody-collection-tabs__btn:hover {
+  color: rgb(var(--cody-text));
+}
+
+.cody-collection-tabs__btn.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background-color: rgb(var(--cody-text));
+}
+
+/* 4. Asymmetric Editorial Bento Banners Grid
+   ========================================================================== */
+.cody-bento-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--cody-grid-gap-x, 16px);
+}
+
+@media screen and (min-width: 900px) {
+  .cody-bento-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+  .cody-bento-item--span-8 {
+    grid-column: span 8;
+  }
+  .cody-bento-item--span-6 {
+    grid-column: span 6;
+  }
+  .cody-bento-item--span-4 {
+    grid-column: span 4;
+  }
+}
+
+.cody-bento-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 48rem;
+  padding: clamp(2.4rem, 3.5vw, 4.4rem);
+  overflow: hidden;
+  color: #ffffff;
+  background-color: rgb(var(--cody-surface));
+}
+
+.cody-bento-card__media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.cody-bento-card__media img,
+.cody-bento-card__media svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--cody-duration-slow) var(--cody-ease-editorial);
+}
+
+.cody-bento-card:hover .cody-bento-card__media img {
+  transform: scale(1.05);
+}
+
+.cody-bento-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.62) 0%, rgba(0, 0, 0, 0.05) 65%);
+}
+
+.cody-bento-card__content {
+  position: relative;
+  z-index: 3;
+  max-width: 46rem;
+}
+
+/* 5. Editorial Footer & Mobile Sticky Bottom App Bar
+   ========================================================================== */
+.cody-footer {
+  border-top: 1px solid rgb(var(--cody-border));
+  padding-top: clamp(4.8rem, 6vw, 8rem);
+  padding-bottom: clamp(3.6rem, 4vw, 5.6rem);
+}
+
+.cody-footer__top {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  padding-bottom: 5.6rem;
+  border-bottom: 1px solid rgb(var(--cody-border));
+}
+
+@media screen and (min-width: 960px) {
+  .cody-footer__top {
+    grid-template-columns: 1.4fr repeat(3, 1fr);
+  }
+}
+
+.cody-footer__heading {
+  font-family: var(--cody-font-body-family);
+  font-size: 1.15rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 1.8rem;
+}
+
+.cody-footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cody-footer__link {
+  font-size: 1.35rem;
+  color: rgb(var(--cody-text-muted));
+}
+
+.cody-footer__link:hover {
+  color: rgb(var(--cody-text));
+}
+
+.cody-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-top: 3.2rem;
+  font-size: 1.25rem;
+  color: rgb(var(--cody-text-muted));
+}
+
+/* Wokiee-Style Mobile Sticky Bottom App Bar */
+.cody-mobile-sticky-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 35;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background-color: rgba(var(--cody-bg), 0.96);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgb(var(--cody-border));
+  padding-block: 0.8rem;
+}
+
+@media screen and (min-width: 1024px) {
+  .cody-mobile-sticky-bar {
+    display: none;
+  }
+}
+
+.cody-mobile-sticky-bar__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgb(var(--cody-text));
+}
+
+/* Social Proof Recent Sales Popup */
+.cody-sales-popup {
+  position: fixed;
+  left: 2rem;
+  bottom: 2.4rem;
+  z-index: 36;
+  max-width: 34rem;
+  display: grid;
+  grid-template-columns: 5.6rem 1fr auto;
+  gap: 1.2rem;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  background-color: rgb(var(--cody-bg));
+  color: rgb(var(--cody-text));
+  border: 1px solid rgb(var(--cody-border));
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  transform: translateY(140%);
+  opacity: 0;
+  transition: all var(--cody-duration-normal) var(--cody-ease-editorial);
+}
+
+.cody-sales-popup.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+@media screen and (max-width: 1023px) {
+  .cody-sales-popup {
+    bottom: 7.2rem;
+  }
+}

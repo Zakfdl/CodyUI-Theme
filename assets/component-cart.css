@@ -1,0 +1,218 @@
+/* ==========================================================================
+   CodyUI Fashion — Cart Drawer, Free Shipping Bar, Upsells & Cart Page CSS
+   ========================================================================== */
+
+/* 1. Free Shipping Progress Bar
+   ========================================================================== */
+.cody-shipping-bar {
+  padding: 1.4rem 2.4rem;
+  background-color: rgb(var(--cody-surface));
+  border-bottom: 1px solid rgb(var(--cody-border));
+}
+
+.cody-shipping-bar__text {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.25rem;
+  margin-bottom: 0.8rem;
+}
+
+.cody-shipping-bar__track {
+  width: 100%;
+  height: 0.4rem;
+  background-color: rgba(var(--cody-text), 0.12);
+  overflow: hidden;
+}
+
+.cody-shipping-bar__fill {
+  height: 100%;
+  background-color: rgb(var(--cody-text));
+  transition: width 500ms var(--cody-ease-editorial);
+}
+
+.cody-shipping-bar--unlocked .cody-shipping-bar__fill {
+  background-color: var(--cody-color-success);
+}
+
+/* 2. Cart Drawer Line Items
+   ========================================================================== */
+.cody-cart-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.cody-cart-item {
+  display: grid;
+  grid-template-columns: 8.4rem 1fr;
+  gap: 1.6rem;
+  padding-block: 2rem;
+  border-bottom: 1px solid rgb(var(--cody-border));
+}
+
+.cody-cart-item:first-child {
+  padding-top: 0;
+}
+
+.cody-cart-item__details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.cody-cart-item__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cody-cart-item__vendor {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgb(var(--cody-text-muted));
+  margin-bottom: 0.2rem;
+}
+
+.cody-cart-item__title {
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.cody-cart-item__options {
+  font-size: 1.2rem;
+  color: rgb(var(--cody-text-muted));
+  margin-top: 0.3rem;
+}
+
+.cody-cart-item__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.4rem;
+}
+
+.cody-cart-item__remove {
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgb(var(--cody-text-muted));
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+.cody-cart-item__remove:hover {
+  color: rgb(var(--cody-text));
+}
+
+/* 3. Cart Drawer Upsells ("Complete Your Wardrobe")
+   ========================================================================== */
+.cody-cart-upsells {
+  margin-top: 2.4rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgb(var(--cody-border));
+}
+
+.cody-cart-upsells__heading {
+  font-size: 1.15rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 1.4rem;
+}
+
+.cody-cart-upsells__list {
+  display: flex;
+  gap: 1.2rem;
+  overflow-x: auto;
+  padding-bottom: 0.8rem;
+  scroll-snap-type: x mandatory;
+}
+
+.cody-cart-upsell-card {
+  flex: 0 0 26rem;
+  scroll-snap-align: start;
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  gap: 1.2rem;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid rgb(var(--cody-border));
+  background-color: rgb(var(--cody-surface));
+}
+
+/* 4. Cart Drawer Footer & Extras (Note, Gift Wrap, Discount)
+   ========================================================================== */
+.cody-cart-extras {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.6rem;
+  padding-bottom: 1.6rem;
+  border-bottom: 1px solid rgb(var(--cody-border));
+}
+
+.cody-cart-giftwrap {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.cody-cart-subtotal {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.cody-cart-subtotal__label {
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.cody-cart-subtotal__value {
+  font-family: var(--cody-font-heading-family);
+  font-size: 2.4rem;
+  font-weight: 500;
+}
+
+.cody-cart-tax-note {
+  font-size: 1.2rem;
+  color: rgb(var(--cody-text-muted));
+  margin-bottom: 1.6rem;
+}
+
+/* 5. Main Cart Page Table
+   ========================================================================== */
+.cody-cart-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cody-cart-table th {
+  text-align: left;
+  font-size: 1.15rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgb(var(--cody-text-muted));
+  padding-bottom: 1.6rem;
+  border-bottom: 1px solid rgb(var(--cody-border));
+}
+
+.cody-cart-table td {
+  padding-block: 2.4rem;
+  border-bottom: 1px solid rgb(var(--cody-border));
+  vertical-align: middle;
+}

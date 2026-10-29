@@ -1,0 +1,154 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container">
+    <div class="cody-section-header">
+      <div>
+        <span class="cody-eyebrow">SIDE-BY-SIDE SPECIFICATION</span>
+        <h1 class="cody-h1" style="margin-bottom: 0;">{{ page.title | default: 'Compare Pieces' }}</h1>
+      </div>
+      <button type="button" id="CodyCompareClearAll" class="cody-btn cody-btn--outline cody-btn--sm" hidden>
+        {{ 'general.compare.clear_all' | t }}
+      </button>
+    </div>
+
+    <div id="CodyCompareContainer" class="cody-compare-table-wrap"></div>
+
+    <div id="CodyCompareEmpty" style="text-align: center; padding: 6rem 2rem;" hidden>
+      <p class="cody-h3" style="margin-bottom: 2.4rem;">{{ 'general.compare.empty' | t }}</p>
+      <a href="{{ routes.all_products_collection_url }}" class="cody-btn cody-btn--primary">
+        {{ 'general.wishlist.explore' | t }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('CodyCompareContainer');
+    const emptyState = document.getElementById('CodyCompareEmpty');
+    const clearBtn = document.getElementById('CodyCompareClearAll');
+    if (!container || !window.CodyStore) return;
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        window.CodyStore.saveList(window.CodyStore.compareKey, []);
+        window.CodyStore.syncUI();
+        renderCompareTable();
+      });
+    }
+
+    function renderCompareTable() {
+      const handles = window.CodyStore.getList(window.CodyStore.compareKey);
+      if (!handles.length) {
+        container.innerHTML = '';
+        container.hidden = true;
+        emptyState.hidden = false;
+        if (clearBtn) clearBtn.hidden = true;
+        return;
+      }
+
+      emptyState.hidden = true;
+      container.hidden = false;
+      if (clearBtn) clearBtn.hidden = false;
+
+      Promise.all(
+        handles.map((handle) =>
+          fetch(`${window.routes.root_url}products/${handle}.js`)
+            .then((r) => (r.ok ? r.json() : null))
+            .catch(() => null)
+        )
+      ).then((products) => {
+        const valid = products.filter(Boolean);
+        if (!valid.length) {
+          container.hidden = true;
+          emptyState.hidden = false;
+          return;
+        }
+
+        const currency = window.codyConfig?.currencySymbol || '$';
+        container.innerHTML = `
+          <table class="cody-compare-table">
+            <tbody>
+              <tr>
+                <th>{{ 'sections.cart.headings.product' | t }}</th>
+                ${valid
+                  .map(
+                    (p) => `
+                  <td>
+                    <div style="max-width: 22rem;">
+                      <div class="cody-media cody-media--portrait" style="margin-bottom: 1.2rem;">
+                        ${p.featured_image ? `<img src="${p.featured_image}" alt="${p.title}" loading="lazy">` : ''}
+                      </div>
+                      <h3 class="cody-card__title" style="margin-bottom: 1rem;"><a href="${p.url}">${p.title}</a></h3>
+                      <div style="display: flex; gap: 0.8rem;">
+                        <button type="button" class="cody-btn cody-btn--primary cody-btn--sm" data-quickview-handle="${p.handle}">
+                          {{ 'products.product.add_to_cart' | t }}
+                        </button>
+                        <button type="button" class="cody-btn cody-btn--outline cody-btn--sm" data-compare-toggle="${p.handle}">
+                          &times;
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                `
+                  )
+                  .join('')}
+              </tr>
+              <tr>
+                <th>{{ 'general.compare.attribute_price' | t }}</th>
+                ${valid.map((p) => `<td><strong>${currency}${(p.price / 100).toFixed(2)}</strong></td>`).join('')}
+              </tr>
+              <tr>
+                <th>{{ 'general.compare.attribute_vendor' | t }}</th>
+                ${valid.map((p) => `<td>${p.vendor || '—'}</td>`).join('')}
+              </tr>
+              <tr>
+                <th>{{ 'general.compare.attribute_availability' | t }}</th>
+                ${valid
+                  .map(
+                    (p) =>
+                      `<td>${
+                        p.available
+                          ? `<span style="color: var(--cody-color-success);">{{ 'products.product.in_stock' | t }}</span>`
+                          : `<span style="color: var(--cody-color-sale);">{{ 'products.product.sold_out' | t }}</span>`
+                      }</td>`
+                  )
+                  .join('')}
+              </tr>
+              <tr>
+                <th>{{ 'general.compare.attribute_type' | t }}</th>
+                ${valid.map((p) => `<td>${p.type || '—'}</td>`).join('')}
+              </tr>
+              <tr>
+                <th>{{ 'general.compare.attribute_options' | t }}</th>
+                ${valid
+                  .map((p) => `<td>${p.options.map((o) => `${o.name}: ${o.values.join(', ')}`).join('<br>')}</td>`)
+                  .join('')}
+              </tr>
+            </tbody>
+          </table>
+        `;
+      });
+    }
+
+    renderCompareTable();
+    if (window.subscribe && window.PUB_SUB_EVENTS) {
+      window.subscribe(window.PUB_SUB_EVENTS.compareUpdate, renderCompareTable);
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Compare Pieces Table",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

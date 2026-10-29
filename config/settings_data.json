@@ -1,0 +1,183 @@
+{
+  "current": {
+    "color_schemes": {
+      "scheme-1": {
+        "settings": {
+          "background": "#FAF8F5",
+          "background_gradient": "",
+          "surface": "#F2EFE9",
+          "text": "#111111",
+          "text_muted": "#66635E",
+          "accent": "#9A7B4F",
+          "button": "#111111",
+          "button_label": "#FAF8F5",
+          "secondary_button_label": "#111111",
+          "border": "#E2DDD5"
+        }
+      },
+      "scheme-2": {
+        "settings": {
+          "background": "#F2EFE9",
+          "background_gradient": "",
+          "surface": "#E8E3DA",
+          "text": "#111111",
+          "text_muted": "#5C5852",
+          "accent": "#8C6D43",
+          "button": "#111111",
+          "button_label": "#FAF8F5",
+          "secondary_button_label": "#111111",
+          "border": "#D9D2C7"
+        }
+      },
+      "scheme-3": {
+        "settings": {
+          "background": "#111111",
+          "background_gradient": "",
+          "surface": "#1C1C1C",
+          "text": "#FAF8F5",
+          "text_muted": "#A8A39B",
+          "accent": "#D4B88C",
+          "button": "#FAF8F5",
+          "button_label": "#111111",
+          "secondary_button_label": "#FAF8F5",
+          "border": "#2E2E2E"
+        }
+      },
+      "scheme-4": {
+        "settings": {
+          "background": "#231B16",
+          "background_gradient": "",
+          "surface": "#2E241E",
+          "text": "#F7F3EB",
+          "text_muted": "#B8ADA1",
+          "accent": "#C9A675",
+          "button": "#F7F3EB",
+          "button_label": "#231B16",
+          "secondary_button_label": "#F7F3EB",
+          "border": "#3E322A"
+        }
+      },
+      "scheme-5": {
+        "settings": {
+          "background": "#E9DFCF",
+          "background_gradient": "",
+          "surface": "#DFD3BF",
+          "text": "#141210",
+          "text_muted": "#5A5248",
+          "accent": "#7A5B34",
+          "button": "#141210",
+          "button_label": "#FAF8F5",
+          "secondary_button_label": "#141210",
+          "border": "#CFC1AB"
+        }
+      }
+    },
+    "color_sale": "#A82424",
+    "color_success": "#1E5E3A",
+    "color_warning": "#B86B19",
+    "color_rating_star": "#111111",
+    "heading_font_source": "google",
+    "google_heading_font_family": "Cormorant Garamond",
+    "heading_font_weight": "400",
+    "heading_text_transform": "none",
+    "heading_scale": 110,
+    "heading_letter_spacing": -1,
+    "body_font_source": "google",
+    "google_body_font_family": "Plus Jakarta Sans",
+    "body_scale": 100,
+    "nav_letter_spacing": 10,
+    "page_width": 1520,
+    "enable_wide_editorial_layout": true,
+    "spacing_sections": 0,
+    "grid_horizontal_space": 16,
+    "grid_vertical_space": 36,
+    "border_radius_global": 0,
+    "icon_stroke_weight": "1.4",
+    "enable_rtl": false,
+    "show_breadcrumbs": true,
+    "buttons_radius": 0,
+    "buttons_border_thickness": 1,
+    "buttons_text_transform": "uppercase",
+    "button_hover_effect": "slide-fill",
+    "card_image_ratio": "portrait",
+    "card_show_secondary_image": true,
+    "card_show_vendor": true,
+    "card_show_rating": false,
+    "card_quick_add_style": "size-bar-hover",
+    "card_enable_quick_view": true,
+    "card_enable_wishlist": true,
+    "card_enable_compare": true,
+    "card_text_alignment": "split",
+    "enable_color_swatches": true,
+    "swatch_option_names": "Color, Colour, Shade, Fabric, Material, Finish",
+    "swatch_shape": "circle",
+    "swatch_source": "custom_color",
+    "card_max_swatches": 5,
+    "sale_badge_format": "percentage",
+    "show_new_badge": true,
+    "new_badge_days": 28,
+    "show_preorder_badge": true,
+    "show_low_stock_badge": true,
+    "low_stock_threshold": 5,
+    "cart_type": "drawer",
+    "cart_enable_free_shipping_bar": true,
+    "cart_free_shipping_threshold": 200,
+    "cart_show_note": true,
+    "cart_show_gift_wrap": true,
+    "cart_gift_wrap_price_display": "$12.00",
+    "cart_show_discount_input": true,
+    "cart_show_upsells": true,
+    "enable_wishlist": true,
+    "enable_compare": true,
+    "compare_max_items": 4,
+    "enable_recently_viewed": true,
+    "recently_viewed_limit": 8,
+    "predictive_search_enabled": true,
+    "predictive_search_show_vendor": true,
+    "predictive_search_show_price": true,
+    "predictive_search_trending_terms": "Cashmere Coat, Silk Slip Dress, Tailored Blazer, Leather Tote, New Season",
+    "currency_code_enabled": false,
+    "external_links_new_tab": false
+  },
+  "presets": {
+    "Editorial Luxury (Default)": {
+      "heading_font_source": "google",
+      "google_heading_font_family": "Cormorant Garamond",
+      "heading_font_weight": "400",
+      "heading_text_transform": "none",
+      "body_font_source": "google",
+      "google_body_font_family": "Plus Jakarta Sans",
+      "border_radius_global": 0,
+      "buttons_radius": 0,
+      "card_image_ratio": "portrait",
+      "card_quick_add_style": "size-bar-hover",
+      "card_text_alignment": "split"
+    },
+    "Atelier Minimal": {
+      "heading_font_source": "google",
+      "google_heading_font_family": "Instrument Serif",
+      "heading_font_weight": "400",
+      "heading_text_transform": "none",
+      "body_font_source": "google",
+      "google_body_font_family": "Inter",
+      "border_radius_global": 2,
+      "buttons_radius": 2,
+      "card_image_ratio": "tall-runway",
+      "card_quick_add_style": "size-bar-hover",
+      "card_text_alignment": "left"
+    },
+    "Noir Streetwear": {
+      "heading_font_source": "google",
+      "google_heading_font_family": "Syne",
+      "heading_font_weight": "700",
+      "heading_text_transform": "uppercase",
+      "body_font_source": "google",
+      "google_body_font_family": "DM Sans",
+      "border_radius_global": 0,
+      "buttons_radius": 0,
+      "card_image_ratio": "portrait",
+      "card_quick_add_style": "button-hover",
+      "card_text_alignment": "split"
+    }
+  }
+}

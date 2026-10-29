@@ -1,0 +1,45 @@
+<article class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container cody-container--narrow">
+    <header style="margin-bottom: 3.6rem;">
+      <span class="cody-eyebrow">{{ article.published_at | time_tag: format: 'date' }} &mdash; {{ article.author }}</span>
+      <h1 class="cody-display-lg" style="margin-bottom: 0;">{{ article.title | escape }}</h1>
+    </header>
+
+    {%- if article.image -%}
+      <div class="cody-media cody-media--landscape" style="margin-bottom: 4rem;">
+        <img
+          src="{{ article.image | image_url: width: 1400 }}"
+          alt="{{ article.image.alt | default: article.title | escape }}"
+          width="{{ article.image.width }}"
+          height="{{ article.image.height }}"
+          loading="eager"
+        >
+      </div>
+    {%- endif -%}
+
+    <div class="cody-rte" style="font-size: 1.65rem; line-height: 1.75;">
+      {{ article.content }}
+    </div>
+
+    <div style="margin-top: 4.8rem; padding-top: 2.4rem; border-top: 1px solid rgb(var(--cody-border));">
+      <a href="{{ blog.url }}" class="cody-link-editorial">
+        {% render 'cody-icons', icon: 'arrow-left', size: 15 %}
+        <span>{{ 'blogs.article.back_to_blog' | t }}</span>
+      </a>
+    </div>
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Journal Article",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

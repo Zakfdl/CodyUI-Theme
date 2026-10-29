@@ -1,0 +1,182 @@
+<footer class="cody-footer color-{{ section.settings.color_scheme }}">
+  <div class="cody-container">
+    <div class="cody-footer__top">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'newsletter' -%}
+            <div {{ block.shopify_attributes }}>
+              <h2 class="cody-h3" style="margin-bottom: 1rem;">{{ block.settings.heading | escape }}</h2>
+              <p class="cody-text-muted" style="margin: 0 0 2rem; max-width: 38rem;">
+                {{ block.settings.subtext | escape }}
+              </p>
+              {%- form 'customer', id: 'ContactFooter', class: 'cody-footer__newsletter' -%}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                <div style="display: flex; gap: 0.8rem;">
+                  <input
+                    id="NewsletterForm--{{ section.id }}"
+                    type="email"
+                    name="contact[email]"
+                    class="cody-input"
+                    value="{{ form.email }}"
+                    aria-required="true"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    autocomplete="email"
+                    placeholder="{{ 'newsletter.label' | t }}"
+                    required
+                  >
+                  <button type="submit" class="cody-btn cody-btn--primary" name="commit">
+                    {{ 'newsletter.button_label' | t }}
+                  </button>
+                </div>
+                {%- if form.posted_successfully? -%}
+                  <p style="color: var(--cody-color-success); font-size: 1.25rem; margin-top: 1rem;">
+                    {{ 'newsletter.success' | t }}
+                  </p>
+                {%- endif -%}
+              {%- endform -%}
+            </div>
+
+          {%- when 'link_list' -%}
+            <div {{ block.shopify_attributes }}>
+              {%- if block.settings.heading != blank -%}
+                <h3 class="cody-footer__heading">{{ block.settings.heading | escape }}</h3>
+              {%- endif -%}
+              {%- if block.settings.menu != blank -%}
+                <ul class="cody-footer__links">
+                  {%- for link in block.settings.menu.links -%}
+                    <li>
+                      <a href="{{ link.url }}" class="cody-footer__link">{{ link.title | escape }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+
+          {%- when 'brand_info' -%}
+            <div {{ block.shopify_attributes }}>
+              <h3 class="cody-footer__heading">{{ block.settings.heading | escape }}</h3>
+              <div class="cody-rte cody-text-muted" style="font-size: 1.35rem;">
+                {{ block.settings.subtext }}
+              </div>
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="cody-footer__bottom">
+      <div>
+        <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. Powered by CodyUI Fashion.</span>
+      </div>
+
+      {%- if section.settings.show_social -%}
+        <div style="display: flex; align-items: center; gap: 2rem;">
+          {%- if settings.social_instagram_link != blank -%}
+            <a href="{{ settings.social_instagram_link }}" class="cody-footer__link">Instagram</a>
+          {%- endif -%}
+          {%- if settings.social_tiktok_link != blank -%}
+            <a href="{{ settings.social_tiktok_link }}" class="cody-footer__link">TikTok</a>
+          {%- endif -%}
+          {%- if settings.social_pinterest_link != blank -%}
+            <a href="{{ settings.social_pinterest_link }}" class="cody-footer__link">Pinterest</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.payment_enable and shop.enabled_payment_types != empty -%}
+        <div style="display: flex; flex-wrap: wrap; gap: 0.8rem;">
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Editorial Footer",
+  "max_blocks": 5,
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "default": true,
+      "label": "Show social media links"
+    },
+    {
+      "type": "checkbox",
+      "id": "payment_enable",
+      "default": true,
+      "label": "Show payment method icons"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "newsletter",
+      "name": "Private List Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Join The Private List",
+          "label": "Heading"
+        },
+        {
+          "type": "textarea",
+          "id": "subtext",
+          "default": "Receive early access to runway capsules, private archive sales, and atelier invitations.",
+          "label": "Description"
+        }
+      ]
+    },
+    {
+      "type": "link_list",
+      "name": "Navigation Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Client Services",
+          "label": "Column heading"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "default": "footer",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "type": "brand_info",
+      "name": "Atelier Story",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "The Maison",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "subtext",
+          "default": "<p>Designed with architectural precision and crafted from traceable European natural fibers.</p>",
+          "label": "Text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

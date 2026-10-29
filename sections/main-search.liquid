@@ -1,0 +1,67 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container">
+    <div class="cody-section-header">
+      <div>
+        <span class="cody-eyebrow">ARCHIVE SEARCH</span>
+        <h1 class="cody-h1" style="margin-bottom: 0;">
+          {%- if search.performed -%}
+            {{ 'templates.search.results_with_count_and_term' | t: terms: search.terms, count: search.results_count }}
+          {%- else -%}
+            {{ 'templates.search.title' | t }}
+          {%- endif -%}
+        </h1>
+      </div>
+    </div>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" style="max-width: 56rem; display: flex; gap: 1rem; margin-bottom: 4.8rem;">
+      <input type="search" name="q" value="{{ search.terms | escape }}" class="cody-input" placeholder="{{ 'general.search.search' | t }}">
+      <input name="options[prefix]" type="hidden" value="last">
+      <button type="submit" class="cody-btn cody-btn--primary">{{ 'general.search.search' | t | truncatewords: 1, '' }}</button>
+    </form>
+
+    {%- if search.performed -%}
+      {%- paginate search.results by 16 -%}
+        {%- if search.results.size == 0 -%}
+          <p class="cody-text-muted">{{ 'templates.search.no_results' | t: terms: search.terms }}</p>
+        {%- else -%}
+          <div class="cody-grid cody-grid--{{ section.settings.columns_desktop }}">
+            {%- for item in search.results -%}
+              {%- if item.object_type == 'product' -%}
+                {% render 'card-product', card_product: item %}
+              {%- else -%}
+                <article class="cody-card" style="padding: 2.4rem; background-color: rgb(var(--cody-surface));">
+                  <span class="cody-eyebrow">{{ item.object_type | upcase }}</span>
+                  <h3 class="cody-h3"><a href="{{ item.url }}">{{ item.title | escape }}</a></h3>
+                  <p class="cody-text-muted">{{ item.content | strip_html | truncatewords: 24 }}</p>
+                </article>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Search Results",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "Desktop columns"
+    }
+  ]
+}
+{% endschema %}

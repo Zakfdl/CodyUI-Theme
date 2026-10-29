@@ -1,0 +1,107 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container">
+    <div class="cody-section-header">
+      <div>
+        <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        <h2 class="cody-h1" style="margin-bottom: 0;">{{ section.settings.heading | escape }}</h2>
+      </div>
+      {%- if section.settings.blog != blank -%}
+        <a href="{{ section.settings.blog.url }}" class="cody-link-editorial">
+          <span>{{ 'sections.featured_blog.view_all' | t }}</span>
+          {% render 'cody-icons', icon: 'arrow-right', size: 15 %}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="cody-grid cody-grid--3">
+      {%- if section.settings.blog != blank and section.settings.blog.articles_count > 0 -%}
+        {%- for article in section.settings.blog.articles limit: section.settings.post_limit -%}
+          <article class="cody-card">
+            <a href="{{ article.url }}" class="cody-card__media-wrap cody-media cody-media--landscape">
+              {%- if article.image -%}
+                <img
+                  src="{{ article.image | image_url: width: 900 }}"
+                  alt="{{ article.title | escape }}"
+                  class="cody-card__img--primary"
+                  width="{{ article.image.width }}"
+                  height="{{ article.image.height }}"
+                  loading="lazy"
+                >
+              {%- endif -%}
+            </a>
+            <div class="cody-card__info" style="padding-top: 1.8rem;">
+              <span class="cody-eyebrow" style="margin-bottom: 0.4rem;">{{ article.published_at | time_tag: format: 'date' }}</span>
+              <h3 class="cody-h3" style="margin-bottom: 0.8rem;"><a href="{{ article.url }}">{{ article.title | escape }}</a></h3>
+              <p class="cody-text-muted" style="margin: 0 0 1.4rem;">
+                {{ article.excerpt_or_content | strip_html | truncatewords: 24 }}
+              </p>
+              <a href="{{ article.url }}" class="cody-link-editorial">
+                <span>{{ 'blogs.article.read_more' | t }}</span>
+                {% render 'cody-icons', icon: 'arrow-right', size: 14 %}
+              </a>
+            </div>
+          </article>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..3) -%}
+          <article class="cody-card">
+            <div class="cody-card__media-wrap cody-media cody-media--landscape">
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            <div class="cody-card__info" style="padding-top: 1.8rem;">
+              <span class="cody-eyebrow" style="margin-bottom: 0.4rem;">EDITORIAL JOURNAL</span>
+              <h3 class="cody-h3" style="margin-bottom: 0.8rem;">{{ 'sections.featured_blog.onboarding_title' | t }}</h3>
+              <p class="cody-text-muted" style="margin: 0;">{{ 'sections.featured_blog.onboarding_content' | t }}</p>
+            </div>
+          </article>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Editorial Journal Posts",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "THE ATELIER JOURNAL",
+      "label": "Eyebrow subtitle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Stories, Craft & Runway Notes",
+      "label": "Heading"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "post_limit",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "label": "Articles to show"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial Journal Posts"
+    }
+  ]
+}
+{% endschema %}

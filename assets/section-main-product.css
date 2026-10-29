@@ -1,0 +1,368 @@
+/* ==========================================================================
+   CodyUI Fashion — Flagship Product Page, 5 Gallery Modes & Sticky ATC CSS
+   ========================================================================== */
+
+.cody-product-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(3.2rem, 4.5vw, 6.4rem);
+  align-items: start;
+}
+
+@media screen and (min-width: 1024px) {
+  .cody-product-grid {
+    grid-template-columns: 1.35fr 1fr;
+  }
+}
+
+/* 1. 5 Media Gallery Layouts
+   ========================================================================== */
+.cody-product-gallery {
+  display: grid;
+  gap: 1.2rem;
+}
+
+/* Mobile: Horizontal swipe carousel with snap */
+@media screen and (max-width: 1023px) {
+  .cody-product-gallery__main {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 0.8rem;
+    scrollbar-width: none;
+  }
+  .cody-product-gallery__main::-webkit-scrollbar {
+    display: none;
+  }
+  .cody-product-gallery__item {
+    flex: 0 0 88%;
+    scroll-snap-align: start;
+  }
+  .cody-product-gallery__thumbs {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  /* Mode 1: Editorial 2-Column Grid */
+  .cody-product-gallery--editorial-grid-2 .cody-product-gallery__main {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.2rem;
+  }
+  .cody-product-gallery--editorial-grid-2 .cody-product-gallery__thumbs {
+    display: none;
+  }
+
+  /* Mode 2: Featured Hero + 2-Col Grid */
+  .cody-product-gallery--featured-plus-grid .cody-product-gallery__main {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.2rem;
+  }
+  .cody-product-gallery--featured-plus-grid .cody-product-gallery__item:first-child {
+    grid-column: span 2;
+  }
+  .cody-product-gallery--featured-plus-grid .cody-product-gallery__thumbs {
+    display: none;
+  }
+
+  /* Mode 3: Thumbnails Left + Main Active Slide */
+  .cody-product-gallery--thumbnails-left {
+    grid-template-columns: 8.8rem 1fr;
+    gap: 1.6rem;
+    align-items: start;
+  }
+  .cody-product-gallery--thumbnails-left .cody-product-gallery__thumbs {
+    order: -1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: sticky;
+    top: 10rem;
+  }
+  .cody-product-gallery--thumbnails-left .cody-product-gallery__item:not(.is-active-media) {
+    display: none;
+  }
+
+  /* Mode 4: Thumbnails Bottom */
+  .cody-product-gallery--thumbnails-bottom .cody-product-gallery__thumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.2rem;
+  }
+  .cody-product-gallery--thumbnails-bottom .cody-product-gallery__thumbs .cody-product-gallery__thumb {
+    width: 8.4rem;
+  }
+  .cody-product-gallery--thumbnails-bottom .cody-product-gallery__item:not(.is-active-media) {
+    display: none;
+  }
+
+  /* Mode 5: Stacked Single Column */
+  .cody-product-gallery--stacked-single .cody-product-gallery__main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+  .cody-product-gallery--stacked-single .cody-product-gallery__thumbs {
+    display: none;
+  }
+}
+
+.cody-product-gallery__thumb {
+  border: 1px solid transparent;
+  padding: 0;
+  opacity: 0.65;
+  transition: all var(--cody-duration-fast) ease;
+}
+
+.cody-product-gallery__thumb.is-active,
+.cody-product-gallery__thumb:hover {
+  opacity: 1;
+  border-color: rgb(var(--cody-text));
+}
+
+/* 2. Sticky Product Information Column & Blocks
+   ========================================================================== */
+.cody-product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+}
+
+@media screen and (min-width: 1024px) {
+  .cody-product-info--sticky {
+    position: sticky;
+    top: 10rem;
+  }
+}
+
+/* Variant Picker Pills & Swatches */
+.cody-variant-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 1.8rem;
+}
+
+.cody-variant-fieldset:last-child {
+  margin-bottom: 0;
+}
+
+.cody-variant-fieldset__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.cody-variant-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.cody-variant-pill {
+  min-width: 4.8rem;
+  height: 4.2rem;
+  padding: 0 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+  border: 1px solid rgb(var(--cody-border));
+  background-color: rgb(var(--cody-bg));
+  color: rgb(var(--cody-text));
+  cursor: pointer;
+  transition: all var(--cody-duration-fast) ease;
+}
+
+.cody-variant-pill:hover {
+  border-color: rgb(var(--cody-text));
+}
+
+.cody-variant-pill.is-selected {
+  background-color: rgb(var(--cody-text));
+  color: rgb(var(--cody-bg));
+  border-color: rgb(var(--cody-text));
+}
+
+.cody-variant-pill.is-unavailable {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+
+/* Size Guide Trigger Button */
+.cody-size-guide-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+/* Low Stock Urgency Bar */
+.cody-inventory-bar {
+  padding: 1.2rem 1.6rem;
+  background-color: rgb(var(--cody-surface));
+  border-left: 3px solid var(--cody-color-success);
+  font-size: 1.25rem;
+}
+
+.cody-inventory-bar--low {
+  border-left-color: var(--cody-color-warning);
+}
+
+.cody-inventory-bar__track {
+  width: 100%;
+  height: 0.35rem;
+  background-color: rgba(var(--cody-text), 0.12);
+  margin-top: 0.8rem;
+}
+
+.cody-inventory-bar__fill {
+  height: 100%;
+  background-color: var(--cody-color-warning);
+}
+
+/* Buy Buttons Row (Quantity + Add to Bag + Wishlist + Dynamic Checkout) */
+.cody-buy-row {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.cody-buy-row__wishlist {
+  width: 4.8rem;
+  height: 4.8rem;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(var(--cody-border));
+  transition: all var(--cody-duration-fast) ease;
+}
+
+.cody-buy-row__wishlist:hover,
+.cody-buy-row__wishlist.is-active {
+  background-color: rgb(var(--cody-text));
+  color: rgb(var(--cody-bg));
+  border-color: rgb(var(--cody-text));
+}
+
+.shopify-payment-button__button {
+  min-height: 4.8rem !important;
+  border-radius: var(--cody-radius-btn, 0px) !important;
+  font-family: var(--cody-font-body-family) !important;
+  font-size: 1.2rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+}
+
+/* Complete The Look (Style With Block) */
+.cody-style-with {
+  padding: 2rem;
+  border: 1px solid rgb(var(--cody-border));
+  background-color: rgb(var(--cody-surface));
+}
+
+.cody-style-with__item {
+  display: grid;
+  grid-template-columns: 6.4rem 1fr auto;
+  gap: 1.4rem;
+  align-items: center;
+  padding-block: 1rem;
+  border-bottom: 1px solid rgb(var(--cody-border));
+}
+
+.cody-style-with__item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* Trust & Service Guarantees */
+.cody-trust-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 1.2rem;
+  padding-block: 1.6rem;
+  border-top: 1px solid rgb(var(--cody-border));
+  border-bottom: 1px solid rgb(var(--cody-border));
+}
+
+.cody-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.2rem;
+}
+
+/* 3. Sticky Add-to-Cart Bar on Scroll
+   ========================================================================== */
+.cody-sticky-atc {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 38;
+  background-color: rgba(var(--cody-bg), 0.96);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgb(var(--cody-border));
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.08);
+  padding-block: 1.2rem;
+  transform: translateY(100%);
+  transition: transform var(--cody-duration-normal) var(--cody-ease-editorial);
+}
+
+.cody-sticky-atc.is-visible {
+  transform: translateY(0);
+}
+
+.cody-sticky-atc__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.cody-sticky-atc__product {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+}
+
+.cody-sticky-atc__thumb {
+  width: 4.4rem;
+  height: 5.8rem;
+  object-fit: cover;
+}
+
+/* 4. Size Guide Table inside Modal
+   ========================================================================== */
+.cody-size-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  font-size: 1.35rem;
+}
+
+.cody-size-table th,
+.cody-size-table td {
+  padding: 1.2rem 1.6rem;
+  border: 1px solid rgb(var(--cody-border));
+  text-align: center;
+}
+
+.cody-size-table th {
+  background-color: rgb(var(--cody-surface));
+  font-size: 1.15rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}

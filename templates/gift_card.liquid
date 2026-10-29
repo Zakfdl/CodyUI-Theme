@@ -1,0 +1,28 @@
+{% layout none %}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{{ 'gift_cards.issued.title' | t: value: gift_card.initial_value | money_without_trailing_zeros, shop: shop.name }}</title>
+    {% render 'cody-css-vars' %}
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ content_for_header }}
+  </head>
+  <body class="cody-body color-scheme-1" style="text-align: center; justify-content: center; padding: 4.8rem 2rem;">
+    <main class="cody-container cody-container--narrow">
+      <span class="cody-eyebrow">{{ shop.name }}</span>
+      <h1 class="cody-display-lg">{{ 'gift_cards.issued.subtext' | t }}</h1>
+      <p class="cody-h2">{{ gift_card.balance | money }}</p>
+      <div style="display: inline-block; padding: 1.6rem 3.2rem; border: 1px solid rgb(var(--cody-border)); font-size: 2rem; letter-spacing: 0.16em; margin-block: 2.4rem;">
+        {{ gift_card.code | format_code }}
+      </div>
+      <div>
+        <a href="{{ shop.url }}" class="cody-btn cody-btn--primary" target="_blank" rel="noopener">
+          {{ 'gift_cards.issued.shop_link' | t }}
+        </a>
+      </div>
+    </main>
+  </body>
+</html>

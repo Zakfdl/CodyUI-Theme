@@ -1,0 +1,54 @@
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "blocks": {
+        "sub-1": {
+          "type": "subcollection",
+          "settings": {
+            "custom_title": "Outerwear"
+          }
+        },
+        "sub-2": {
+          "type": "subcollection",
+          "settings": {
+            "custom_title": "Knitwear"
+          }
+        },
+        "sub-3": {
+          "type": "subcollection",
+          "settings": {
+            "custom_title": "Tailoring"
+          }
+        },
+        "sub-4": {
+          "type": "subcollection",
+          "settings": {
+            "custom_title": "Dresses"
+          }
+        }
+      },
+      "block_order": ["sub-1", "sub-2", "sub-3", "sub-4"],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "CURATED COLLECTION",
+        "show_collection_description": true,
+        "show_collection_image": false
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "full_width": false,
+        "enable_filtering": true,
+        "filter_layout": "drawer",
+        "enable_sorting": true,
+        "enable_grid_switcher": true
+      }
+    }
+  },
+  "order": ["banner", "product-grid"]
+}

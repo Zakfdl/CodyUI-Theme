@@ -1,0 +1,86 @@
+<section
+  class="cody-section color-{{ section.settings.color_scheme }}"
+  data-product-recommendations
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.products_to_show }}"
+>
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <div class="cody-container">
+      <div class="cody-section-header">
+        <div>
+          <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+          <h2 class="cody-h2" style="margin-bottom: 0;">{{ section.settings.heading | escape }}</h2>
+        </div>
+      </div>
+
+      <div class="cody-grid cody-grid--{{ section.settings.columns_desktop }}">
+        {%- for recommendation in recommendations.products -%}
+          {% render 'card-product', card_product: recommendation %}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const recEl = document.querySelector('[data-product-recommendations]');
+    if (!recEl || !recEl.dataset.url) return;
+
+    fetch(recEl.dataset.url)
+      .then((res) => res.text())
+      .then((text) => {
+        const html = document.createElement('div');
+        html.innerHTML = text;
+        const recommendations = html.querySelector('[data-product-recommendations]');
+        if (recommendations && recommendations.innerHTML.trim().length) {
+          recEl.innerHTML = recommendations.innerHTML;
+          if (window.CodyStore) window.CodyStore.syncUI();
+        }
+      })
+      .catch(() => {});
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Recommendations",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "CURATED FOR YOU",
+      "label": "Eyebrow subtitle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "You May Also Like",
+      "label": "Heading"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4,
+      "label": "Maximum products to show"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "Desktop columns"
+    }
+  ]
+}
+{% endschema %}

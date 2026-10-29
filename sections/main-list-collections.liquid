@@ -1,0 +1,72 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container">
+    <div class="cody-section-header">
+      <div>
+        <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        <h1 class="cody-display-lg" style="margin-bottom: 0;">{{ section.settings.title | escape }}</h1>
+      </div>
+    </div>
+
+    <div class="cody-grid cody-grid--{{ section.settings.columns_desktop }}">
+      {%- for collection in collections -%}
+        <a href="{{ collection.url }}" class="cody-card">
+          <div class="cody-card__media-wrap cody-media cody-media--portrait">
+            {%- if collection.featured_image != blank -%}
+              <img
+                src="{{ collection.featured_image | image_url: width: 900 }}"
+                alt="{{ collection.title | escape }}"
+                class="cody-card__img--primary"
+                width="{{ collection.featured_image.width }}"
+                height="{{ collection.featured_image.height }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <div class="cody-card__info">
+            <div class="cody-card__header-row">
+              <h2 class="cody-h3" style="margin: 0;">{{ collection.title | escape }}</h2>
+              <span class="cody-text-muted">{{ 'products.facets.product_count_simple' | t: count: collection.all_products_count }}</span>
+            </div>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collections List Page",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow subtitle",
+      "default": "SEASONAL ARCHIVE"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "All Collections"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Desktop columns"
+    }
+  ]
+}
+{% endschema %}

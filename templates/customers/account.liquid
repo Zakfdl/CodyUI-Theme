@@ -1,0 +1,57 @@
+<section class="cody-section color-scheme-1">
+  <div class="cody-container">
+    <div class="cody-section-header">
+      <div>
+        <span class="cody-eyebrow">CLIENT DASHBOARD</span>
+        <h1 class="cody-h1" style="margin-bottom: 0;">{{ 'customer.account.title' | t }}</h1>
+      </div>
+      <a href="{{ routes.account_logout_url }}" class="cody-btn cody-btn--outline cody-btn--sm">
+        {{ 'customer.log_out' | t }}
+      </a>
+    </div>
+
+    <div class="cody-grid" style="grid-template-columns: 2fr 1fr; gap: 4.8rem;">
+      <div>
+        <h2 class="cody-h3">{{ 'customer.orders.title' | t }}</h2>
+        {%- paginate customer.orders by 20 -%}
+          {%- if customer.orders.size > 0 -%}
+            <table class="cody-cart-table">
+              <thead>
+                <tr>
+                  <th>{{ 'customer.orders.order_number' | t }}</th>
+                  <th>{{ 'customer.orders.date' | t }}</th>
+                  <th>{{ 'customer.orders.payment_status' | t }}</th>
+                  <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+                  <th>{{ 'customer.orders.total' | t }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {%- for order in customer.orders -%}
+                  <tr>
+                    <td><a href="{{ order.customer_url }}" class="cody-link-editorial">{{ order.name }}</a></td>
+                    <td>{{ order.created_at | time_tag: format: 'date' }}</td>
+                    <td>{{ order.financial_status_label }}</td>
+                    <td>{{ order.fulfillment_status_label }}</td>
+                    <td>{{ order.total_net_amount | money_with_currency }}</td>
+                  </tr>
+                {%- endfor -%}
+              </tbody>
+            </table>
+          {%- else -%}
+            <p class="cody-text-muted">{{ 'customer.orders.none' | t }}</p>
+          {%- endif -%}
+        {%- endpaginate -%}
+      </div>
+
+      <div>
+        <h2 class="cody-h3">{{ 'customer.account.details' | t }}</h2>
+        <div class="cody-text-muted" style="margin-bottom: 2rem;">
+          {{ customer.default_address | format_address }}
+        </div>
+        <a href="{{ routes.account_addresses_url }}" class="cody-btn cody-btn--outline cody-btn--sm">
+          {{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

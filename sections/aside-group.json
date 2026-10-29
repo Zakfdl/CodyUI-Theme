@@ -1,0 +1,28 @@
+{
+  "name": "Popups & Overlays Group",
+  "type": "custom.aside",
+  "sections": {
+    "promotion-popup": {
+      "type": "promotion-popup",
+      "settings": {
+        "enable_popup": false,
+        "color_scheme": "scheme-1",
+        "delay_seconds": 8,
+        "eyebrow": "PRIVATE INVITATION",
+        "heading": "Unlock 10% Off Your First Acquisition",
+        "subtext": "Join our private client list for priority access to limited runway capsules and seasonal archive events.",
+        "button_label": "Unlock Private Access"
+      }
+    },
+    "current-sales-popup": {
+      "type": "current-sales-popup",
+      "settings": {
+        "enable_sales_popup": false,
+        "color_scheme": "scheme-1",
+        "sample_product_title": "Double-Breasted Virgin Wool Coat",
+        "cities_list": "Paris, Milan, New York, London, Geneva, Tokyo"
+      }
+    }
+  },
+  "order": ["promotion-popup", "current-sales-popup"]
+}

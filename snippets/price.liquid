@@ -1,0 +1,56 @@
+{%- comment -%}
+  CodyUI Fashion — Reusable Price Snippet
+  Accepts:
+  - product: {Object} Product or Variant object
+  - use_variant: {Boolean} Renders selected or first available variant price
+  - price_class: {String} Extra CSS class
+{%- endcomment -%}
+{%- liquid
+  if use_variant
+    assign target = product.selected_or_first_available_variant
+  else
+    assign target = product
+  endif
+
+  assign compare_at_price = target.compare_at_price
+  assign price = target.price | default: 19900
+  assign money_price = price | money
+  if settings.currency_code_enabled
+    assign money_price = price | money_with_currency
+  endif
+
+  if target == product and product.price_varies
+    assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+  endif
+-%}
+
+<div class="cody-price {{ price_class }}">
+  {%- if compare_at_price > price -%}
+    <span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
+    <span class="cody-price__sale">{{ money_price }}</span>
+    <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+    <s class="cody-price__compare">
+      {%- if settings.currency_code_enabled -%}
+        {{ compare_at_price | money_with_currency }}
+      {%- else -%}
+        {{ compare_at_price | money }}
+      {%- endif -%}
+    </s>
+  {%- else -%}
+    <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+    <span class="cody-price__regular">{{ money_price }}</span>
+  {%- endif -%}
+
+  {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
+    <small class="cody-price__unit cody-text-muted">
+      <span>{{ product.selected_or_first_available_variant.unit_price | money }}</span>
+      <span aria-hidden="true">/</span>
+      <span>
+        {%- if product.selected_or_first_available_variant.unit_price_measurement.reference_value != 1 -%}
+          {{- product.selected_or_first_available_variant.unit_price_measurement.reference_value -}}
+        {%- endif -%}
+        {{ product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}
+      </span>
+    </small>
+  {%- endif -%}
+</div>

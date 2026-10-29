@@ -1,0 +1,162 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-editorial-slideshow",
+      "blocks": {
+        "slide-1": {
+          "type": "slide",
+          "settings": {
+            "overlay_opacity": 40,
+            "text_alignment": "left",
+            "eyebrow": "AUTUMN / WINTER RUNWAY CAPSULE",
+            "heading": "The Architecture of Quiet Luxury",
+            "subheading": "Sculpted silhouettes in Italian double-faced cashmere, raw mulberry silk, and structured virgin wool.",
+            "button_label_1": "Explore Women",
+            "button_label_2": "View Lookbook"
+          }
+        }
+      },
+      "block_order": ["slide-1"],
+      "settings": {
+        "hero_height": 85
+      }
+    },
+    "marquee": {
+      "type": "marquee-ticker",
+      "blocks": {
+        "m-1": { "type": "item", "settings": { "text": "AUTUMN / WINTER RUNWAY EDITION" } },
+        "m-2": { "type": "item", "settings": { "text": "TRACEABLE ITALIAN CASHMERE" } },
+        "m-3": { "type": "item", "settings": { "text": "COMPLIMENTARY EXPRESS GLOBAL COURIER" } }
+      },
+      "block_order": ["m-1", "m-2", "m-3"],
+      "settings": {
+        "color_scheme": "scheme-3",
+        "speed": 25
+      }
+    },
+    "collection_tabs": {
+      "type": "featured-collection-tabs",
+      "blocks": {
+        "tab-1": { "type": "tab", "settings": { "tab_label": "New Arrivals" } },
+        "tab-2": { "type": "tab", "settings": { "tab_label": "Tailoring & Coats" } },
+        "tab-3": { "type": "tab", "settings": { "tab_label": "Silk & Knitwear" } }
+      },
+      "block_order": ["tab-1", "tab-2", "tab-3"],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "SEASONAL WARDROBE",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "show_view_all": true
+      }
+    },
+    "bento_banners": {
+      "type": "banners-editorial-grid",
+      "blocks": {
+        "b-1": {
+          "type": "banner",
+          "settings": {
+            "column_span": "8",
+            "eyebrow": "WOMENSWEAR",
+            "heading": "Architectural Coat Edit",
+            "button_label": "Discover Capsule"
+          }
+        },
+        "b-2": {
+          "type": "banner",
+          "settings": {
+            "column_span": "4",
+            "eyebrow": "ACCESSORIES",
+            "heading": "Sculpted Leather Goods",
+            "button_label": "Explore Bags"
+          }
+        }
+      },
+      "block_order": ["b-1", "b-2"],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "CURATED DEPARTMENTS",
+        "heading": "The Seasonal Edit",
+        "full_width": false
+      }
+    },
+    "lookbook": {
+      "type": "lookbook-shop-the-look",
+      "blocks": {
+        "pin-1": {
+          "type": "hotspot",
+          "settings": {
+            "hotspot_x": 44,
+            "hotspot_y": 32
+          }
+        },
+        "pin-2": {
+          "type": "hotspot",
+          "settings": {
+            "hotspot_x": 54,
+            "hotspot_y": 64
+          }
+        }
+      },
+      "block_order": ["pin-1", "pin-2"],
+      "settings": {
+        "color_scheme": "scheme-2",
+        "eyebrow": "SHOP THE RUNWAY LOOK",
+        "heading": "Look 04 — Milan Atelier"
+      }
+    },
+    "testimonials": {
+      "type": "testimonials-editorial",
+      "blocks": {
+        "t-1": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "The tailoring and drape of the double-faced cashmere coat rival heritage Milanese houses at twice the price.",
+            "author": "Elena Rostova",
+            "role": "Verified Atelier Client — Paris"
+          }
+        },
+        "t-2": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Uncompromising fabric weight, whisper-quiet luxury hardware, and presentation that feels like a private showroom.",
+            "author": "Camille Laurent",
+            "role": "Fashion Director — Geneva"
+          }
+        },
+        "t-3": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Every piece in my capsule wardrobe from CodyUI transitions effortlessly from morning flights to evening dinners.",
+            "author": "Sophia Vance",
+            "role": "Verified Atelier Client — New York"
+          }
+        }
+      },
+      "block_order": ["t-1", "t-2", "t-3"],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "CLIENT & PRESS ACCLAIM",
+        "heading": "In The Words of Our Clients"
+      }
+    },
+    "journal": {
+      "type": "featured-blog",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "THE ATELIER JOURNAL",
+        "heading": "Stories, Craft & Runway Notes",
+        "post_limit": 3
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "marquee",
+    "collection_tabs",
+    "bento_banners",
+    "lookbook",
+    "testimonials",
+    "journal"
+  ]
+}

@@ -1,0 +1,56 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container">
+    <div class="cody-section-header">
+      <div>
+        <span class="cody-eyebrow">EDITORIAL JOURNAL</span>
+        <h1 class="cody-display-lg" style="margin-bottom: 0;">{{ blog.title | escape }}</h1>
+      </div>
+    </div>
+
+    {%- paginate blog.articles by 9 -%}
+      <div class="cody-grid cody-grid--3">
+        {%- for article in blog.articles -%}
+          <article class="cody-card">
+            <a href="{{ article.url }}" class="cody-card__media-wrap cody-media cody-media--landscape">
+              {%- if article.image -%}
+                <img
+                  src="{{ article.image | image_url: width: 900 }}"
+                  alt="{{ article.title | escape }}"
+                  class="cody-card__img--primary"
+                  width="{{ article.image.width }}"
+                  height="{{ article.image.height }}"
+                  loading="lazy"
+                >
+              {%- endif -%}
+            </a>
+            <div class="cody-card__info" style="padding-top: 1.8rem;">
+              <span class="cody-eyebrow" style="margin-bottom: 0.4rem;">{{ article.published_at | time_tag: format: 'date' }}</span>
+              <h2 class="cody-h3" style="margin-bottom: 0.8rem;"><a href="{{ article.url }}">{{ article.title | escape }}</a></h2>
+              <p class="cody-text-muted" style="margin: 0 0 1.4rem;">
+                {{ article.excerpt_or_content | strip_html | truncatewords: 28 }}
+              </p>
+              <a href="{{ article.url }}" class="cody-link-editorial">
+                <span>{{ 'blogs.article.read_more' | t }}</span>
+                {% render 'cody-icons', icon: 'arrow-right', size: 14 %}
+              </a>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Blog Journal Grid",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,34 @@
+<section class="cody-section color-scheme-1">
+  <div class="cody-container">
+    <div class="cody-section-header">
+      <div>
+        <span class="cody-eyebrow">{{ 'customer.order.date_html' | t: date: order.created_at | time_tag: format: 'date' }}</span>
+        <h1 class="cody-h1" style="margin-bottom: 0;">{{ 'customer.order.title' | t: name: order.name }}</h1>
+      </div>
+      <a href="{{ routes.account_url }}" class="cody-link-editorial">{{ 'customer.account.return' | t }}</a>
+    </div>
+
+    <table class="cody-cart-table">
+      <thead>
+        <tr>
+          <th>{{ 'customer.order.product' | t }}</th>
+          <th>{{ 'customer.order.sku' | t }}</th>
+          <th>{{ 'customer.order.price' | t }}</th>
+          <th>{{ 'customer.order.quantity' | t }}</th>
+          <th>{{ 'customer.order.total' | t }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for line_item in order.line_items -%}
+          <tr>
+            <td><a href="{{ line_item.product.url }}">{{ line_item.title }}</a></td>
+            <td>{{ line_item.sku }}</td>
+            <td>{{ line_item.final_price | money }}</td>
+            <td>{{ line_item.quantity }}</td>
+            <td>{{ line_item.final_line_price | money }}</td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+  </div>
+</section>

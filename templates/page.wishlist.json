@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-wishlist",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "PERSONAL CURATION",
+        "columns_desktop": 4
+      }
+    }
+  },
+  "order": ["main"]
+}

@@ -1,0 +1,97 @@
+{%- comment -%}
+  CodyUI Fashion — Predictive Search Section Rendering Endpoint
+{%- endcomment -%}
+{%- if predictive_search.performed -%}
+  {%- assign total_results = predictive_search.resources.products.size
+    | plus: predictive_search.resources.collections.size
+    | plus: predictive_search.resources.articles.size
+    | plus: predictive_search.resources.pages.size
+  -%}
+
+  <div id="predictive-search-results" role="listbox">
+    {%- if total_results > 0 -%}
+      {%- if predictive_search.resources.collections.size > 0 -%}
+        <div class="cody-predictive-results__group">
+          <h3 class="cody-predictive-results__heading">{{ 'general.search.popular_collections' | t }}</h3>
+          <div class="cody-search-trending__pills">
+            {%- for collection in predictive_search.resources.collections -%}
+              <a href="{{ collection.url }}" class="cody-search-pill">
+                {{ collection.title | escape }}
+              </a>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if predictive_search.resources.products.size > 0 -%}
+        <div class="cody-predictive-results__group">
+          <h3 class="cody-predictive-results__heading">{{ 'general.search.products' | t }}</h3>
+          <ul class="cody-predictive-list" role="group" aria-label="{{ 'general.search.products' | t }}">
+            {%- for product in predictive_search.resources.products -%}
+              <li class="cody-predictive-list__item" role="option">
+                <a href="{{ product.url }}" class="cody-predictive-item">
+                  <div class="cody-media cody-media--portrait">
+                    {%- if product.featured_media != blank -%}
+                      <img
+                        src="{{ product.featured_media | image_url: width: 180 }}"
+                        alt="{{ product.featured_media.alt | escape }}"
+                        width="90"
+                        height="120"
+                        loading="lazy"
+                      >
+                    {%- endif -%}
+                  </div>
+                  <div class="cody-predictive-item__info">
+                    {%- if settings.predictive_search_show_vendor and product.vendor != blank -%}
+                      <div class="cody-predictive-item__vendor">{{ product.vendor }}</div>
+                    {%- endif -%}
+                    <div class="cody-predictive-item__title">{{ product.title | escape }}</div>
+                    {%- if settings.predictive_search_show_price -%}
+                      <div class="cody-predictive-item__price">
+                        {%- if product.compare_at_price > product.price -%}
+                          <span style="color: var(--cody-color-sale);">{{ product.price | money }}</span>
+                          <s class="cody-text-muted">{{ product.compare_at_price | money }}</s>
+                        {%- else -%}
+                          <span>{{ product.price | money }}</span>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- if predictive_search.resources.articles.size > 0 or predictive_search.resources.pages.size > 0 -%}
+        <div class="cody-predictive-results__group">
+          <h3 class="cody-predictive-results__heading">{{ 'general.search.articles' | t }}</h3>
+          <ul class="cody-megamenu__sublist">
+            {%- for article in predictive_search.resources.articles -%}
+              <li>
+                <a href="{{ article.url }}" class="cody-megamenu__sublink">{{ article.title | escape }}</a>
+              </li>
+            {%- endfor -%}
+            {%- for page in predictive_search.resources.pages -%}
+              <li>
+                <a href="{{ page.url }}" class="cody-megamenu__sublink">{{ page.title | escape }}</a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      <div style="margin-top: 2.8rem;">
+        <button type="submit" form="CodyHeaderSearchForm" class="cody-btn cody-btn--outline cody-btn--full">
+          {{ 'general.search.view_all' | t: terms: predictive_search.terms }}
+          {% render 'cody-icons', icon: 'arrow-right', size: 16 %}
+        </button>
+      </div>
+    {%- else -%}
+      <p class="cody-text-muted" style="margin-top: 2.4rem;">
+        {{ 'general.search.no_results' | t: terms: predictive_search.terms }}
+      </p>
+    {%- endif -%}
+  </div>
+{%- endif -%}

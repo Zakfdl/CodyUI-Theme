@@ -1,0 +1,115 @@
+{{ 'component-facets.css' | asset_url | stylesheet_tag }}
+
+<section class="cody-collection-hero color-{{ section.settings.color_scheme }}">
+  <div class="cody-container">
+    <div class="cody-collection-hero__grid{% if section.settings.show_collection_image and collection.image %} cody-collection-hero__grid--split{% endif %}">
+      <div>
+        <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        <h1 class="cody-display-lg" style="margin-bottom: 0;">
+          {{ collection.title | escape }}
+        </h1>
+        {%- if section.settings.show_collection_description and collection.description != blank -%}
+          <div class="cody-collection-hero__description cody-rte">
+            {{ collection.description }}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.show_collection_image and collection.image -%}
+        <div class="cody-media cody-media--landscape">
+          <img
+            src="{{ collection.image | image_url: width: 1100 }}"
+            alt="{{ collection.image.alt | default: collection.title | escape }}"
+            width="{{ collection.image.width }}"
+            height="{{ collection.image.height }}"
+            loading="eager"
+          >
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="cody-subcollections" role="navigation" aria-label="Subcollections">
+        {%- for block in section.blocks -%}
+          {%- assign sub_col = block.settings.collection -%}
+          {%- assign sub_title = block.settings.custom_title | default: sub_col.title | default: 'Runway Capsule' -%}
+          {%- assign sub_img = block.settings.custom_image | default: sub_col.featured_image -%}
+          <a
+            href="{{ sub_col.url | default: '#' }}"
+            class="cody-subcollection-pill{% if sub_col.handle == collection.handle %} is-active{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            {%- if sub_img != blank -%}
+              <span class="cody-subcollection-pill__thumb">
+                <img
+                  src="{{ sub_img | image_url: width: 120 }}"
+                  alt="{{ sub_title | escape }}"
+                  width="36"
+                  height="36"
+                  loading="lazy"
+                >
+              </span>
+            {%- endif -%}
+            <span class="cody-subcollection-pill__title">{{ sub_title | escape }}</span>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection Banner & Pills",
+  "class": "cody-section-collection-banner",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Editorial eyebrow label",
+      "default": "CURATED COLLECTION"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "default": true,
+      "label": "Show collection description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "default": false,
+      "label": "Show collection hero image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subcollection",
+      "name": "Subcollection Visual Pill",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "custom_title",
+          "label": "Custom label override"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom thumbnail override"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

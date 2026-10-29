@@ -1,0 +1,346 @@
+{{ 'component-facets.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign active_filters_count = 0
+  for f in collection.filters
+    assign active_filters_count = active_filters_count | plus: f.active_values.size
+    if f.type == 'price_range'
+      if f.min_value.value != nil or f.max_value.value != nil
+        assign active_filters_count = active_filters_count | plus: 1
+      endif
+    endif
+  endfor
+-%}
+
+<section
+  id="CodyCollectionProductGridContainer"
+  data-section-id="{{ section.id }}"
+  class="cody-section color-{{ section.settings.color_scheme }}"
+>
+  <div class="cody-container{% if section.settings.full_width %} cody-container--fluid{% endif %}">
+    {%- comment -%} Collection Toolbar {%- endcomment -%}
+    <div class="cody-collection-toolbar">
+      <div class="cody-toolbar__left">
+        {%- if section.settings.enable_filtering -%}
+          <button
+            type="button"
+            class="cody-toolbar__filter-btn"
+            data-drawer-open="CodyFilterDrawer"
+          >
+            {% render 'cody-icons', icon: 'filter', size: 16 %}
+            <span>{{ 'products.facets.filter_and_sort' | t }}</span>
+            {%- if active_filters_count > 0 -%}
+              <span>({{ active_filters_count }})</span>
+            {%- endif -%}
+          </button>
+        {%- endif -%}
+
+        <span class="cody-toolbar__count">
+          {{ 'products.facets.product_count_simple' | t: count: collection.products_count }}
+        </span>
+      </div>
+
+      <div class="cody-toolbar__right">
+        {%- if section.settings.enable_sorting -%}
+          <form id="CodyToolbarSortForm" class="cody-toolbar__sort" data-facets-form>
+            <label for="CodySortBySelect" class="cody-text-muted">{{ 'products.facets.sort_by_label' | t }}</label>
+            <select name="sort_by" id="CodySortBySelect" class="cody-toolbar__sort-select">
+              {%- for option in collection.sort_options -%}
+                <option
+                  value="{{ option.value | escape }}"
+                  {% if option.value == sort_by %}selected{% endif %}
+                >
+                  {{ option.name | escape }}
+                </option>
+              {%- endfor -%}
+            </select>
+          </form>
+        {%- endif -%}
+
+        {%- if section.settings.enable_grid_switcher -%}
+          <div class="cody-toolbar__grid-switcher" role="group" aria-label="Grid layout switcher">
+            <button
+              type="button"
+              class="cody-grid-switch-btn{% if section.settings.columns_desktop == 2 %} is-active{% endif %}"
+              data-grid-cols="2"
+              aria-label="2 columns"
+            >
+              {% render 'cody-icons', icon: 'grid-2', size: 18 %}
+            </button>
+            <button
+              type="button"
+              class="cody-grid-switch-btn{% if section.settings.columns_desktop == 3 %} is-active{% endif %}"
+              data-grid-cols="3"
+              aria-label="3 columns"
+            >
+              {% render 'cody-icons', icon: 'grid-3', size: 18 %}
+            </button>
+            <button
+              type="button"
+              class="cody-grid-switch-btn{% if section.settings.columns_desktop == 4 %} is-active{% endif %}"
+              data-grid-cols="4"
+              aria-label="4 columns"
+            >
+              {% render 'cody-icons', icon: 'grid-4', size: 18 %}
+            </button>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} Active Filter Pills Row {%- endcomment -%}
+    {%- if active_filters_count > 0 -%}
+      <div class="cody-active-facets">
+        {%- for filter in collection.filters -%}
+          {%- for value in filter.active_values -%}
+            <a href="{{ value.url_to_remove }}" class="cody-active-facet-pill" data-facet-remove>
+              <span>{{ filter.label }}: {{ value.label | escape }}</span>
+              <span aria-hidden="true">&times;</span>
+            </a>
+          {%- endfor -%}
+          {%- if filter.type == 'price_range' -%}
+            {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+              <a href="{{ filter.url_to_remove }}" class="cody-active-facet-pill" data-facet-remove>
+                <span>
+                  {{ filter.min_value.value | default: 0 | money }} &ndash; {{ filter.max_value.value | default: filter.range_max | money }}
+                </span>
+                <span aria-hidden="true">&times;</span>
+              </a>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        <a href="{{ collection.url }}?sort_by={{ sort_by }}" class="cody-link-editorial" data-facet-remove style="margin-left: 0.8rem;">
+          {{ 'products.facets.clear_all' | t }}
+        </a>
+      </div>
+    {%- endif -%}
+
+    {%- paginate collection.products by section.settings.products_per_page -%}
+      <div class="{% if section.settings.filter_layout == 'sidebar' and section.settings.enable_filtering %}cody-collection-layout--sidebar{% endif %}">
+        {%- if section.settings.filter_layout == 'sidebar' and section.settings.enable_filtering -%}
+          <aside class="cody-facets-sidebar">
+            {% render 'facets', results: collection, form_id: 'CodySidebarFacetsForm' %}
+          </aside>
+        {%- endif -%}
+
+        <div>
+          {%- if collection.products.size == 0 -%}
+            <div style="text-align: center; padding: 6rem 2rem;">
+              <h2 class="cody-h3">{{ 'sections.collection_template.empty' | t }}</h2>
+              <p class="cody-text-muted">
+                {{ 'sections.collection_template.use_fewer_filters_html' | t: link: collection.url, class: 'cody-link-editorial' }}
+              </p>
+            </div>
+          {%- else -%}
+            <div id="CodyProductGridList" class="cody-grid cody-grid--{{ section.settings.columns_desktop }}">
+              {%- assign in_grid_block = section.blocks | where: 'type', 'in_grid_banner' | first -%}
+              {%- for product in collection.products -%}
+                {%- if in_grid_block != nil and forloop.index == in_grid_block.settings.banner_position -%}
+                  <div class="cody-in-grid-spotlight" {{ in_grid_block.shopify_attributes }}>
+                    {%- if in_grid_block.settings.image != blank -%}
+                      <img
+                        src="{{ in_grid_block.settings.image | image_url: width: 800 }}"
+                        alt="{{ in_grid_block.settings.heading | escape }}"
+                        class="cody-in-grid-spotlight__bg"
+                        width="400"
+                        height="533"
+                        loading="lazy"
+                      >
+                    {%- endif -%}
+                    <div class="cody-in-grid-spotlight__content">
+                      <span class="cody-eyebrow" style="color: rgba(255,255,255,0.8);">{{ in_grid_block.settings.eyebrow | escape }}</span>
+                      <h3 class="cody-h3" style="color: #ffffff; margin-bottom: 1.4rem;">{{ in_grid_block.settings.heading | escape }}</h3>
+                      {%- if in_grid_block.settings.button_label != blank -%}
+                        <a href="{{ in_grid_block.settings.button_link | default: '#' }}" class="cody-btn cody-btn--primary cody-btn--sm">
+                          {{ in_grid_block.settings.button_label | escape }}
+                        </a>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                {%- endif -%}
+
+                {% render 'card-product', card_product: product %}
+              {%- endfor -%}
+            </div>
+
+            {%- if paginate.pages > 1 -%}
+              <nav class="cody-pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+                {%- if paginate.previous -%}
+                  <a href="{{ paginate.previous.url }}" class="cody-pagination__item" aria-label="{{ 'general.pagination.previous' | t }}">
+                    {% render 'cody-icons', icon: 'chevron-left', size: 16 %}
+                  </a>
+                {%- endif -%}
+
+                {%- for part in paginate.parts -%}
+                  {%- if part.is_link -%}
+                    <a href="{{ part.url }}" class="cody-pagination__item">{{ part.title }}</a>
+                  {%- else -%}
+                    <span class="cody-pagination__item{% if part.title == paginate.current_page %} is-current{% endif %}">
+                      {{ part.title }}
+                    </span>
+                  {%- endif -%}
+                {%- endfor -%}
+
+                {%- if paginate.next -%}
+                  <a href="{{ paginate.next.url }}" class="cody-pagination__item" aria-label="{{ 'general.pagination.next' | t }}">
+                    {% render 'cody-icons', icon: 'chevron-right', size: 16 %}
+                  </a>
+                {%- endif -%}
+              </nav>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{%- comment -%} Slide-Out Faceted Filter Drawer {%- endcomment -%}
+{%- if section.settings.enable_filtering -%}
+  <cody-drawer id="CodyFilterDrawer" class="cody-drawer cody-drawer--left" aria-hidden="true">
+    <div class="cody-drawer__backdrop" data-drawer-close></div>
+    <div class="cody-drawer__panel" role="dialog" aria-modal="true" aria-label="{{ 'products.facets.filter_and_sort' | t }}">
+      <div class="cody-drawer__header">
+        <h2 class="cody-drawer__title">{{ 'products.facets.filter_and_sort' | t }}</h2>
+        <button type="button" class="cody-drawer__close" data-drawer-close aria-label="{{ 'accessibility.close' | t }}">
+          {% render 'cody-icons', icon: 'close', size: 20 %}
+        </button>
+      </div>
+
+      <div id="CodyFacetDrawerBody" class="cody-drawer__body">
+        {% render 'facets', results: collection, form_id: 'CodyDrawerFacetsForm' %}
+      </div>
+
+      <div class="cody-drawer__footer">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <a href="{{ collection.url }}" class="cody-btn cody-btn--outline cody-btn--full" data-facet-remove>
+            {{ 'products.facets.clear_all' | t }}
+          </a>
+          <button type="button" class="cody-btn cody-btn--primary cody-btn--full" data-drawer-close>
+            {{ 'products.facets.apply' | t }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </cody-drawer>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collection Product Grid",
+  "class": "cody-section-collection-grid",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 36,
+      "step": 4,
+      "default": 16,
+      "label": "Products per page"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "Default desktop columns"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": false,
+      "label": "Full-bleed editorial grid"
+    },
+    {
+      "type": "header",
+      "content": "Filtering, Sorting & Column Switcher"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "Enable Storefront 2.0 faceted filtering"
+    },
+    {
+      "type": "select",
+      "id": "filter_layout",
+      "label": "Desktop filter layout",
+      "options": [
+        { "value": "drawer", "label": "Slide-Out Editorial Filter Drawer" },
+        { "value": "sidebar", "label": "Sticky Left Sidebar + Drawer" }
+      ],
+      "default": "drawer"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "Enable sorting dropdown"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_grid_switcher",
+      "default": true,
+      "label": "Enable live 2 / 3 / 4 column switcher on toolbar"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "in_grid_banner",
+      "name": "In-Grid Lookbook Card",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "banner_position",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "default": 5,
+          "label": "Insert at grid position"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Editorial image"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow label",
+          "default": "THE RUNWAY EDIT"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Card heading",
+          "default": "Architectural Wool & Silk Tailoring"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Explore Lookbook"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,40 @@
+<section class="cody-section color-scheme-1">
+  <div class="cody-container cody-container--narrow" style="max-width: 48rem;">
+    <div style="text-align: center; margin-bottom: 3.6rem;">
+      <span class="cody-eyebrow">NEW CLIENT PROFILE</span>
+      <h1 class="cody-h1" style="margin-bottom: 0;">{{ 'customer.register.title' | t }}</h1>
+    </div>
+
+    {%- form 'create_customer', novalidate: 'novalidate' -%}
+      {%- if form.errors -%}
+        <div style="color: var(--cody-color-sale); margin-bottom: 2rem;">
+          {{ form.errors | default_errors }}
+        </div>
+      {%- endif -%}
+
+      <div class="cody-field" style="margin-bottom: 1.8rem;">
+        <label class="cody-label" for="RegisterForm-FirstName">{{ 'customer.register.first_name' | t }}</label>
+        <input type="text" name="customer[first_name]" id="RegisterForm-FirstName" class="cody-input" autocomplete="given-name">
+      </div>
+
+      <div class="cody-field" style="margin-bottom: 1.8rem;">
+        <label class="cody-label" for="RegisterForm-LastName">{{ 'customer.register.last_name' | t }}</label>
+        <input type="text" name="customer[last_name]" id="RegisterForm-LastName" class="cody-input" autocomplete="family-name">
+      </div>
+
+      <div class="cody-field" style="margin-bottom: 1.8rem;">
+        <label class="cody-label" for="RegisterForm-email">{{ 'customer.register.email' | t }}</label>
+        <input type="email" name="customer[email]" id="RegisterForm-email" class="cody-input" autocomplete="email" required>
+      </div>
+
+      <div class="cody-field" style="margin-bottom: 2.4rem;">
+        <label class="cody-label" for="RegisterForm-password">{{ 'customer.register.password' | t }}</label>
+        <input type="password" name="customer[password]" id="RegisterForm-password" class="cody-input" required>
+      </div>
+
+      <button type="submit" class="cody-btn cody-btn--primary cody-btn--full">
+        {{ 'customer.register.submit' | t }}
+      </button>
+    {%- endform -%}
+  </div>
+</section>

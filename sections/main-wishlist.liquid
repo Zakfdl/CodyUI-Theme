@@ -1,0 +1,120 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container">
+    <div class="cody-section-header">
+      <div>
+        <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        <h1 class="cody-h1" style="margin-bottom: 0;">{{ page.title | default: 'Saved Wardrobe' }}</h1>
+      </div>
+    </div>
+
+    <div id="CodyWishlistGrid" class="cody-grid cody-grid--{{ section.settings.columns_desktop }}"></div>
+
+    <div id="CodyWishlistEmpty" style="text-align: center; padding: 6rem 2rem;" hidden>
+      <p class="cody-h3" style="margin-bottom: 2.4rem;">{{ 'general.wishlist.empty' | t }}</p>
+      <a href="{{ routes.all_products_collection_url }}" class="cody-btn cody-btn--primary">
+        {{ 'general.wishlist.explore' | t }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const grid = document.getElementById('CodyWishlistGrid');
+    const emptyState = document.getElementById('CodyWishlistEmpty');
+    if (!grid || !window.CodyStore) return;
+
+    function renderWishlistPage() {
+      const handles = window.CodyStore.getList(window.CodyStore.wishlistKey);
+      if (!handles.length) {
+        grid.innerHTML = '';
+        emptyState.hidden = false;
+        return;
+      }
+      emptyState.hidden = true;
+
+      Promise.all(
+        handles.map((handle) =>
+          fetch(`${window.routes.root_url}products/${handle}.js`)
+            .then((r) => (r.ok ? r.json() : null))
+            .catch(() => null)
+        )
+      ).then((products) => {
+        const valid = products.filter(Boolean);
+        if (!valid.length) {
+          emptyState.hidden = false;
+          return;
+        }
+        grid.innerHTML = valid
+          .map((p) => {
+            const priceFormatted = (p.price / 100).toLocaleString(undefined, {
+              minimumFractionDigits: 2
+            });
+            return `
+              <article class="cody-card" data-product-card data-product-handle="${p.handle}">
+                <div class="cody-card__media-wrap cody-media cody-media--portrait">
+                  <div class="cody-card__actions-top">
+                    <button type="button" class="cody-card__icon-btn is-active" data-wishlist-toggle="${p.handle}" aria-label="Remove">
+                      &times;
+                    </button>
+                  </div>
+                  <a href="${p.url}" class="cody-card__link-overlay">
+                    ${p.featured_image ? `<img src="${p.featured_image}" alt="${p.title}" loading="lazy">` : ''}
+                  </a>
+                </div>
+                <div class="cody-card__info">
+                  <span class="cody-card__vendor">${p.vendor || ''}</span>
+                  <div class="cody-card__header-row">
+                    <h3 class="cody-card__title"><a href="${p.url}">${p.title}</a></h3>
+                    <div class="cody-price">${window.codyConfig?.currencySymbol || '$'}${priceFormatted}</div>
+                  </div>
+                  <div style="margin-top: 1rem;">
+                    <button type="button" class="cody-btn cody-btn--primary cody-btn--sm cody-btn--full" data-quickview-handle="${p.handle}">
+                      {{ 'products.product.add_to_cart' | t }}
+                    </button>
+                  </div>
+                </div>
+              </article>
+            `;
+          })
+          .join('');
+      });
+    }
+
+    renderWishlistPage();
+    if (window.subscribe && window.PUB_SUB_EVENTS) {
+      window.subscribe(window.PUB_SUB_EVENTS.wishlistUpdate, renderWishlistPage);
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Wishlist Page Grid",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow subtitle",
+      "default": "PERSONAL CURATION"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Desktop columns",
+      "default": 4
+    }
+  ]
+}
+{% endschema %}

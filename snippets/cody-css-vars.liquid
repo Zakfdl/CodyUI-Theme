@@ -1,0 +1,144 @@
+{%- comment -%}
+  CodyUI Fashion — Dynamic Design Tokens & Typography Engine
+  Outputs Google Fonts / Shopify Fonts, Color Scheme CSS Variables,
+  Custom Fashion Swatch Hex Tokens, and Layout Grid Tokens.
+{%- endcomment -%}
+
+{%- liquid
+  assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
+  assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
+  assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+
+  assign google_heading_family = settings.google_heading_font_family | strip | default: 'Cormorant Garamond'
+  assign google_body_family = settings.google_body_font_family | strip | default: 'Plus Jakarta Sans'
+  assign google_heading_param = google_heading_family | replace: ' ', '+'
+  assign google_body_param = google_body_family | replace: ' ', '+'
+-%}
+
+{%- if settings.heading_font_source == 'google' or settings.body_font_source == 'google' -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  {%- if settings.heading_font_source == 'google' and settings.body_font_source == 'google' -%}
+    <link href="https://fonts.googleapis.com/css2?family={{ google_heading_param }}:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family={{ google_body_param }}:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  {%- elsif settings.heading_font_source == 'google' -%}
+    <link href="https://fonts.googleapis.com/css2?family={{ google_heading_param }}:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  {%- elsif settings.body_font_source == 'google' -%}
+    <link href="https://fonts.googleapis.com/css2?family={{ google_body_param }}:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  {%- endif -%}
+{%- endif -%}
+
+{% style %}
+  {%- if settings.body_font_source == 'shopify' -%}
+    {{ settings.type_body_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+  {%- if settings.heading_font_source == 'shopify' -%}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+  {%- assign scheme_classes = '' -%}
+  {%- for scheme in settings.color_schemes -%}
+    {%- assign scheme_classes = scheme_classes | append: ', .color-' | append: scheme.id -%}
+    {%- if forloop.index == 1 -%}
+      :root,
+    {%- endif -%}
+    .color-{{ scheme.id }} {
+      --cody-bg: {{ scheme.settings.background.red }}, {{ scheme.settings.background.green }}, {{ scheme.settings.background.blue }};
+      --cody-bg-hex: {{ scheme.settings.background }};
+      {%- if scheme.settings.background_gradient != empty -%}
+        --cody-bg-gradient: {{ scheme.settings.background_gradient }};
+      {%- else -%}
+        --cody-bg-gradient: {{ scheme.settings.background }};
+      {%- endif -%}
+      --cody-surface: {{ scheme.settings.surface.red }}, {{ scheme.settings.surface.green }}, {{ scheme.settings.surface.blue }};
+      --cody-surface-hex: {{ scheme.settings.surface }};
+      --cody-text: {{ scheme.settings.text.red }}, {{ scheme.settings.text.green }}, {{ scheme.settings.text.blue }};
+      --cody-text-hex: {{ scheme.settings.text }};
+      --cody-text-muted: {{ scheme.settings.text_muted.red }}, {{ scheme.settings.text_muted.green }}, {{ scheme.settings.text_muted.blue }};
+      --cody-text-muted-hex: {{ scheme.settings.text_muted }};
+      --cody-accent: {{ scheme.settings.accent.red }}, {{ scheme.settings.accent.green }}, {{ scheme.settings.accent.blue }};
+      --cody-accent-hex: {{ scheme.settings.accent }};
+      --cody-btn-bg: {{ scheme.settings.button.red }}, {{ scheme.settings.button.green }}, {{ scheme.settings.button.blue }};
+      --cody-btn-bg-hex: {{ scheme.settings.button }};
+      --cody-btn-text: {{ scheme.settings.button_label.red }}, {{ scheme.settings.button_label.green }}, {{ scheme.settings.button_label.blue }};
+      --cody-btn-text-hex: {{ scheme.settings.button_label }};
+      --cody-btn-secondary: {{ scheme.settings.secondary_button_label.red }}, {{ scheme.settings.secondary_button_label.green }}, {{ scheme.settings.secondary_button_label.blue }};
+      --cody-btn-secondary-hex: {{ scheme.settings.secondary_button_label }};
+      --cody-border: {{ scheme.settings.border.red }}, {{ scheme.settings.border.green }}, {{ scheme.settings.border.blue }};
+      --cody-border-hex: {{ scheme.settings.border }};
+    }
+  {%- endfor -%}
+
+  {{ scheme_classes | remove_first: ', ' }} {
+    color: rgb(var(--cody-text));
+    background-color: rgb(var(--cody-bg));
+  }
+
+  :root {
+    {%- if settings.heading_font_source == 'google' -%}
+      --cody-font-heading-family: '{{ google_heading_family }}', Georgia, serif;
+      --cody-font-heading-weight: {{ settings.heading_font_weight | default: '400' }};
+      --cody-font-heading-style: normal;
+    {%- else -%}
+      --cody-font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+      --cody-font-heading-weight: {{ settings.type_header_font.weight }};
+      --cody-font-heading-style: {{ settings.type_header_font.style }};
+    {%- endif -%}
+
+    {%- if settings.body_font_source == 'google' -%}
+      --cody-font-body-family: '{{ google_body_family }}', -apple-system, BlinkMacSystemFont, sans-serif;
+      --cody-font-body-weight: 400;
+      --cody-font-body-weight-bold: 600;
+      --cody-font-body-style: normal;
+    {%- else -%}
+      --cody-font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+      --cody-font-body-weight: {{ settings.type_body_font.weight }};
+      --cody-font-body-weight-bold: {{ body_font_bold.weight | default: 600 }};
+      --cody-font-body-style: {{ settings.type_body_font.style }};
+    {%- endif -%}
+
+    --cody-heading-scale: {{ settings.heading_scale | divided_by: 100.0 }};
+    --cody-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
+    --cody-heading-transform: {{ settings.heading_text_transform | default: 'none' }};
+    --cody-heading-tracking: {{ settings.heading_letter_spacing | divided_by: 100.0 }}em;
+    --cody-nav-tracking: {{ settings.nav_letter_spacing | divided_by: 100.0 }}em;
+
+    --cody-page-width: {{ settings.page_width | default: 1520 }}px;
+    --cody-section-spacing: {{ settings.spacing_sections | default: 0 }}px;
+    --cody-grid-gap-x: {{ settings.grid_horizontal_space | default: 16 }}px;
+    --cody-grid-gap-y: {{ settings.grid_vertical_space | default: 36 }}px;
+    --cody-radius-global: {{ settings.border_radius_global | default: 0 }}px;
+    --cody-radius-btn: {{ settings.buttons_radius | default: 0 }}px;
+    --cody-btn-border-width: {{ settings.buttons_border_thickness | default: 1 }}px;
+    --cody-btn-transform: {{ settings.buttons_text_transform | default: 'uppercase' }};
+    --cody-icon-stroke: {{ settings.icon_stroke_weight | default: '1.4' }};
+
+    --cody-color-sale: {{ settings.color_sale | default: '#A82424' }};
+    --cody-color-success: {{ settings.color_success | default: '#1E5E3A' }};
+    --cody-color-warning: {{ settings.color_warning | default: '#B86B19' }};
+    --cody-color-star: {{ settings.color_rating_star | default: '#111111' }};
+
+    --cody-ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+    --cody-ease-drawer: cubic-bezier(0.16, 1, 0.3, 1);
+    --cody-duration-fast: 200ms;
+    --cody-duration-normal: 380ms;
+    --cody-duration-slow: 650ms;
+
+    {%- comment -%} Custom Fashion Color Swatch Tokens {%- endcomment -%}
+    {%- assign swatch_lines = settings.custom_color_swatch_map | newline_to_br | split: '<br />' -%}
+    {%- for line in swatch_lines -%}
+      {%- assign clean_line = line | strip -%}
+      {%- if clean_line contains ':' -%}
+        {%- assign parts = clean_line | split: ':' -%}
+        {%- assign swatch_key = parts[0] | strip | handleize -%}
+        {%- assign swatch_val = parts[1] | strip -%}
+        {%- if swatch_key != blank and swatch_val != blank -%}
+          --cody-swatch-{{ swatch_key }}: {{ swatch_val }};
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  }
+{% endstyle %}

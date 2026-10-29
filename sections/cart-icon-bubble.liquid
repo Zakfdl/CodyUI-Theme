@@ -1,0 +1,12 @@
+{%- render 'cody-icons', icon: 'bag', size: 20 -%}
+<span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+{%- if cart != empty -%}
+  <span class="cody-header__badge" aria-hidden="true">
+    {%- if cart.item_count < 100 -%}
+      {{ cart.item_count }}
+    {%- else -%}
+      99+
+    {%- endif -%}
+  </span>
+  <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+{%- endif -%}

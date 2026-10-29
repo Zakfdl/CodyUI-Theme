@@ -1,0 +1,145 @@
+<section class="cody-section color-{{ section.settings.color_scheme }}">
+  <div class="cody-container">
+    <div class="cody-section-header">
+      <div>
+        <span class="cody-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        <h2 class="cody-h1" style="margin-bottom: 0;">{{ section.settings.heading | escape }}</h2>
+      </div>
+    </div>
+
+    <cody-tabs class="cody-lookbook__grid">
+      {%- comment -%} Left: Interactive Editorial Image with Pulsing Hotspot Pins {%- endcomment -%}
+      <div class="cody-lookbook__canvas cody-media cody-media--portrait">
+        {%- if section.settings.lookbook_image != blank -%}
+          <img
+            src="{{ section.settings.lookbook_image | image_url: width: 1400 }}"
+            alt="{{ section.settings.heading | escape }}"
+            width="{{ section.settings.lookbook_image.width }}"
+            height="{{ section.settings.lookbook_image.height }}"
+            loading="lazy"
+          >
+        {%- else -%}
+          {{ 'collection-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+
+        {%- for block in section.blocks -%}
+          <button
+            type="button"
+            class="cody-lookbook__pin{% if forloop.first %} is-active{% endif %}"
+            style="left: {{ block.settings.hotspot_x }}%; top: {{ block.settings.hotspot_y }}%;"
+            data-tab-trigger="lookbook-pin-{{ block.id }}"
+            aria-label="Inspect piece {{ forloop.index }}"
+            {{ block.shopify_attributes }}
+          >
+            {{ forloop.index }}
+          </button>
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} Right: Active Hotspot Product Card Showcase {%- endcomment -%}
+      <div class="cody-lookbook__showcase">
+        {%- for block in section.blocks -%}
+          <div
+            data-tab-panel="lookbook-pin-{{ block.id }}"
+            class="{% if forloop.first %}is-active{% endif %}"
+            {% unless forloop.first %}hidden{% endunless %}
+          >
+            <div style="margin-bottom: 1.4rem; display: flex; align-items: center; justify-content: space-between;">
+              <span class="cody-eyebrow" style="margin-bottom: 0;">LOOK {{ forloop.index }} OF {{ section.blocks.size }}</span>
+              <span class="cody-text-muted" style="font-size: 1.2rem;">Click numbered pins on image</span>
+            </div>
+            {% render 'card-product', card_product: block.settings.product, placeholder_index: forloop.index %}
+          </div>
+        {%- endfor -%}
+      </div>
+    </cody-tabs>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop The Look (Hotspots)",
+  "tag": "section",
+  "class": "cody-section-lookbook",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "SHOP THE RUNWAY LOOK",
+      "label": "Eyebrow subtitle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Look 04 — Milan Atelier",
+      "label": "Heading"
+    },
+    {
+      "type": "image_picker",
+      "id": "lookbook_image",
+      "label": "Editorial lookbook photograph"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "hotspot",
+      "name": "Product Hotspot Pin",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "range",
+          "id": "hotspot_x",
+          "min": 10,
+          "max": 90,
+          "step": 2,
+          "unit": "%",
+          "default": 46,
+          "label": "Horizontal pin position (X%)"
+        },
+        {
+          "type": "range",
+          "id": "hotspot_y",
+          "min": 10,
+          "max": 90,
+          "step": 2,
+          "unit": "%",
+          "default": 36,
+          "label": "Vertical pin position (Y%)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop The Look (Hotspots)",
+      "blocks": [
+        {
+          "type": "hotspot",
+          "settings": {
+            "hotspot_x": 44,
+            "hotspot_y": 32
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "hotspot_x": 54,
+            "hotspot_y": 64
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
