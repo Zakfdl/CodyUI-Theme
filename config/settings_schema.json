@@ -146,7 +146,7 @@
       {
         "type": "font_picker",
         "id": "type_header_font",
-        "default": "cormorant_garamond_n4",
+        "default": "cormorant_n4",
         "label": "Shopify Heading Font"
       },
       {

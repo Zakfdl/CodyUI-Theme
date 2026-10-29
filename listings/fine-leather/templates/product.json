@@ -92,9 +92,9 @@
     "recommendations": {
       "type": "product-recommendations",
       "settings": {
-        "color_scheme": "scheme-2",
+        "color_scheme": "scheme-1",
         "eyebrow": "CURATED FOR YOU",
-        "heading": "You May Also Like",
+        "heading": "Curated With This Piece \u2014 Fine Leather",
         "products_to_show": 4,
         "columns_desktop": 4
       }

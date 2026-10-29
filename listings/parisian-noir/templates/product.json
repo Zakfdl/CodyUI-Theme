@@ -92,9 +92,9 @@
     "recommendations": {
       "type": "product-recommendations",
       "settings": {
-        "color_scheme": "scheme-3",
+        "color_scheme": "scheme-1",
         "eyebrow": "CURATED FOR YOU",
-        "heading": "You May Also Like",
+        "heading": "Curated With This Piece \u2014 Parisian Noir",
         "products_to_show": 4,
         "columns_desktop": 4
       }
@@ -102,7 +102,7 @@
     "recently-viewed": {
       "type": "product-recently-viewed",
       "settings": {
-        "color_scheme": "scheme-3",
+        "color_scheme": "scheme-2",
         "eyebrow": "YOUR BROWSING HISTORY",
         "heading": "Recently Viewed",
         "products_to_show": 4,

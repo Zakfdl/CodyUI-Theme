@@ -138,7 +138,7 @@
     "predictive_search_trending_terms": "Cashmere Coat, Silk Slip Dress, Tailored Blazer, Leather Tote, New Season",
     "currency_code_enabled": false,
     "external_links_new_tab": false,
-    "type_header_font": "cormorant_garamond_n4",
+    "type_header_font": "cormorant_n4",
     "type_body_font": "assistant_n4"
   },
   "presets": {
@@ -281,7 +281,7 @@
       "predictive_search_trending_terms": "Cashmere Coat, Silk Slip Dress, Tailored Blazer, Leather Tote, New Season",
       "currency_code_enabled": false,
       "external_links_new_tab": false,
-      "type_header_font": "cormorant_garamond_n4",
+      "type_header_font": "cormorant_n4",
       "type_body_font": "assistant_n4"
     },
     "Parisian Noir": {
@@ -423,8 +423,8 @@
       "predictive_search_trending_terms": "Cashmere Coat, Silk Slip Dress, Tailored Blazer, Leather Tote, New Season",
       "currency_code_enabled": false,
       "external_links_new_tab": false,
-      "type_header_font": "cormorant_garamond_n4",
-      "type_body_font": "assistant_n4"
+      "type_header_font": "bodoni_moda_n4",
+      "type_body_font": "dm_sans_n4"
     },
     "Minimalist Atelier": {
       "color_schemes": {
@@ -565,7 +565,7 @@
       "predictive_search_trending_terms": "Cashmere Coat, Silk Slip Dress, Tailored Blazer, Leather Tote, New Season",
       "currency_code_enabled": false,
       "external_links_new_tab": false,
-      "type_header_font": "cormorant_garamond_n4",
+      "type_header_font": "instrument_sans_n4",
       "type_body_font": "assistant_n4"
     },
     "Fine Leather": {
@@ -707,7 +707,7 @@
       "predictive_search_trending_terms": "Cashmere Coat, Silk Slip Dress, Tailored Blazer, Leather Tote, New Season",
       "currency_code_enabled": false,
       "external_links_new_tab": false,
-      "type_header_font": "cormorant_garamond_n4",
+      "type_header_font": "playfair_display_n4",
       "type_body_font": "assistant_n4"
     }
   }
