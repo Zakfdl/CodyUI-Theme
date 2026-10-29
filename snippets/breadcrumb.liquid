@@ -1,9 +1,9 @@
 {%- comment -%}
   CodyUI Fashion — Editorial Breadcrumb Navigation + Schema.org BreadcrumbList JSON-LD
 {%- endcomment -%}
-{%- unless template == 'index' or template == 'cart' or template == 'list-collections' or template == '404' -%}
+{%- unless request.page_type == 'index' or request.page_type == 'cart' or request.page_type == 'list-collections' or request.page_type == '404' -%}
   {%- if settings.show_breadcrumbs -%}
-    {%- assign t = template | split: '.' | first -%}
+    {%- assign t = request.page_type -%}
     <nav class="cody-breadcrumbs cody-container" role="navigation" aria-label="breadcrumbs">
       <ol class="cody-breadcrumbs__list" itemscope itemtype="https://schema.org/BreadcrumbList">
         <li class="cody-breadcrumbs__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">

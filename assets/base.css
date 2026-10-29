@@ -320,7 +320,9 @@ h6, .cody-h6 {
 
 .cody-media > img,
 .cody-media > video,
-.cody-media > svg {
+.cody-media > svg,
+.cody-media .cody-card__img--primary,
+.cody-media .cody-card__link-overlay > img {
   width: 100%;
   height: 100%;
   object-fit: cover;

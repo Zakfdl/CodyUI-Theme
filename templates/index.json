@@ -23,8 +23,8 @@
         "hero_height": 85
       }
     },
-    "marquee_editorial_ticker": {
-      "type": "marquee-editorial-ticker",
+    "marquee_ticker": {
+      "type": "marquee-ticker",
       "blocks": {
         "item_1": {
           "type": "item",
@@ -52,7 +52,7 @@
       ],
       "settings": {
         "color_scheme": "scheme-3",
-        "speed": 28
+        "speed": 25
       }
     },
     "brands_list": {
@@ -170,9 +170,9 @@
       "settings": {
         "color_scheme": "scheme-2",
         "eyebrow": "SEASONAL CURATION",
-        "heading": "New Season Arrivals",
         "products_to_show": 4,
-        "columns_desktop": "4"
+        "columns_desktop": 4,
+        "show_view_all": true
       }
     },
     "banners_editorial_grid": {
@@ -267,27 +267,27 @@
       "type": "testimonials-editorial",
       "blocks": {
         "review_1": {
-          "type": "review",
+          "type": "testimonial",
           "settings": {
             "quote": "The drape and hand-feel of the double-faced wool trench rivals heritage Milanese houses at three times the price.",
-            "author": "Camille Laurent — Paris",
-            "verified_item": "Double-Faced Wool Trench"
+            "author": "Camille Laurent",
+            "role": "Verified Atelier Client — Paris"
           }
         },
         "review_2": {
-          "type": "review",
+          "type": "testimonial",
           "settings": {
             "quote": "Every detail—from the horn buttons to the unlined interior seams—is executed with extraordinary precision.",
-            "author": "Elena Rostova — Milan",
-            "verified_item": "Cashmere Belted Coat"
+            "author": "Elena Rostova",
+            "role": "Verified Atelier Client — Milan"
           }
         },
         "review_3": {
-          "type": "review",
+          "type": "testimonial",
           "settings": {
             "quote": "My capsule wardrobe is now almost entirely CodyUI. Effortless sizing and instant DHL delivery to New York.",
-            "author": "Victoria Sterling — New York",
-            "verified_item": "Relaxed Silk Poplin Shirt"
+            "author": "Victoria Sterling",
+            "role": "Fashion Director — New York"
           }
         }
       },
@@ -402,7 +402,7 @@
   },
   "order": [
     "hero_editorial_slideshow",
-    "marquee_editorial_ticker",
+    "marquee_ticker",
     "brands_list",
     "collection_list",
     "featured_collection_tabs",

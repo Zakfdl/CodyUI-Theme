@@ -1,13 +1,40 @@
+<style>
+  .cody-ticker-bar {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    user-select: none;
+    white-space: nowrap;
+    gap: 4.8rem;
+  }
+  .cody-ticker-bar__track {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    min-width: 100%;
+    gap: 4.8rem;
+    animation: codyTickerInfinite var(--cody-marquee-speed, 25s) linear infinite;
+  }
+  .cody-ticker-bar:hover .cody-ticker-bar__track {
+    animation-play-state: paused;
+  }
+  @keyframes codyTickerInfinite {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-100% - 4.8rem)); }
+  }
+</style>
+
 <section
   class="color-{{ section.settings.color_scheme }}"
-  style="padding-block: 2.2rem; border-top: 1px solid rgb(var(--cody-border)); border-bottom: 1px solid rgb(var(--cody-border)); --cody-marquee-speed: {{ section.settings.speed }}s;"
+  style="padding-block: 1.8rem; border-top: 1px solid rgb(var(--cody-border)); border-bottom: 1px solid rgb(var(--cody-border)); --cody-marquee-speed: {{ section.settings.speed }}s;"
 >
-  <div class="cody-marquee">
+  <div class="cody-ticker-bar">
     {%- for i in (1..2) -%}
-      <div class="cody-marquee__track" {% if i == 2 %}aria-hidden="true"{% endif %}>
+      <div class="cody-ticker-bar__track" {% if i == 2 %}aria-hidden="true"{% endif %}>
         {%- for block in section.blocks -%}
           <span
-            style="font-family: var(--cody-font-heading-family); font-size: clamp(2.2rem, 3.2vw, 3.6rem); letter-spacing: 0.04em;"
+            style="font-family: var(--cody-font-heading-family); font-size: clamp(1.8rem, 2.4vw, 2.8rem); letter-spacing: 0.06em;"
             {{ block.shopify_attributes }}
           >
             {{ block.settings.text | escape }}

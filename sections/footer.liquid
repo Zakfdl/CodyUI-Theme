@@ -42,13 +42,21 @@
               {%- if block.settings.heading != blank -%}
                 <h3 class="cody-footer__heading">{{ block.settings.heading | escape }}</h3>
               {%- endif -%}
-              {%- if block.settings.menu != blank -%}
+              {%- if block.settings.menu != blank and block.settings.menu.links.size > 1 -%}
                 <ul class="cody-footer__links">
                   {%- for link in block.settings.menu.links -%}
                     <li>
                       <a href="{{ link.url }}" class="cody-footer__link">{{ link.title | escape }}</a>
                     </li>
                   {%- endfor -%}
+                </ul>
+              {%- else -%}
+                <ul class="cody-footer__links">
+                  <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Shipping & Global Courier</a></li>
+                  <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">30-Day Returns & Exchanges</a></li>
+                  <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Size & Tailoring Guide</a></li>
+                  <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Garment & Cashmere Care</a></li>
+                  <li><a href="{{ routes.search_url }}" class="cody-footer__link">Book a Private Appointment</a></li>
                 </ul>
               {%- endif -%}
             </div>
