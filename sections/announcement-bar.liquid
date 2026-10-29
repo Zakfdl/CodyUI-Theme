@@ -1,30 +1,30 @@
 {{ 'header.css' | asset_url | stylesheet_tag }}
 
-{%- if section.blocks.size > 0 -%}
-  <div
-    class="cody-announcement color-{{ section.settings.color_scheme }}"
-    role="region"
-    aria-label="{{ 'sections.header.announcement' | t }}"
-    style="--cody-marquee-speed: {{ section.settings.marquee_speed }}s;"
-  >
-    <div class="cody-container{% if section.settings.full_width %} cody-container--fluid{% endif %}">
-      <div class="cody-announcement__inner">
-        {%- if section.settings.show_utility_links and section.settings.display_mode != 'marquee' -%}
-          <div class="cody-announcement__utility-links">
-            {%- if section.settings.utility_label_1 != blank -%}
-              <a href="{{ section.settings.utility_link_1 | default: '#' }}" class="cody-announcement__utility-link">
-                {{ section.settings.utility_label_1 | escape }}
-              </a>
-            {%- endif -%}
-            {%- if section.settings.utility_label_2 != blank -%}
-              <a href="{{ section.settings.utility_link_2 | default: '#' }}" class="cody-announcement__utility-link">
-                {{ section.settings.utility_label_2 | escape }}
-              </a>
-            {%- endif -%}
-          </div>
-        {%- endif -%}
+<div
+  class="cody-announcement color-{{ section.settings.color_scheme }}"
+  role="region"
+  aria-label="{{ 'sections.header.announcement' | t }}"
+  style="--cody-marquee-speed: {{ section.settings.marquee_speed }}s;"
+>
+  <div class="cody-container{% if section.settings.full_width %} cody-container--fluid{% endif %}">
+    <div class="cody-announcement__inner">
+      {%- if section.settings.show_utility_links and section.settings.display_mode != 'marquee' -%}
+        <div class="cody-announcement__utility-links">
+          {%- if section.settings.utility_label_1 != blank -%}
+            <a href="{{ section.settings.utility_link_1 | default: routes.collections_url }}" class="cody-announcement__utility-link">
+              {{ section.settings.utility_label_1 | escape }}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.utility_label_2 != blank -%}
+            <a href="{{ section.settings.utility_link_2 | default: routes.all_products_collection_url }}" class="cody-announcement__utility-link">
+              {{ section.settings.utility_label_2 | escape }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
 
-        <div class="cody-announcement__center">
+      <div class="cody-announcement__center">
+        {%- if section.blocks.size > 0 -%}
           {%- if section.settings.display_mode == 'marquee' -%}
             <div class="cody-marquee" aria-label="{{ 'sections.header.announcement' | t }}">
               {%- for i in (1..2) -%}
@@ -64,7 +64,13 @@
               {%- endif -%}
             </div>
           {%- endif -%}
-        </div>
+        {%- else -%}
+          <div class="cody-announcement__message">
+            <span>COMPLIMENTARY DHL EXPRESS SHIPPING &amp; SIGNATURE GARMENT BOX ON ORDERS OVER $250</span>
+            <a href="{{ routes.all_products_collection_url }}" class="cody-announcement__link">EXPLORE RUNWAY</a>
+          </div>
+        {%- endif -%}
+      </div>
 
         {%- if section.settings.show_localization and section.settings.display_mode != 'marquee' -%}
           <div class="cody-announcement__localization">
@@ -130,16 +136,12 @@
       setInterval(updateCountdowns, 1000);
     })();
   </script>
-{%- endif -%}
 
 {% schema %}
 {
   "name": "Announcement & Ticker Bar",
   "max_blocks": 8,
   "class": "cody-section-announcement",
-  "enabled_on": {
-    "groups": ["header"]
-  },
   "settings": [
     {
       "type": "color_scheme",

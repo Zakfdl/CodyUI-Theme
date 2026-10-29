@@ -88,17 +88,38 @@
       }
     </script>
 
-    {%- sections 'header-group' -%}
+    {%- section 'announcement-bar' -%}
+    {%- section 'header' -%}
 
     <main id="MainContent" class="cody-main focus-none" role="main" tabindex="-1">
-      {%- unless request.page_type == 'index' or request.page_type == 'cart' or request.page_type == '404' -%}
-        {%- render 'breadcrumb' -%}
+      {%- unless request.page_type == 'index' or request.page_type == 'cart' or request.page_type == 'list-collections' or request.page_type == '404' or template.name == 'index' -%}
+        {%- if settings.show_breadcrumbs -%}
+          <nav class="cody-breadcrumbs cody-container" role="navigation" aria-label="breadcrumbs">
+            <ol class="cody-breadcrumbs__list">
+              <li class="cody-breadcrumbs__item">
+                <a class="cody-breadcrumbs__link" href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a>
+                <span class="cody-breadcrumbs__sep" aria-hidden="true">/</span>
+              </li>
+              {%- if request.page_type == 'product' and collection.url -%}
+                <li class="cody-breadcrumbs__item">
+                  <a class="cody-breadcrumbs__link" href="{{ collection.url }}">{{ collection.title }}</a>
+                  <span class="cody-breadcrumbs__sep" aria-hidden="true">/</span>
+                </li>
+              {%- endif -%}
+              <li class="cody-breadcrumbs__item">
+                <span class="cody-breadcrumbs__current" aria-current="page">{{ page_title }}</span>
+              </li>
+            </ol>
+          </nav>
+        {%- endif -%}
       {%- endunless -%}
       {{ content_for_layout }}
     </main>
 
-    {%- sections 'footer-group' -%}
-    {%- sections 'aside-group' -%}
+    {%- section 'footer' -%}
+    {%- section 'mobile-sticky-bar' -%}
+    {%- section 'promotion-popup' -%}
+    {%- section 'current-sales-popup' -%}
 
     {%- if settings.cart_type == 'drawer' and template != 'cart' -%}
       {%- section 'cart-drawer' -%}

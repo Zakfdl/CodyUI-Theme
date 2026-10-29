@@ -1,75 +1,117 @@
 <footer class="cody-footer color-{{ section.settings.color_scheme }}">
   <div class="cody-container">
     <div class="cody-footer__top">
-      {%- for block in section.blocks -%}
-        {%- case block.type -%}
-          {%- when 'newsletter' -%}
-            <div {{ block.shopify_attributes }}>
-              <h2 class="cody-h3" style="margin-bottom: 1rem;">{{ block.settings.heading | escape }}</h2>
-              <p class="cody-text-muted" style="margin: 0 0 2rem; max-width: 38rem;">
-                {{ block.settings.subtext | escape }}
-              </p>
-              {%- form 'customer', id: 'ContactFooter', class: 'cody-footer__newsletter' -%}
-                <input type="hidden" name="contact[tags]" value="newsletter">
-                <div style="display: flex; gap: 0.8rem;">
-                  <input
-                    id="NewsletterForm--{{ section.id }}"
-                    type="email"
-                    name="contact[email]"
-                    class="cody-input"
-                    value="{{ form.email }}"
-                    aria-required="true"
-                    autocorrect="off"
-                    autocapitalize="off"
-                    autocomplete="email"
-                    placeholder="{{ 'newsletter.label' | t }}"
-                    required
-                  >
-                  <button type="submit" class="cody-btn cody-btn--primary" name="commit">
-                    {{ 'newsletter.button_label' | t }}
-                  </button>
-                </div>
-                {%- if form.posted_successfully? -%}
-                  <p style="color: var(--cody-color-success); font-size: 1.25rem; margin-top: 1rem;">
-                    {{ 'newsletter.success' | t }}
-                  </p>
-                {%- endif -%}
-              {%- endform -%}
-            </div>
-
-          {%- when 'link_list' -%}
-            <div {{ block.shopify_attributes }}>
-              {%- if block.settings.heading != blank -%}
-                <h3 class="cody-footer__heading">{{ block.settings.heading | escape }}</h3>
-              {%- endif -%}
-              {%- if block.settings.menu != blank and block.settings.menu.links.size > 1 -%}
-                <ul class="cody-footer__links">
-                  {%- for link in block.settings.menu.links -%}
-                    <li>
-                      <a href="{{ link.url }}" class="cody-footer__link">{{ link.title | escape }}</a>
-                    </li>
-                  {%- endfor -%}
-                </ul>
-              {%- else -%}
-                <ul class="cody-footer__links">
-                  <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Shipping & Global Courier</a></li>
-                  <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">30-Day Returns & Exchanges</a></li>
-                  <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Size & Tailoring Guide</a></li>
-                  <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Garment & Cashmere Care</a></li>
-                  <li><a href="{{ routes.search_url }}" class="cody-footer__link">Book a Private Appointment</a></li>
-                </ul>
-              {%- endif -%}
-            </div>
-
-          {%- when 'brand_info' -%}
-            <div {{ block.shopify_attributes }}>
-              <h3 class="cody-footer__heading">{{ block.settings.heading | escape }}</h3>
-              <div class="cody-rte cody-text-muted" style="font-size: 1.35rem;">
-                {{ block.settings.subtext }}
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'newsletter' -%}
+              <div {{ block.shopify_attributes }}>
+                <h2 class="cody-h3" style="margin-bottom: 1rem;">{{ block.settings.heading | escape }}</h2>
+                <p class="cody-text-muted" style="margin: 0 0 2rem; max-width: 38rem;">
+                  {{ block.settings.subtext | escape }}
+                </p>
+                {%- form 'customer', id: 'ContactFooter', class: 'cody-footer__newsletter' -%}
+                  <input type="hidden" name="contact[tags]" value="newsletter">
+                  <div style="display: flex; gap: 0.8rem;">
+                    <input
+                      id="NewsletterForm--{{ section.id }}"
+                      type="email"
+                      name="contact[email]"
+                      class="cody-input"
+                      value="{{ form.email }}"
+                      aria-required="true"
+                      autocorrect="off"
+                      autocapitalize="off"
+                      autocomplete="email"
+                      placeholder="{{ 'newsletter.label' | t }}"
+                      required
+                    >
+                    <button type="submit" class="cody-btn cody-btn--primary" name="commit">
+                      {{ 'newsletter.button_label' | t }}
+                    </button>
+                  </div>
+                  {%- if form.posted_successfully? -%}
+                    <p style="color: var(--cody-color-success); font-size: 1.25rem; margin-top: 1rem;">
+                      {{ 'newsletter.success' | t }}
+                    </p>
+                  {%- endif -%}
+                {%- endform -%}
               </div>
+
+            {%- when 'link_list' -%}
+              <div {{ block.shopify_attributes }}>
+                {%- if block.settings.heading != blank -%}
+                  <h3 class="cody-footer__heading">{{ block.settings.heading | escape }}</h3>
+                {%- endif -%}
+                {%- if block.settings.menu != blank and block.settings.menu.links.size > 1 -%}
+                  <ul class="cody-footer__links">
+                    {%- for link in block.settings.menu.links -%}
+                      <li>
+                        <a href="{{ link.url }}" class="cody-footer__link">{{ link.title | escape }}</a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- else -%}
+                  <ul class="cody-footer__links">
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Shipping &amp; Global Courier</a></li>
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">30-Day Returns &amp; Exchanges</a></li>
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Size &amp; Tailoring Guide</a></li>
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Garment &amp; Cashmere Care</a></li>
+                    <li><a href="{{ routes.search_url }}" class="cody-footer__link">Book a Private Appointment</a></li>
+                  </ul>
+                {%- endif -%}
+              </div>
+
+            {%- when 'brand_info' -%}
+              <div {{ block.shopify_attributes }}>
+                <h3 class="cody-footer__heading">{{ block.settings.heading | escape }}</h3>
+                <div class="cody-rte cody-text-muted" style="font-size: 1.35rem;">
+                  {{ block.settings.subtext }}
+                </div>
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      {%- else -%}
+        <div>
+          <h2 class="cody-h3" style="margin-bottom: 1rem;">Join The Private List</h2>
+          <p class="cody-text-muted" style="margin: 0 0 2rem; max-width: 38rem;">
+            Receive early access to runway capsules, private archive sales, and atelier invitations.
+          </p>
+          {%- form 'customer', id: 'ContactFooterDefault', class: 'cody-footer__newsletter' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div style="display: flex; gap: 0.8rem;">
+              <input type="email" name="contact[email]" class="cody-input" placeholder="{{ 'newsletter.label' | t }}" required>
+              <button type="submit" class="cody-btn cody-btn--primary" name="commit">{{ 'newsletter.button_label' | t }}</button>
             </div>
-        {%- endcase -%}
-      {%- endfor -%}
+          {%- endform -%}
+        </div>
+        <div>
+          <h3 class="cody-footer__heading">Collections</h3>
+          <ul class="cody-footer__links">
+            <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">New Season Runway</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Tailored Outerwear</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Architectural Knitwear</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Silk &amp; Eveningwear</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Italian Leather Goods</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="cody-footer__heading">Client Concierge</h3>
+          <ul class="cody-footer__links">
+            <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Shipping &amp; Global Courier</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">30-Day Returns &amp; Exchanges</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Size &amp; Tailoring Guide</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}" class="cody-footer__link">Garment &amp; Cashmere Care</a></li>
+            <li><a href="{{ routes.search_url }}" class="cody-footer__link">Book a Private Appointment</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="cody-footer__heading">The Maison</h3>
+          <div class="cody-rte cody-text-muted" style="font-size: 1.35rem;">
+            <p>Designed with architectural precision in Milan and crafted from 100% traceable Italian virgin wool, organic Como silk, and Mongolian cashmere.</p>
+          </div>
+        </div>
+      {%- endif -%}
     </div>
 
     <div class="cody-footer__bottom">
@@ -106,9 +148,6 @@
 {
   "name": "Editorial Footer",
   "max_blocks": 5,
-  "enabled_on": {
-    "groups": ["footer"]
-  },
   "settings": [
     {
       "type": "color_scheme",

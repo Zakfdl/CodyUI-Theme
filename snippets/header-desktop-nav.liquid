@@ -31,7 +31,7 @@
           endfor
 
           assign is_megamenu = false
-          if matched_megamenu != nil or has_grandchild
+          if matched_megamenu != nil or has_grandchild or link_title_down == 'catalog' or link_title_down == 'shop'
             assign is_megamenu = true
           endif
         -%}
@@ -50,8 +50,10 @@
               >
                 {{ matched_badge.settings.badge_text | escape }}
               </span>
+            {%- elsif link_title_down == 'catalog' -%}
+              <span class="cody-nav__badge" style="background-color: #111111; color: #FAF8F5;">NEW</span>
             {%- endif -%}
-            {%- if link.links != blank or matched_megamenu != nil -%}
+            {%- if link.links != blank or is_megamenu -%}
               {% render 'cody-icons', icon: 'chevron-down', size: 13 %}
             {%- endif -%}
           </a>
@@ -60,7 +62,7 @@
             <div class="cody-megamenu" {% if matched_megamenu != nil %}{{ matched_megamenu.shopify_attributes }}{% endif %}>
               <div class="cody-container">
                 <div class="cody-megamenu__grid">
-                  <div class="cody-megamenu__links-area{% if matched_megamenu == nil %} cody-megamenu__links-area--full{% endif %}">
+                  <div class="cody-megamenu__links-area">
                     {%- if link.links != blank -%}
                       {%- for childlink in link.links -%}
                         <div class="cody-megamenu__col">
@@ -115,84 +117,101 @@
                     {%- endif -%}
                   </div>
 
-                  {%- if matched_megamenu != nil -%}
-                    <div class="cody-megamenu__promos">
-                      {%- if matched_megamenu.type == 'megamenu_editorial' -%}
-                        {%- for i in (1..2) -%}
-                          {%- liquid
-                            assign img_key = 'image_' | append: i
-                            assign sub_key = 'subtitle_' | append: i
-                            assign title_key = 'title_' | append: i
-                            assign link_key = 'link_' | append: i
-                            assign promo_img = matched_megamenu.settings[img_key]
-                            assign promo_sub = matched_megamenu.settings[sub_key]
-                            assign promo_title = matched_megamenu.settings[title_key]
-                            assign promo_link = matched_megamenu.settings[link_key]
-                            if i == 1
-                              assign default_mega_img = 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=600&q=80'
-                            else
-                              assign default_mega_img = 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80'
-                            endif
-                          -%}
-                          {%- if promo_title != blank or promo_img != blank -%}
-                            <a href="{{ promo_link | default: routes.all_products_collection_url }}" class="cody-megamenu-banner">
-                              <div class="cody-media cody-media--portrait">
-                                {%- if promo_img != blank -%}
-                                  <img
-                                    src="{{ promo_img | image_url: width: 600 }}"
-                                    alt="{{ promo_title | escape }}"
-                                    width="300"
-                                    height="400"
-                                    loading="lazy"
-                                  >
-                                {%- else -%}
-                                  <img
-                                    src="{{ default_mega_img }}"
-                                    alt="{{ promo_title | default: 'Editorial Capsule' | escape }}"
-                                    width="300"
-                                    height="400"
-                                    loading="lazy"
-                                  >
-                                {%- endif -%}
-                              </div>
-                              <div class="cody-megamenu-banner__caption">
-                                {%- if promo_sub != blank -%}
-                                  <span class="cody-megamenu-banner__subtitle">{{ promo_sub | escape }}</span>
-                                {%- endif -%}
-                                {%- if promo_title != blank -%}
-                                  <h4 class="cody-megamenu-banner__title">{{ promo_title | escape }}</h4>
-                                {%- endif -%}
-                              </div>
-                            </a>
-                          {%- endif -%}
-                        {%- endfor -%}
-                      {%- elsif matched_megamenu.type == 'megamenu_products' -%}
-                        {%- assign mega_col = matched_megamenu.settings.featured_collection -%}
-                        {%- if mega_col != blank and mega_col.products_count > 0 -%}
-                          {%- for product in mega_col.products limit: matched_megamenu.settings.products_limit -%}
-                            <a href="{{ product.url }}" class="cody-megamenu-banner">
-                              <div class="cody-media cody-media--portrait">
-                                {%- if product.featured_media != blank -%}
-                                  <img
-                                    src="{{ product.featured_media | image_url: width: 500 }}"
-                                    alt="{{ product.title | escape }}"
-                                    width="250"
-                                    height="333"
-                                    loading="lazy"
-                                  >
-                                {%- endif -%}
-                              </div>
-                              <div class="cody-megamenu-banner__caption">
-                                <span class="cody-megamenu-banner__subtitle">{{ product.vendor | escape }}</span>
-                                <h4 class="cody-megamenu-banner__title" style="font-size: 1.6rem;">{{ product.title | escape }}</h4>
-                                <span style="font-size: 1.3rem;">{{ product.price | money }}</span>
-                              </div>
-                            </a>
-                          {%- endfor -%}
+                  <div class="cody-megamenu__promos">
+                    {%- if matched_megamenu != nil and matched_megamenu.type == 'megamenu_editorial' -%}
+                      {%- for i in (1..2) -%}
+                        {%- liquid
+                          assign img_key = 'image_' | append: i
+                          assign sub_key = 'subtitle_' | append: i
+                          assign title_key = 'title_' | append: i
+                          assign link_key = 'link_' | append: i
+                          assign promo_img = matched_megamenu.settings[img_key]
+                          assign promo_sub = matched_megamenu.settings[sub_key]
+                          assign promo_title = matched_megamenu.settings[title_key]
+                          assign promo_link = matched_megamenu.settings[link_key]
+                          if i == 1
+                            assign default_mega_img = 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=600&q=80'
+                          else
+                            assign default_mega_img = 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80'
+                          endif
+                        -%}
+                        {%- if promo_title != blank or promo_img != blank -%}
+                          <a href="{{ promo_link | default: routes.all_products_collection_url }}" class="cody-megamenu-banner">
+                            <div class="cody-media cody-media--portrait">
+                              {%- if promo_img != blank -%}
+                                <img
+                                  src="{{ promo_img | image_url: width: 600 }}"
+                                  alt="{{ promo_title | escape }}"
+                                  width="300"
+                                  height="400"
+                                  loading="lazy"
+                                >
+                              {%- else -%}
+                                <img
+                                  src="{{ default_mega_img }}"
+                                  alt="{{ promo_title | default: 'Editorial Capsule' | escape }}"
+                                  width="300"
+                                  height="400"
+                                  loading="lazy"
+                                >
+                              {%- endif -%}
+                            </div>
+                            <div class="cody-megamenu-banner__caption">
+                              {%- if promo_sub != blank -%}
+                                <span class="cody-megamenu-banner__subtitle">{{ promo_sub | escape }}</span>
+                              {%- endif -%}
+                              {%- if promo_title != blank -%}
+                                <h4 class="cody-megamenu-banner__title">{{ promo_title | escape }}</h4>
+                              {%- endif -%}
+                            </div>
+                          </a>
                         {%- endif -%}
+                      {%- endfor -%}
+                    {%- elsif matched_megamenu != nil and matched_megamenu.type == 'megamenu_products' -%}
+                      {%- assign mega_col = matched_megamenu.settings.featured_collection -%}
+                      {%- if mega_col != blank and mega_col.products_count > 0 -%}
+                        {%- for product in mega_col.products limit: matched_megamenu.settings.products_limit -%}
+                          <a href="{{ product.url }}" class="cody-megamenu-banner">
+                            <div class="cody-media cody-media--portrait">
+                              {%- if product.featured_media != blank -%}
+                                <img
+                                  src="{{ product.featured_media | image_url: width: 500 }}"
+                                  alt="{{ product.title | escape }}"
+                                  width="250"
+                                  height="333"
+                                  loading="lazy"
+                                >
+                              {%- endif -%}
+                            </div>
+                            <div class="cody-megamenu-banner__caption">
+                              <span class="cody-megamenu-banner__subtitle">{{ product.vendor | escape }}</span>
+                              <h4 class="cody-megamenu-banner__title" style="font-size: 1.6rem;">{{ product.title | escape }}</h4>
+                              <span style="font-size: 1.3rem;">{{ product.price | money }}</span>
+                            </div>
+                          </a>
+                        {%- endfor -%}
                       {%- endif -%}
-                    </div>
-                  {%- endif -%}
+                    {%- else -%}
+                      <a href="{{ routes.all_products_collection_url }}" class="cody-megamenu-banner">
+                        <div class="cody-media cody-media--portrait">
+                          <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=600&q=80" alt="Autumn Tailoring" width="300" height="400" loading="lazy">
+                        </div>
+                        <div class="cody-megamenu-banner__caption">
+                          <span class="cody-megamenu-banner__subtitle">NEW SEASON</span>
+                          <h4 class="cody-megamenu-banner__title">Autumn Tailoring</h4>
+                        </div>
+                      </a>
+                      <a href="{{ routes.all_products_collection_url }}" class="cody-megamenu-banner">
+                        <div class="cody-media cody-media--portrait">
+                          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80" alt="Italian Cashmere" width="300" height="400" loading="lazy">
+                        </div>
+                        <div class="cody-megamenu-banner__caption">
+                          <span class="cody-megamenu-banner__subtitle">LIMITED CAPSULE</span>
+                          <h4 class="cody-megamenu-banner__title">Italian Cashmere</h4>
+                        </div>
+                      </a>
+                    {%- endif -%}
+                  </div>
                 </div>
               </div>
             </div>
