@@ -243,6 +243,84 @@
           </a>
         </li>
       {%- endif -%}
+    {%- else -%}
+      <li class="cody-nav__item">
+        <a href="{{ routes.root_url }}" class="cody-nav__link is-active"><span>Home</span></a>
+      </li>
+      <li class="cody-nav__item">
+        <a href="{{ routes.all_products_collection_url }}" class="cody-nav__link">
+          <span>Catalog</span>
+          <span class="cody-nav__badge" style="background-color: #111111; color: #FAF8F5;">NEW</span>
+          {% render 'cody-icons', icon: 'chevron-down', size: 13 %}
+        </a>
+        <div class="cody-megamenu">
+          <div class="cody-container">
+            <div class="cody-megamenu__grid">
+              <div class="cody-megamenu__links-area">
+                <div class="cody-megamenu__col">
+                  <a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__col-title">Ready-To-Wear</a>
+                  <ul class="cody-megamenu__sublist">
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__sublink">New Season Runway</a></li>
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__sublink">Double-Faced Wool Coats</a></li>
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__sublink">Architectural Blazers</a></li>
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__sublink">Mongolian Cashmere Knitwear</a></li>
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__sublink">Mulberry Silk Dresses</a></li>
+                  </ul>
+                </div>
+                <div class="cody-megamenu__col">
+                  <a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__col-title">Leather &amp; Accessories</a>
+                  <ul class="cody-megamenu__sublist">
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__sublink">Sculpted Calfskin Totes</a></li>
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__sublink">Crossbody &amp; Mini Bags</a></li>
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__sublink">Italian Leather Footwear</a></li>
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__sublink">Cashmere Scarves &amp; Wraps</a></li>
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__sublink">Acetate &amp; Metal Eyewear</a></li>
+                  </ul>
+                </div>
+                <div class="cody-megamenu__col">
+                  <a href="{{ routes.collections_url }}" class="cody-megamenu__col-title">Curated Edits</a>
+                  <ul class="cody-megamenu__sublist">
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__sublink">The Milan Capsule 04</a></li>
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__sublink">Monochromatic Tailoring</a></li>
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__sublink">Evening &amp; Black Tie</a></li>
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__sublink">Un-Dyed Organic Fibers</a></li>
+                    <li><a href="{{ routes.all_products_collection_url }}" class="cody-megamenu__sublink">Private Archive Sale</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="cody-megamenu__promos">
+                <a href="{{ routes.all_products_collection_url }}" class="cody-megamenu-banner">
+                  <div class="cody-media cody-media--portrait">
+                    <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=600&q=80" alt="Autumn Tailoring" width="300" height="400" loading="lazy">
+                  </div>
+                  <div class="cody-megamenu-banner__caption">
+                    <span class="cody-megamenu-banner__subtitle">NEW SEASON</span>
+                    <h4 class="cody-megamenu-banner__title">Autumn Tailoring</h4>
+                  </div>
+                </a>
+                <a href="{{ routes.all_products_collection_url }}" class="cody-megamenu-banner">
+                  <div class="cody-media cody-media--portrait">
+                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80" alt="Italian Cashmere" width="300" height="400" loading="lazy">
+                  </div>
+                  <div class="cody-megamenu-banner__caption">
+                    <span class="cody-megamenu-banner__subtitle">LIMITED CAPSULE</span>
+                    <h4 class="cody-megamenu-banner__title">Italian Cashmere</h4>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="cody-nav__item">
+        <a href="{{ routes.collections_url }}" class="cody-nav__link"><span>Collections</span></a>
+      </li>
+      <li class="cody-nav__item">
+        <a href="{{ routes.all_products_collection_url }}" class="cody-nav__link">
+          <span>Archive Sale</span>
+          <span class="cody-nav__badge" style="background-color: #A82424; color: #ffffff;">-30%</span>
+        </a>
+      </li>
     {%- endif -%}
   </ul>
 </nav>

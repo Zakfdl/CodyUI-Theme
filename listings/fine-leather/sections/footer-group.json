@@ -1,0 +1,61 @@
+{
+  "name": "Footer Group",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Join The Private List",
+            "subtext": "Receive early access to runway capsules, private archive sales, and atelier invitations."
+          }
+        },
+        "links-1": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Collections",
+            "menu": "main-menu"
+          }
+        },
+        "links-2": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Client Concierge",
+            "menu": "footer"
+          }
+        },
+        "story": {
+          "type": "brand_info",
+          "settings": {
+            "heading": "The Maison",
+            "subtext": "<p>Designed with architectural precision and crafted from traceable European natural fibers.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "newsletter",
+        "links-1",
+        "links-2",
+        "story"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "show_social": true,
+        "payment_enable": true
+      }
+    },
+    "mobile-sticky-bar": {
+      "type": "mobile-sticky-bar",
+      "settings": {
+        "enable_mobile_bar": true,
+        "color_scheme": "scheme-1"
+      }
+    }
+  },
+  "order": [
+    "footer",
+    "mobile-sticky-bar"
+  ]
+}

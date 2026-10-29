@@ -1,0 +1,418 @@
+{
+  "sections": {
+    "hero_editorial_slideshow": {
+      "type": "hero-editorial-slideshow",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "overlay_opacity": 35,
+            "text_alignment": "left",
+            "eyebrow": "AUTUMN / WINTER RUNWAY COLLECTION",
+            "heading": "Architectural Tailoring & Pure Cashmere",
+            "subheading": "Timeless silhouettes crafted in Milan from traceable Italian virgin wool, organic silk, and un-dyed Mongolian cashmere.",
+            "button_label_1": "Explore Runway Edit",
+            "button_label_2": "View Lookbook"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1"
+      ],
+      "settings": {
+        "hero_height": 85
+      }
+    },
+    "marquee_ticker": {
+      "type": "marquee-ticker",
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "text": "COMPLIMENTARY GLOBAL EXPRESS SHIPPING OVER $250"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "text": "ITALIAN VIRGIN WOOL & TRACEABLE CASHMERE"
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "text": "30-DAY COMPLIMENTARY CONCIERGE RETURNS & EXCHANGES"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3"
+      ],
+      "settings": {
+        "color_scheme": "scheme-3",
+        "speed": 25
+      }
+    },
+    "brands_list": {
+      "type": "brands-list",
+      "blocks": {
+        "brand_1": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "VOGUE",
+            "quote": "Masterful Italian tailoring."
+          }
+        },
+        "brand_2": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "HARPER'S BAZAAR",
+            "quote": "Seasonless architectural essentials."
+          }
+        },
+        "brand_3": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "ELLE PARIS",
+            "quote": "Pure un-dyed cashmere perfection."
+          }
+        },
+        "brand_4": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "WALLPAPER*",
+            "quote": "Minimalist proportion and craft."
+          }
+        }
+      },
+      "block_order": [
+        "brand_1",
+        "brand_2",
+        "brand_3",
+        "brand_4"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "heading": "AS FEATURED IN INTERNATIONAL RUNWAY PRESS"
+      }
+    },
+    "collection_list": {
+      "type": "collection-list",
+      "blocks": {
+        "col_1": {
+          "type": "collection_item",
+          "settings": {
+            "custom_title": "Tailored Outerwear"
+          }
+        },
+        "col_2": {
+          "type": "collection_item",
+          "settings": {
+            "custom_title": "Architectural Knitwear"
+          }
+        },
+        "col_3": {
+          "type": "collection_item",
+          "settings": {
+            "custom_title": "Silk & Eveningwear"
+          }
+        },
+        "col_4": {
+          "type": "collection_item",
+          "settings": {
+            "custom_title": "Italian Leather Goods"
+          }
+        }
+      },
+      "block_order": [
+        "col_1",
+        "col_2",
+        "col_3",
+        "col_4"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "SHOP BY CATEGORY",
+        "heading": "Curated Departments",
+        "columns_desktop": "4",
+        "full_width": false
+      }
+    },
+    "featured_collection_tabs": {
+      "type": "featured-collection-tabs",
+      "blocks": {
+        "tab_1": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "New Arrivals"
+          }
+        },
+        "tab_2": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Tailored Coats"
+          }
+        },
+        "tab_3": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Pure Cashmere"
+          }
+        }
+      },
+      "block_order": [
+        "tab_1",
+        "tab_2",
+        "tab_3"
+      ],
+      "settings": {
+        "color_scheme": "scheme-2",
+        "eyebrow": "SEASONAL CURATION",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "show_view_all": true
+      }
+    },
+    "banners_editorial_grid": {
+      "type": "banners-editorial-grid",
+      "blocks": {
+        "banner_1": {
+          "type": "banner",
+          "settings": {
+            "column_span": "8",
+            "eyebrow": "ATELIER OUTERWEAR",
+            "heading": "Double-Faced Wool & Cashmere Coats",
+            "button_label": "Shop Outerwear"
+          }
+        },
+        "banner_2": {
+          "type": "banner",
+          "settings": {
+            "column_span": "4",
+            "eyebrow": "CAPSULE 02",
+            "heading": "Sculpted Knitwear",
+            "button_label": "Explore Knitwear"
+          }
+        }
+      },
+      "block_order": [
+        "banner_1",
+        "banner_2"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "CURATED DEPARTMENTS",
+        "heading": "The Seasonal Edit",
+        "full_width": false
+      }
+    },
+    "lookbook_shop_the_look": {
+      "type": "lookbook-shop-the-look",
+      "blocks": {
+        "hotspot_1": {
+          "type": "hotspot",
+          "settings": {
+            "hotspot_x": 46,
+            "hotspot_y": 32
+          }
+        },
+        "hotspot_2": {
+          "type": "hotspot",
+          "settings": {
+            "hotspot_x": 54,
+            "hotspot_y": 66
+          }
+        }
+      },
+      "block_order": [
+        "hotspot_1",
+        "hotspot_2"
+      ],
+      "settings": {
+        "color_scheme": "scheme-2",
+        "eyebrow": "INTERACTIVE RUNWAY STYLING",
+        "heading": "Shop The Look \u2014 Milan Look 04"
+      }
+    },
+    "media_with_text": {
+      "type": "media-with-text",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "layout": "image_first",
+        "eyebrow": "SAVOIR-FAIRE & HERITAGE",
+        "heading": "Crafted in Biella & Milan for Modern Permanence",
+        "text": "<p>Every CodyUI garment begins with traceable natural fibers\u2014un-dyed Mongolian cashmere, double-faced virgin wool, and organic Como silk. Tailored in small batches with hand-finished seams.</p>",
+        "stat_1_number": "100% Traceable",
+        "stat_1_label": "Certified Italian & Mongolian Mills",
+        "stat_2_number": "38 Hours",
+        "stat_2_label": "Hand-tailoring per double-faced coat",
+        "button_label": "Explore The Atelier"
+      }
+    },
+    "discount_banner": {
+      "type": "discount-banner",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "badge_text": "PRIVATE ARCHIVE EVENT \u2014 UP TO 30% OFF",
+        "heading": "The Mid-Season Private Archive",
+        "subheading": "Limited edition runway prototypes, past-season cashmere coats, and Italian leather goods at private atelier pricing.",
+        "end_date": "2026-12-31T23:59:59",
+        "promo_code": "ARCHIVE25",
+        "button_label": "Enter Private Sale"
+      }
+    },
+    "testimonials_editorial": {
+      "type": "testimonials-editorial",
+      "blocks": {
+        "review_1": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "The drape and hand-feel of the double-faced wool trench rivals heritage Milanese houses at three times the price.",
+            "author": "Camille Laurent",
+            "role": "Verified Atelier Client \u2014 Paris"
+          }
+        },
+        "review_2": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Every detail\u2014from the horn buttons to the unlined interior seams\u2014is executed with extraordinary precision.",
+            "author": "Elena Rostova",
+            "role": "Verified Atelier Client \u2014 Milan"
+          }
+        },
+        "review_3": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "My capsule wardrobe is now almost entirely CodyUI. Effortless sizing and instant DHL delivery to New York.",
+            "author": "Victoria Sterling",
+            "role": "Fashion Director \u2014 New York"
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "CLIENT & PRESS ACCLAIM",
+        "heading": "Verified Atelier Reviews"
+      }
+    },
+    "shop_the_feed": {
+      "type": "shop-the-feed",
+      "blocks": {
+        "post_1": {
+          "type": "post",
+          "settings": {
+            "caption": "@camille.paris \u2014 Wool Trench"
+          }
+        },
+        "post_2": {
+          "type": "post",
+          "settings": {
+            "caption": "@elena.milano \u2014 Cashmere Crewneck"
+          }
+        },
+        "post_3": {
+          "type": "post",
+          "settings": {
+            "caption": "@sofia.nyc \u2014 Relaxed Blazer"
+          }
+        },
+        "post_4": {
+          "type": "post",
+          "settings": {
+            "caption": "@chloe.london \u2014 Silk Midi Dress"
+          }
+        }
+      },
+      "block_order": [
+        "post_1",
+        "post_2",
+        "post_3",
+        "post_4"
+      ],
+      "settings": {
+        "color_scheme": "scheme-2",
+        "eyebrow": "AS SEEN ON OUR COMMUNITY",
+        "heading": "Styled Around the World",
+        "handle_label": "@CODYUI.ATELIER",
+        "full_width": false
+      }
+    },
+    "featured_blog": {
+      "type": "featured-blog",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "THE ATELIER JOURNAL",
+        "heading": "Stories, Craft & Runway Notes",
+        "post_limit": 3
+      }
+    },
+    "text_columns_icons": {
+      "type": "text-columns-icons",
+      "blocks": {
+        "p1": {
+          "type": "pillar",
+          "settings": {
+            "icon": "truck",
+            "title": "Global Express Delivery",
+            "text": "Complimentary insured DHL Express shipping on orders over $250."
+          }
+        },
+        "p2": {
+          "type": "pillar",
+          "settings": {
+            "icon": "gift",
+            "title": "Signature Garment Box",
+            "text": "Delivered in archival cotton garment bags and embossed linen boxes."
+          }
+        },
+        "p3": {
+          "type": "pillar",
+          "settings": {
+            "icon": "return",
+            "title": "30-Day Concierge Exchanges",
+            "text": "Effortless courier pickup and instant size exchanges worldwide."
+          }
+        },
+        "p4": {
+          "type": "pillar",
+          "settings": {
+            "icon": "shield",
+            "title": "Certified Italian Mills",
+            "text": "100% traceable cashmere, virgin wool, and organic Como silk."
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    }
+  },
+  "order": [
+    "hero_editorial_slideshow",
+    "marquee_ticker",
+    "brands_list",
+    "collection_list",
+    "featured_collection_tabs",
+    "banners_editorial_grid",
+    "lookbook_shop_the_look",
+    "media_with_text",
+    "discount_banner",
+    "testimonials_editorial",
+    "shop_the_feed",
+    "featured_blog",
+    "text_columns_icons"
+  ]
+}

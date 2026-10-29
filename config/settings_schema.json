@@ -146,7 +146,7 @@
       {
         "type": "font_picker",
         "id": "type_header_font",
-        "default": "cormorant_garamond_n5",
+        "default": "cormorant_garamond_n4",
         "label": "Shopify Heading Font"
       },
       {
@@ -222,7 +222,7 @@
       {
         "type": "font_picker",
         "id": "type_body_font",
-        "default": "plus_jakarta_sans_n4",
+        "default": "assistant_n4",
         "label": "Shopify Body Font"
       },
       {
@@ -310,7 +310,7 @@
         "max": 24,
         "step": 2,
         "unit": "px",
-        "label": "Global corner radius (0px for sharp Zara/Editorial look)",
+        "label": "Global corner radius (0px for sharp editorial)",
         "default": 0
       },
       {
@@ -334,7 +334,7 @@
       {
         "type": "checkbox",
         "id": "show_breadcrumbs",
-        "label": "Show editorial breadcrumb navigation on inner templates",
+        "label": "Show breadcrumb navigation on inner pages",
         "default": true
       }
     ]
@@ -423,7 +423,7 @@
         "id": "card_quick_add_style",
         "label": "Quick Add / Size Bar on Product Card",
         "options": [
-          { "value": "size-bar-hover", "label": "Instant Size Selector Bar on Image Hover (Zara/Massimo style)" },
+          { "value": "size-bar-hover", "label": "Instant Size Bar on Image Hover" },
           { "value": "button-hover", "label": "Quick Add Button on Hover" },
           { "value": "below-card", "label": "Always Visible Button Below Details" },
           { "value": "none", "label": "Disabled" }
@@ -467,7 +467,7 @@
       {
         "type": "checkbox",
         "id": "enable_color_swatches",
-        "label": "Enable interactive color & fabric swatches on cards and product pages",
+        "label": "Enable interactive color & fabric swatches",
         "default": true
       },
       {
@@ -493,8 +493,8 @@
         "id": "swatch_source",
         "label": "Swatch visual source priority",
         "options": [
-          { "value": "variant_image", "label": "Variant Image first, fallback to CSS/Custom Color Map" },
-          { "value": "custom_color", "label": "Custom Color Map / Native Shopify Swatch first" }
+          { "value": "variant_image", "label": "Variant Image First, Then Color Map" },
+          { "value": "custom_color", "label": "Custom Color Map / Native Swatch" }
         ],
         "default": "custom_color"
       },
@@ -504,7 +504,7 @@
         "min": 3,
         "max": 10,
         "step": 1,
-        "label": "Max swatches shown on product card before '+X more'",
+        "label": "Max swatches shown on product cards",
         "default": 5
       },
       {
@@ -533,14 +533,14 @@
       {
         "type": "checkbox",
         "id": "show_new_badge",
-        "label": "Automatically show 'NEW' badge on recently created products",
+        "label": "Auto-display 'NEW' badge on recent products",
         "default": true
       },
       {
         "type": "range",
         "id": "new_badge_days",
         "min": 7,
-        "max": 90,
+        "max": 91,
         "step": 7,
         "unit": "d",
         "label": "Days since publication to consider a product 'NEW'",
@@ -549,13 +549,13 @@
       {
         "type": "checkbox",
         "id": "show_preorder_badge",
-        "label": "Show 'PRE-ORDER' badge when inventory policy is continue selling",
+        "label": "Show 'PRE-ORDER' badge on backorder items",
         "default": true
       },
       {
         "type": "checkbox",
         "id": "show_low_stock_badge",
-        "label": "Show 'LOW STOCK' badge when total inventory is below threshold",
+        "label": "Show 'LOW STOCK' badge below threshold",
         "default": true
       },
       {
@@ -591,7 +591,7 @@
       {
         "type": "number",
         "id": "cart_free_shipping_threshold",
-        "label": "Free shipping threshold amount (in store base currency, e.g. 200)",
+        "label": "Free shipping threshold amount (e.g. 200)",
         "default": 200
       },
       {
@@ -615,13 +615,13 @@
       {
         "type": "checkbox",
         "id": "cart_show_discount_input",
-        "label": "Show promo / discount code field inside Cart Drawer",
+        "label": "Show promo code input inside Cart Drawer",
         "default": true
       },
       {
         "type": "checkbox",
         "id": "cart_show_upsells",
-        "label": "Show 'Complete Your Wardrobe' recommendations in Cart Drawer",
+        "label": "Show upsell recommendations in Cart Drawer",
         "default": true
       },
       {
@@ -751,13 +751,13 @@
       {
         "type": "checkbox",
         "id": "currency_code_enabled",
-        "label": "Show currency ISO codes with prices (e.g. $240.00 USD)",
+        "label": "Show currency ISO codes (e.g. $240.00 USD)",
         "default": false
       },
       {
         "type": "checkbox",
         "id": "external_links_new_tab",
-        "label": "Open external http/https links in a new browser tab",
+        "label": "Open external links in a new browser tab",
         "default": false
       }
     ]

@@ -1,0 +1,84 @@
+{
+  "name": "Header Group",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement-1": {
+          "type": "announcement",
+          "settings": {
+            "text": "Complimentary Express Shipping & Signature Gift Box on Orders Over $200",
+            "countdown_date": "",
+            "link_label": "Explore Collection"
+          }
+        },
+        "announcement-2": {
+          "type": "announcement",
+          "settings": {
+            "text": "Autumn / Winter Runway Capsule Now Live Online & In Boutiques",
+            "countdown_date": "",
+            "link_label": "Shop Runway"
+          }
+        }
+      },
+      "block_order": [
+        "announcement-1",
+        "announcement-2"
+      ],
+      "settings": {
+        "color_scheme": "scheme-3",
+        "display_mode": "static",
+        "marquee_speed": 28,
+        "full_width": true,
+        "show_utility_links": true,
+        "utility_label_1": "Boutique Locator",
+        "utility_label_2": "Client Concierge",
+        "show_localization": true
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "mega-editorial-1": {
+          "type": "megamenu_editorial",
+          "settings": {
+            "trigger_item": "Catalog",
+            "subtitle_1": "NEW SEASON",
+            "title_1": "Autumn Tailoring",
+            "subtitle_2": "LIMITED CAPSULE",
+            "title_2": "Italian Cashmere"
+          }
+        },
+        "badge-1": {
+          "type": "menu_badge",
+          "settings": {
+            "trigger_item": "Catalog",
+            "badge_text": "NEW",
+            "badge_bg": "#111111",
+            "badge_color": "#FAF8F5"
+          }
+        }
+      },
+      "block_order": [
+        "mega-editorial-1",
+        "badge-1"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "header_layout": "logo-center-split",
+        "header_height": 76,
+        "full_width": true,
+        "logo_width": 140,
+        "menu": "main-menu",
+        "sticky_header_type": "on-scroll-up",
+        "transparent_on_home": false,
+        "transparent_text_color": "#FFFFFF"
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}

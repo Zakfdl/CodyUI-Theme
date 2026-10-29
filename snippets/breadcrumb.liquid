@@ -41,7 +41,7 @@
               </li>
             {%- endif -%}
 
-          {%- when 'collection' and collection.handle -%}
+          {%- when 'collection' -%}
             {%- if current_tags -%}
               <li class="cody-breadcrumbs__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
                 <a class="cody-breadcrumbs__link" href="{{ collection.url }}" itemprop="item">

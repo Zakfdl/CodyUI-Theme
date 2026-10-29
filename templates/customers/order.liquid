@@ -2,7 +2,8 @@
   <div class="cody-container">
     <div class="cody-section-header">
       <div>
-        <span class="cody-eyebrow">{{ 'customer.order.date_html' | t: date: order.created_at | time_tag: format: 'date' }}</span>
+        {%- assign order_date = order.created_at | time_tag: format: 'date' -%}
+        <span class="cody-eyebrow">{{ 'customer.order.date_html' | t: date: order_date }}</span>
         <h1 class="cody-h1" style="margin-bottom: 0;">{{ 'customer.order.title' | t: name: order.name }}</h1>
       </div>
       <a href="{{ routes.account_url }}" class="cody-link-editorial">{{ 'customer.account.return' | t }}</a>
